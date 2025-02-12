@@ -2,7 +2,7 @@ var fs = require('fs');
 
 let material_option = JSON.parse(fs.readFileSync('test_options.json'))
 
-let addFilament = (vendor, type, name, material_option) => {
+const addFilament = (vendor, type, name, material_option) => {
     let item, filamentType
     for (item in material_option) {
         if (item == vendor) {
@@ -23,7 +23,7 @@ let addFilament = (vendor, type, name, material_option) => {
                             })
                             let newOptions = Object.assign({}, material_option[vendor], newData)
                             material_option[vendor] = newOptions
-                            fs.writeFile("test_options.json", JSON.stringify(material_option), function (err) {
+                            fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
                                 if (err) {
                                     console.log(err);
                                 }
@@ -40,7 +40,7 @@ let addFilament = (vendor, type, name, material_option) => {
                 }
                 const newData = Object.assign({}, oldValues, newValues)
                 material_option[vendor] = newData
-                fs.writeFile("test_options.json", JSON.stringify(material_option), function (err) {
+                fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
                     if (err) {
                         console.log(err);
                     }
@@ -57,14 +57,14 @@ let addFilament = (vendor, type, name, material_option) => {
     const oldValues = material_option
     const newData = Object.assign({}, oldValues, newVendor)
     material_option = newData
-    fs.writeFile("test_options.json", JSON.stringify(material_option), function (err) {
+    fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
         if (err) {
             console.log(err);
         }
     });
 }
 
-let removeFilament = (vendor, type, name, material_option) => {
+const removeFilament = (vendor, type, name, material_option) => {
     let item, filamentType
     for(item in material_option) {
         if (item == vendor) {
@@ -87,7 +87,7 @@ let removeFilament = (vendor, type, name, material_option) => {
                             material_option[vendor][type] = tempStr
                         }
                         
-                        fs.writeFile("test_options.json", JSON.stringify(material_option), function (err) {
+                        fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
                             if (err) {
                                 console.log(err);
                             }
@@ -97,7 +97,7 @@ let removeFilament = (vendor, type, name, material_option) => {
                         let wordToDelete = '\n' + name
                         const tempStr = newString.replace(wordToDelete, '')
                         material_option[vendor][type] = tempStr
-                        fs.writeFile("test_options.json", JSON.stringify(material_option), function (err) {
+                        fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
                             if (err) {
                                 console.log(err);
                             }
@@ -111,13 +111,13 @@ let removeFilament = (vendor, type, name, material_option) => {
 
 }
 
-let removeType = (vendor, type, material_option) => {
+const removeType = (vendor, type, material_option) => {
     let tempOptions = material_option[vendor]
     let removedType = delete tempOptions[type]
     let newOptions = Object.assign({}, tempOptions, removedType) 
  
     material_option[vendor] = newOptions
-    fs.writeFile("test_options.json", JSON.stringify(material_option), function (err) {
+    fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
         if (err) {
             console.log(err);
         }
@@ -125,13 +125,13 @@ let removeType = (vendor, type, material_option) => {
 }
 
 
-let removeVendor = (vendor, material_option) => {
+const removeVendor = (vendor, material_option) => {
     let tempOptions = material_option
     let removedVendor = delete material_option[vendor]
     let newOptions = Object.assign({}, tempOptions, removedVendor)
     
     material_option = newOptions
-    fs.writeFile("test_options.json", JSON.stringify(material_option), function (err) {
+    fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
         if (err) {
             console.log(err);
         }
