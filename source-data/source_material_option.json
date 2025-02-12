@@ -1,0 +1,10 @@
+{
+  "Creality":{
+    "PLA":"Hyper PLA"
+  },
+  "Generic":{
+    "PLA":"Generic PLA\nGeneric PLA-Silk\nGeneric Support for PLA"
+  },
+  "Inland": { 
+    "PLA": "PLA+\nPLA Pro" }
+}
