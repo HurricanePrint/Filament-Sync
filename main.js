@@ -3,8 +3,6 @@ const {addFilament, removeFilament, removeType, removeVendor} = require('./optio
 const {readDatabase, updateDatabase, readOptions, updateOptions, loadCustomProfiles, loadFilamentPresets, sendToPrinter} = require('./config.js')
 
 
-
-// read and store options list
 let addOptions = () => {
     let customProfiles = loadCustomProfiles()
     for (item in customProfiles) {
@@ -31,6 +29,10 @@ let addProfiles = () => {
             let curItemInfo = JSON.parse(curItem.filament_notes)
             if (curItemInfo.name == curProfileItem.base.name && curItemInfo.vendor == curProfileItem.base.brand) {
                 foundMatch = true
+                let updatedFilamentEntry = convertToPrinterFormat(curItem)
+                console.log(updatedFilamentEntry)
+                updateProfiles(updatedFilamentEntry)
+                // TODO Rewrite update function to use new printer formated objects
                 break
             } 
             else if(profileItem == profiles.length - 1 && foundMatch == false) {

@@ -1,21 +1,21 @@
 const {material_database, writeDatabase, testProfile} = require('./config.js')
 let materialList = material_database.result.list
 
-const findKey = (key) => {
+const findKey = (key, brand) => {
     let index = 0
     for (item in materialList) {
         index += 1
         for (profile in materialList[item]) {
             let tempVal = materialList[item][profile]
-            if (tempVal.name == key) {               
+            if (tempVal.name == key && tempVal.brand == brand) {     
                 return index -= 1
             }
         }
     }
 }
 
-const readProfile = (materialName) => {
-    let materialKey = findKey(materialName)
+const readProfile = (materialName, materialBrand) => {
+    let materialKey = findKey(materialName, materialBrand)
     let material = materialList[materialKey]
     return {material, materialKey}
 }
@@ -40,23 +40,10 @@ let deleteProfile = (name) => {
     writeDatabase(material_database)
 }
 
-const updateProfiles = (materialName, newProperties) => {
-    let {material, materialKey} = readProfile(materialName)
-    let updatedMaterial = material
-    for (entry in material) {
-        if(material[entry] !== newProperties[entry]) {
-            if(typeof(material[entry]) === 'object') {
-                for (subEntry in material[entry]) {
-                    // console.log("1 ",material[entry][subEntry])
-                    // console.log("2 ",newProperties)
-                    if(material[entry][subEntry] !== newProperties[entry][subEntry]) {
-                        updatedMaterial[entry][subEntry] = newProperties[entry][subEntry]
-                    }
-                }
-            }
-            updatedMaterial[entry] = newProperties[entry]
-        }
-    }
+const updateProfiles = (materialUpdate) => {
+    let materialToUpdate = materialUpdate
+    let {material, materialKey} = readProfile(materialToUpdate.base.name, materialToUpdate.base.brand)
+    let updatedMaterial = Object.assign({}, material, materialToUpdate)
     material_database.result.list[materialKey] = updatedMaterial
     writeDatabase(material_database)
 }
