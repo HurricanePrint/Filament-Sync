@@ -1,4 +1,4 @@
-const {material_database, writeDatabase, testProfile} = require('./config.js')
+const {material_database, writeDatabase} = require('./config.js')
 let materialList = material_database.result.list
 
 const findKey = (key, brand) => {

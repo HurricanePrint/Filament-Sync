@@ -3,7 +3,7 @@ const {addFilament, removeFilament, removeType, removeVendor} = require('./optio
 const {readDatabase, updateDatabase, readOptions, updateOptions, loadCustomProfiles, loadFilamentPresets, sendToPrinter} = require('./config.js')
 
 
-let addOptions = () => {
+const addOptions = () => {
     let customProfiles = loadCustomProfiles()
     for (item in customProfiles) {
         let curItem = customProfiles[item]
@@ -14,10 +14,9 @@ let addOptions = () => {
     }
 }
 
-addOptions()
+// addOptions()
 
-
-let addProfiles = () => {
+const addProfiles = () => {
     let profiles = readDatabase().result.list
     let presets = loadCustomProfiles()
     
@@ -42,7 +41,7 @@ let addProfiles = () => {
     }
 }
 
-addProfiles()
+// addProfiles()
 
-
+sendToPrinter()
 

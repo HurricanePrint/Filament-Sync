@@ -11,11 +11,6 @@ const {sendFile} = require('./sftp.js')
 
 const presetDirectory = './source-data/filamentpresets/'
 
-//For Testing
-let testProfile = JSON.parse(fs.readFileSync('test_profile.json'))
-let testOptions = JSON.parse(fs.readFileSync('test_options.json'))
-//
-
 const writeOptions = (options) => {
     fs.writeFile(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
         if (err) {
@@ -142,8 +137,8 @@ const loadFilamentPresets = () => {
 } 
 
 
-const sendToPrinter = (file, filename) => {
-    sendFile(file, filename)
+const sendToPrinter = () => {
+    sendFile('material_database.json', 'material_option.json')
 }
 
-module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter, testProfile}
+module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter}
