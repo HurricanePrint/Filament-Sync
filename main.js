@@ -30,9 +30,7 @@ let addProfiles = () => {
             if (curItemInfo.name == curProfileItem.base.name && curItemInfo.vendor == curProfileItem.base.brand) {
                 foundMatch = true
                 let updatedFilamentEntry = convertToPrinterFormat(curItem)
-                console.log(updatedFilamentEntry)
                 updateProfiles(updatedFilamentEntry)
-                // TODO Rewrite update function to use new printer formated objects
                 break
             } 
             else if(profileItem == profiles.length - 1 && foundMatch == false) {
