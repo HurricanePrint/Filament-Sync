@@ -1,6 +1,4 @@
-var fs = require('fs');
-
-let material_option = JSON.parse(fs.readFileSync('test_options.json'))
+let {material_option, writeOptions} = require('./config.js')
 
 const addFilament = (vendor, type, name, material_option) => {
     let item, filamentType
@@ -23,11 +21,7 @@ const addFilament = (vendor, type, name, material_option) => {
                             })
                             let newOptions = Object.assign({}, material_option[vendor], newData)
                             material_option[vendor] = newOptions
-                            fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            });
+                            writeOptions(material_option)
                             return
                         }
                         
@@ -87,21 +81,13 @@ const removeFilament = (vendor, type, name, material_option) => {
                             material_option[vendor][type] = tempStr
                         }
                         
-                        fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
+                        writeOptions(material_option)
                         return
                     } else if (index >= 1) {
                         let wordToDelete = '\n' + name
                         const tempStr = newString.replace(wordToDelete, '')
                         material_option[vendor][type] = tempStr
-                        fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
+                        writeOptions(material_option)
                         return
                     } else if (index == -1) return console.log('Filament not found')
                 } 
@@ -117,23 +103,17 @@ const removeType = (vendor, type, material_option) => {
     let newOptions = Object.assign({}, tempOptions, removedType) 
  
     material_option[vendor] = newOptions
-    fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    writeOptions(material_option)
 }
 
 
-const removeVendor = (vendor, material_option) => {
+const removeVendor = (vendor) => {
     let tempOptions = material_option
     let removedVendor = delete material_option[vendor]
     let newOptions = Object.assign({}, tempOptions, removedVendor)
     
     material_option = newOptions
-    fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    writeOptions(material_option)
 }
+
+module.exports = {addFilament, removeFilament, removeType, removeVendor}

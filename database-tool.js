@@ -1,89 +1,65 @@
-var fs = require('fs');
+let {material_database, writeDatabase, testProfile} = require('./config.js')
+let materialList = material_database.result.list
 
-const material_database = JSON.parse(fs.readFileSync('test_database.json'))
-const materialResult = material_database.result
-const materialListBase = materialResult.list
-const materialList = materialListBase
-
-// finds the key of searched filament (by name)
 const findKey = (key) => {
     let index = 0
-    for (items in materialList) {
+    for (item in materialList) {
         index += 1
-        for (profiles in materialList[items]) {
-            let tempVal = materialList[items][profiles]
-            if (tempVal.name === key) {
-                return index - 1
+        for (profile in materialList[item]) {
+            let tempVal = materialList[item][profile]
+            if (tempVal.name == key) {               
+                return index -= 1
             }
         }
     }
 }
 
-let createProfile = (filamentProps, materialList) => {
+const readProfile = (materialName) => {
+    let materialKey = findKey(materialName)
+    let material = materialList[materialKey]
+    return {material, materialKey}
+}
+
+let createProfile = (filamentProps) => {
     const newProfile = filamentProps
     const oldList = materialList
-    // console.log(oldList)
-    let newList = Object.assign(oldList, newProfile)
-    let tempA = []
-    tempA.push(oldList[0])
-    // tempA.push(newList)
-    console.log(tempA)
-    // let newList = Object.assign({}, oldList, newProfile)
-    // console.log(newList)
+    let tempArray = []
+    tempArray.push(oldList)
+    tempArray[0].push(newProfile)
+    material_database.result.list = tempArray[0]
+    material_database.result.count += 1
+    writeDatabase(material_database)
 }
 
-let testProfile = {
-    "engineVersion":"3.0.0",
-    "printerIntName":"F008",
-    "nozzleDiameter":[
-      "0.4"
-    ],
-    "kvParam":{
-      "temperature_vitrification":"75",
-      "textured_plate_temp":"70",
-      "textured_plate_temp_initial_layer":"70"
-    },
-    "base":{
-      "id":"06002",
-      "brand":"TEST",
-      "name":"Hyper TEST",
-      "meterialType":"TEST",
-      "colors":[
-        "#000000"
-      ],
-      "density":1.275,
-      "diameter":"1.75"
-    }
-  }
-
-createProfile(testProfile, materialList)
-
-let deleteProfile = (name, materialList) => {
+let deleteProfile = (name) => {
     let profile = findKey(name)
     let list = materialList
-    delete list[profile]
-    materialList = list
+    list.splice(profile,1)
+    // delete list[profile]
+    material_database.result.list = list
+    material_database.result.count -= 1
     // write to file
-    fs.writeFile("test_database.json", JSON.stringify(materialList, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
-
-
-const readProfile = (materialName) => {
-    let foundMaterial = materialList[findKey(materialName)]
-    return foundMaterial
+    console.log(material_database)
+    writeDatabase(material_database)
 }
 
 const updateProfiles = (materialName, newProperties) => {
-    let material = readMaterialProperties(materialName)
-    const props = Object.assign({}, material, newProperties)
-    console.log(props)
-    // working but needs a deep merge to write in new vales and not delete non updated values
-
-    //write to file
+    let {material, materialKey} = readProfile(materialName)
+    let updatedMaterial = material
+    for (entry in material) {
+        if(material[entry] !== newProperties[entry]) {
+            if(typeof(material[entry]) === 'object') {
+                for (subEntry in material[entry]) {
+                    if(material[entry][subEntry] !== newProperties[entry][subEntry]) {
+                        updatedMaterial[entry][subEntry] = newProperties[entry][subEntry]
+                    }
+                }
+            }
+            updatedMaterial[entry] = newProperties[entry]
+        }
+    }
+    material_database.result.list[materialKey] = updatedMaterial
+    writeDatabase(material_database)
 }
 
-// updateMaterialProperties('Hyper PLA', {nozzleDiameter: ['0.2'],base: {id:'1', materialType:'PETG',dryingTemp:'50',dryingTime:'100'}})
+module.exports = {createProfile, deleteProfile, readProfile, updateProfiles}

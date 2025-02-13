@@ -1,0 +1,23 @@
+{
+    "engineVersion": "3.0.0",
+    "printerIntName": "F008",
+    "nozzleDiameter": [
+        "0.2"
+    ],
+    "kvParam": {
+        "temperature_vitrification": "Update",
+        "textured_plate_temp": "70",
+        "textured_plate_temp_initial_layer": "Update"
+    },
+    "base": {
+        "id": "1111",
+        "brand": "TEST",
+        "name": "TEST",
+        "meterialType": "PLA",
+        "colors": [
+            "#0000123"
+        ],
+        "density": 5.0,
+        "diameter": "1.75"
+    }
+}

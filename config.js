@@ -1,5 +1,8 @@
 var fs = require('fs');
 
+//For Testing
+let testProfile = JSON.parse(fs.readFileSync('test_profile.json'))
+//
 const databaseFile = 'test_database.json'
 const optionsFile = 'test_options.json'
 //load material database
@@ -37,4 +40,4 @@ const writeDatabase = (database) => {
     });
 }
 
-module.exports = {material_database, material_option, filamentPresets, writeOptions, writeDatabase}
+module.exports = {material_database, material_option, filamentPresets, writeOptions, writeDatabase, testProfile}
