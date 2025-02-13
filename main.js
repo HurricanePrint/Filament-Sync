@@ -14,7 +14,7 @@ const addOptions = () => {
     }
 }
 
-// addOptions()
+addOptions()
 
 const addProfiles = () => {
     let profiles = readDatabase().result.list
@@ -41,7 +41,7 @@ const addProfiles = () => {
     }
 }
 
-// addProfiles()
+addProfiles()
 
 sendToPrinter()
 
