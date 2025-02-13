@@ -1,4 +1,5 @@
-var fs = require('fs');
+const fs = require('fs')
+const os = require('os')
 
 //For Testing
 let testProfile = JSON.parse(fs.readFileSync('test_profile.json'))
@@ -12,8 +13,54 @@ const material_option = JSON.parse(fs.readFileSync(optionsFile))
 
 const presetDirectory = './source-data/filamentpresets/'
 
-//load presets
-let loadFilamentPresets = () => {
+const getOSInfo = () => {
+    return {
+        'osType' : os.type(),
+        'homeDir' : os.userInfo().homedir
+    }
+}
+
+const loadCustomProfiles = () => {
+    let {osType, homeDir} = getOSInfo()
+    let presets = []
+    let directory, directoryFiles
+    switch(osType) { 
+        case 'Darwin': 
+            directory = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/'
+            directoryFiles = fs.readdirSync(directory)
+            for (item in directoryFiles) {
+                if (directoryFiles[item].endsWith('.json')) {
+                    presets.push(JSON.parse(fs.readFileSync(directory+directoryFiles[item])))
+                }
+            }
+            return presets
+            break; 
+        case 'Linux':  
+            directory = homeDir + '/.config/OrcaSlicer/user/default/filament'
+            directoryFiles = fs.readdirSync(directory)
+            for (item in directoryFiles) {
+                if (directoryFiles[item].endsWith('.json')) {
+                    presets.push(JSON.parse(fs.readFileSync(directory+directoryFiles[item])))
+                }
+            }
+            return presets
+            break; 
+        case 'Windows_NT': 
+            directory = homeDir + "/AppData/Roaming/OrcaSlicer/user/default/filament"
+            directoryFiles = fs.readdirSync(directory)
+            for (item in directoryFiles) {
+                if (directoryFiles[item].endsWith('.json')) {
+                    presets.push(JSON.parse(fs.readFileSync(directory+directoryFiles[item])))
+                }
+            }
+            return presets
+            break;     
+        default:  
+            console.log("Unsupported OS"); 
+    } 
+}
+
+const loadFilamentPresets = () => {
     let presets = []
     let directoryFiles = fs.readdirSync(presetDirectory)
     for(item in directoryFiles) {
@@ -21,8 +68,6 @@ let loadFilamentPresets = () => {
     }
     return presets
 } 
-
-const filamentPresets = loadFilamentPresets()
 
 const writeOptions = (options) => {
     fs.writeFile(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
@@ -40,4 +85,4 @@ const writeDatabase = (database) => {
     });
 }
 
-module.exports = {material_database, material_option, filamentPresets, writeOptions, writeDatabase, testProfile}
+module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, testProfile}
