@@ -35,11 +35,8 @@ let deleteProfile = (name) => {
     let profile = findKey(name)
     let list = materialList
     list.splice(profile,1)
-    // delete list[profile]
     material_database.result.list = list
     material_database.result.count -= 1
-    // write to file
-    console.log(material_database)
     writeDatabase(material_database)
 }
 
@@ -50,6 +47,8 @@ const updateProfiles = (materialName, newProperties) => {
         if(material[entry] !== newProperties[entry]) {
             if(typeof(material[entry]) === 'object') {
                 for (subEntry in material[entry]) {
+                    console.log("1 ",material[entry][subEntry])
+                    console.log("2 ",newProperties)
                     if(material[entry][subEntry] !== newProperties[entry][subEntry]) {
                         updatedMaterial[entry][subEntry] = newProperties[entry][subEntry]
                     }

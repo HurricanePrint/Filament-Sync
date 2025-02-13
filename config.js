@@ -3,10 +3,34 @@ const fs = require('fs')
 const os = require('os')
 const defaultDatabaseFile = './source-data/material_database.json'
 const defaultOptionFile = './source-data/material_option.json'
+const databaseFile = './data/material_database.json'
+const optionsFile = './data/material_option.json'
+const material_database = JSON.parse(fs.readFileSync(databaseFile))
+const material_option = JSON.parse(fs.readFileSync(optionsFile))
+const {sendFile} = require('./sftp.js')
+
+const presetDirectory = './source-data/filamentpresets/'
 
 //For Testing
 let testProfile = JSON.parse(fs.readFileSync('test_profile.json'))
+let testOptions = JSON.parse(fs.readFileSync('test_options.json'))
 //
+
+const writeOptions = (options) => {
+    fs.writeFile(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
+
+const writeDatabase = (database) => {
+    fs.writeFile(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
 
 const initData = () => {
     let dir = './data/'
@@ -19,8 +43,6 @@ const initData = () => {
             for (file in files) {
                 fs.writeFileSync(dir+files[file].name, JSON.stringify(files[file].data, null, "\t"))
             }
-        } else {
-            console.log('Data exists')
         }
     } catch(error) {
         try {
@@ -48,6 +70,8 @@ const readDatabase = () => {
 
 const updateDatabase = (newDatabase) => {
     let oldDatabase = readDatabase()
+    let updatedDatabase = Object.assign({}, oldDatabase, newDatabase)
+    writeDatabase(updatedDatabase)
 }
 
 const readOptions = () => {
@@ -55,20 +79,11 @@ const readOptions = () => {
     let options = JSON.parse(fs.readFileSync('./data/material_option.json'))
     return options
 }
-console.log(readOptions())
-
 const updateOptions = (newOptions) => {
     let oldOptions = readOptions()
+    let updatedOptions = Object.assign({}, oldOptions, newOptions)
+    writeOptions(updatedOptions)
 }
-
-const databaseFile = 'test_database.json'
-const optionsFile = 'test_options.json'
-//load material database
-const material_database = JSON.parse(fs.readFileSync(databaseFile))
-//load material options
-const material_option = JSON.parse(fs.readFileSync(optionsFile))
-
-const presetDirectory = './source-data/filamentpresets/'
 
 const getOSInfo = () => {
     return {
@@ -126,20 +141,9 @@ const loadFilamentPresets = () => {
     return presets
 } 
 
-const writeOptions = (options) => {
-    fs.writeFile(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+
+const sendToPrinter = (file, filename) => {
+    sendFile(file, filename)
 }
 
-const writeDatabase = (database) => {
-    fs.writeFile(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
-
-module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, testProfile}
+module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter, testProfile}

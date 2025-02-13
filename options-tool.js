@@ -11,7 +11,6 @@ const addFilament = (vendor, type, name) => {
                     let word = name
                     let index = newString.indexOf(word)
                     if (index !== -1) {
-                        console.log('Name already exists')
                         return
                     } else {
                         if (filamentType == type) {

@@ -1,6 +1,8 @@
 .DS_Store
 /data
 /temp
+/node_modules
 test_database.json
 test_options.json
 test_profile.json
+env.js
