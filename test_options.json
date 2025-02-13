@@ -1,14 +1,21 @@
 {
 	"Creality": {
-		"PLA": "Hyper PLA"
+		"PLA": "Hyper PLA\nPLA+\nPLA Pro",
+		"PETG": "PETG\nHyper PETG",
+		"ASA": "ASA"
 	},
 	"Generic": {
-		"PLA": "Generic PLA\nGeneric PLA-Silk\nGeneric Support for PLA"
+		"PLA": "Generic PLA\nGeneric PLA-Silk\nGeneric Support for PLA",
+		"PETG": "Generic PETG",
+		"ASA": "Generic ASA"
 	},
 	"Inland": {
-		"PETG": "PETG Generic"
+		"PETG": "Generic PETG",
+		"ASA": "Generic ASA",
+		"PLA": "Generic PLA"
 	},
 	"Elegoo": {
-		"PLA": "Fast PLA"
+		"PLA": "Fast PLA",
+		"ABS": "Generic ABS"
 	}
 }

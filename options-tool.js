@@ -1,12 +1,13 @@
 let {material_option, writeOptions} = require('./config.js')
 
-const addFilament = (vendor, type, name, material_option) => {
+const addFilament = (vendor, type, name) => {
     let item, filamentType
-    for (item in material_option) {
+    let materialOption = material_option
+    for (item in materialOption) {
         if (item == vendor) {
-            for (filamentType in material_option[item]) {
+            for (filamentType in materialOption[item]) {
                 if (filamentType === type) {
-                    let newString = material_option[item][filamentType]
+                    let newString = materialOption[item][filamentType]
                     let word = name
                     let index = newString.indexOf(word)
                     if (index !== -1) {
@@ -14,31 +15,27 @@ const addFilament = (vendor, type, name, material_option) => {
                         return
                     } else {
                         if (filamentType == type) {
-                            const oldValues = material_option[vendor]
+                            const oldValues = materialOption[vendor]
                             const tempName = oldValues[type] + "\n" + [name]
                             const newData = Object.assign({}, {
                                 [type]: tempName
                             })
-                            let newOptions = Object.assign({}, material_option[vendor], newData)
-                            material_option[vendor] = newOptions
-                            writeOptions(material_option)
+                            let newOptions = Object.assign({}, materialOption[vendor], newData)
+                            materialOption[vendor] = newOptions
+                            writeOptions(materialOption)
                             return
                         }
                         
                     }
                 }
             }
-                const oldValues = material_option[vendor]
+                const oldValues = materialOption[vendor]
                 const newValues = {
                     [type]: name
                 }
                 const newData = Object.assign({}, oldValues, newValues)
-                material_option[vendor] = newData
-                fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
+                materialOption[vendor] = newData
+                writeOptions(materialOption)
                 return
 
         }
@@ -48,17 +45,13 @@ const addFilament = (vendor, type, name, material_option) => {
             [type]: name
         }
     })
-    const oldValues = material_option
+    const oldValues = materialOption
     const newData = Object.assign({}, oldValues, newVendor)
-    material_option = newData
-    fs.writeFile("test_options.json", JSON.stringify(material_option, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    materialOption = newData
+    writeOptions(materialOption)
 }
 
-const removeFilament = (vendor, type, name, material_option) => {
+const removeFilament = (vendor, type, name) => {
     let item, filamentType
     for(item in material_option) {
         if (item == vendor) {
@@ -97,23 +90,24 @@ const removeFilament = (vendor, type, name, material_option) => {
 
 }
 
-const removeType = (vendor, type, material_option) => {
-    let tempOptions = material_option[vendor]
+const removeType = (vendor, type) => {
+    let materialOption = material_option
+    let tempOptions = materialOption[vendor]
     let removedType = delete tempOptions[type]
     let newOptions = Object.assign({}, tempOptions, removedType) 
  
-    material_option[vendor] = newOptions
-    writeOptions(material_option)
+    materialOption[vendor] = newOptions
+    writeOptions(materialOption)
 }
 
 
 const removeVendor = (vendor) => {
-    let tempOptions = material_option
-    let removedVendor = delete material_option[vendor]
-    let newOptions = Object.assign({}, tempOptions, removedVendor)
+    let materialOption = material_option
+    let removedVendor = delete materialOption[vendor]
+    let newOptions = Object.assign({}, materialOption, removedVendor)
     
-    material_option = newOptions
-    writeOptions(material_option)
+    materialOption = newOptions
+    writeOptions(materialOption)
 }
 
 module.exports = {addFilament, removeFilament, removeType, removeVendor}
