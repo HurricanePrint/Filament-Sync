@@ -98,7 +98,7 @@ const loadCustomProfiles = () => {
     let directory, directoryFiles
     switch(osType) { 
         case 'Darwin': 
-            directory = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/'
+            directory = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
             directoryFiles = fs.readdirSync(directory)
             for (item in directoryFiles) {
                 if (directoryFiles[item].endsWith('.json')) {
@@ -108,7 +108,7 @@ const loadCustomProfiles = () => {
             return presets
             break; 
         case 'Linux':  
-            directory = homeDir + '/.config/OrcaSlicer/user/default/filament'
+            directory = homeDir + '/.config/OrcaSlicer/user/default/filament/base'
             directoryFiles = fs.readdirSync(directory)
             for (item in directoryFiles) {
                 if (directoryFiles[item].endsWith('.json')) {
@@ -118,7 +118,7 @@ const loadCustomProfiles = () => {
             return presets
             break; 
         case 'Windows_NT': 
-            directory = homeDir + "/AppData/Roaming/OrcaSlicer/user/default/filament"
+            directory = homeDir + "/AppData/Roaming/OrcaSlicer/user/default/filament/base"
             directoryFiles = fs.readdirSync(directory)
             for (item in directoryFiles) {
                 if (directoryFiles[item].endsWith('.json')) {

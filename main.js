@@ -1,4 +1,4 @@
-const {createProfile, deleteProfile, readProfile, updateProfiles} = require('./database-tool.js')
+const {createProfile, deleteProfile, readProfile, updateProfiles, convertToPrinterFormat} = require('./database-tool.js')
 const {addFilament, removeFilament, removeType, removeVendor} = require('./options-tool.js')
 const {readDatabase, updateDatabase, readOptions, updateOptions, loadCustomProfiles, loadFilamentPresets, sendToPrinter} = require('./config.js')
 
@@ -19,23 +19,30 @@ let addOptions = () => {
 addOptions()
 
 
-// let addProfiles = () => {
-//     let profiles = readDatabase().result.list
-//     let presets = loadCustomProfiles()
-//     for (item in presets) {
-//         let curItem = presets[item]
-//         for (profileItem in profiles) {
-//             let curProfileItem = profiles[profileItem]
-            
-//             // console.log(curProfileItem)
-//             if (curItem.name == curProfileItem.base.name) {
-//                 updateProfiles(curProfileItem.base.name, curItem)
-//             }
-//         }
-//     }
-// }
+let addProfiles = () => {
+    let profiles = readDatabase().result.list
+    let presets = loadCustomProfiles()
+    
+    for (item in presets) {
+        let foundMatch = false
+        let curItem = presets[item]
+        for (profileItem in profiles) {
+            let curProfileItem = profiles[profileItem]
+            let curItemInfo = JSON.parse(curItem.filament_notes)
+            if (curItemInfo.name == curProfileItem.base.name && curItemInfo.vendor == curProfileItem.base.brand) {
+                foundMatch = true
+                break
+            } 
+            else if(profileItem == profiles.length - 1 && foundMatch == false) {
+                let newFilamentEntry = convertToPrinterFormat(curItem)
+                createProfile(newFilamentEntry)
+                break
+            }
+        }
+    }
+}
 
-// addProfiles()
+addProfiles()
 
 
 
