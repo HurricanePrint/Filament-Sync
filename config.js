@@ -1,9 +1,66 @@
+const { error } = require('console')
 const fs = require('fs')
 const os = require('os')
+const defaultDatabaseFile = './source-data/material_database.json'
+const defaultOptionFile = './source-data/material_option.json'
 
 //For Testing
 let testProfile = JSON.parse(fs.readFileSync('test_profile.json'))
 //
+
+const initData = () => {
+    let dir = './data/'
+    let defaultDatabase = {'name': 'material_database.json', 'data': JSON.parse(fs.readFileSync(defaultDatabaseFile))}
+    let defaultOptions = {'name': 'material_option.json', 'data': JSON.parse(fs.readFileSync(defaultOptionFile))}
+    let files = [defaultDatabase, defaultOptions]
+    try {
+        fs.readdirSync(dir)
+        if(fs.readdirSync(dir).length == 0) {
+            for (file in files) {
+                fs.writeFileSync(dir+files[file].name, JSON.stringify(files[file].data, null, "\t"))
+            }
+        } else {
+            console.log('Data exists')
+        }
+    } catch(error) {
+        try {
+            fs.mkdirSync('data')
+        } catch(error) {
+            console.error(error)
+        }
+        for (file in files) {
+            fs.writeFileSync(dir+files[file].name, JSON.stringify(files[file].data, null, "\t"))
+        }
+    }
+    let tempDir = './temp/'
+    try {
+        fs.readdirSync(tempDir)
+    } catch(error) {
+        fs.mkdirSync(tempDir)
+    }
+}
+
+const readDatabase = () => {
+    initData()
+    let database = JSON.parse(fs.readFileSync('./data/material_database.json'))
+    return database
+}
+
+const updateDatabase = (newDatabase) => {
+    let oldDatabase = readDatabase()
+}
+
+const readOptions = () => {
+    initData()
+    let options = JSON.parse(fs.readFileSync('./data/material_option.json'))
+    return options
+}
+console.log(readOptions())
+
+const updateOptions = (newOptions) => {
+    let oldOptions = readOptions()
+}
+
 const databaseFile = 'test_database.json'
 const optionsFile = 'test_options.json'
 //load material database
@@ -85,4 +142,4 @@ const writeDatabase = (database) => {
     });
 }
 
-module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, testProfile}
+module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, testProfile}

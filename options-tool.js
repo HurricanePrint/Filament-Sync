@@ -1,4 +1,4 @@
-let {material_option, writeOptions} = require('./config.js')
+const {material_option, writeOptions} = require('./config.js')
 
 const addFilament = (vendor, type, name) => {
     let item, filamentType

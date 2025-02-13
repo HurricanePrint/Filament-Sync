@@ -1,1 +1,6 @@
 .DS_Store
+/data
+/temp
+test_database.json
+test_options.json
+test_profile.json
