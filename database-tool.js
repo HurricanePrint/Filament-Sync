@@ -1,7 +1,9 @@
 var fs = require('fs');
 
 const material_database = JSON.parse(fs.readFileSync('test_database.json'))
-const materialList = material_database.result.list
+const materialResult = material_database.result
+const materialListBase = materialResult.list
+const materialList = materialListBase
 
 // finds the key of searched filament (by name)
 const findKey = (key) => {
@@ -20,8 +22,13 @@ const findKey = (key) => {
 let createProfile = (filamentProps, materialList) => {
     const newProfile = filamentProps
     const oldList = materialList
-    console.log(oldList)
-    let newList = {oldList, newProfile}
+    // console.log(oldList)
+    let newList = Object.assign(oldList, newProfile)
+    let tempA = []
+    tempA.push(oldList[0])
+    // tempA.push(newList)
+    console.log(tempA)
+    // let newList = Object.assign({}, oldList, newProfile)
     // console.log(newList)
 }
 
@@ -32,93 +39,6 @@ let testProfile = {
       "0.4"
     ],
     "kvParam":{
-      "activate_air_filtration":"0",
-      "activate_chamber_temp_control":"1",
-      "additional_cooling_fan_speed":"0",
-      "chamber_temperature":"35",
-      "close_fan_the_first_x_layers":"1",
-      "compatible_printers":"",
-      "compatible_printers_condition":"",
-      "compatible_prints":"",
-      "compatible_prints_condition":"",
-      "complete_print_exhaust_fan_speed":"80",
-      "cool_cds_fan_start_at_height":"0.5",
-      "cool_plate_temp":"70",
-      "cool_plate_temp_initial_layer":"70",
-      "cool_special_cds_fan_speed":"0",
-      "default_filament_colour":"\"\"",
-      "during_print_exhaust_fan_speed":"60",
-      "enable_overhang_bridge_fan":"1",
-      "enable_pressure_advance":"0",
-      "enable_special_area_additional_cooling_fan":"0",
-      "eng_plate_temp":"50",
-      "eng_plate_temp_initial_layer":"55",
-      "epoxy_resin_plate_temp":"0",
-      "epoxy_resin_plate_temp_initial_layer":"0",
-      "fan_cooling_layer_time":"30",
-      "fan_max_speed":"80",
-      "fan_min_speed":"40",
-      "filament_cooling_final_speed":"3.4",
-      "filament_cooling_initial_speed":"2.2",
-      "filament_cooling_moves":"4",
-      "filament_cost":"25",
-      "filament_density":"1.28",
-      "filament_deretraction_speed":"nil",
-      "filament_diameter":"1.75",
-      "filament_end_gcode":"; filament end gcode \n",
-      "filament_flow_ratio":"0.98",
-      "filament_is_support":"0",
-      "filament_load_time":"0",
-      "filament_loading_speed":"28",
-      "filament_loading_speed_start":"3",
-      "filament_max_volumetric_speed":"23",
-      "filament_minimal_purge_on_wipe_tower":"15",
-      "filament_multitool_ramming":"0",
-      "filament_multitool_ramming_flow":"10",
-      "filament_multitool_ramming_volume":"10",
-      "filament_notes":"\"\"",
-      "filament_ramming_parameters":"120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6",
-      "filament_retract_before_wipe":"100",
-      "filament_retract_lift_above":"nil",
-      "filament_retract_lift_below":"nil",
-      "filament_retract_lift_enforce":"nil",
-      "filament_retract_restart_extra":"nil",
-      "filament_retract_when_changing_layer":"nil",
-      "filament_retraction_length":"1.2",
-      "filament_retraction_minimum_travel":"nil",
-      "filament_retraction_speed":"nil",
-      "filament_shrink":"100%",
-      "filament_soluble":"0",
-      "filament_start_gcode":"; filament start gcode\n{if (position[2] > first_layer_height) }\nM104 S[nozzle_temperature]\n{else} \nM104 S[first_layer_temperature]\n{endif}\n\n{if(initial_extruder != current_extruder || position[2] > first_layer_height)}\n{if (position[2] +0.4  < printable_height) }\nG2 Z{position[2]  + 0.4} I0.86 J0.86 P1 F10000 ; spiral lift a little from second lift\nG1 X205 Y345 F20000\nG1 Z{position[2] } F1200\n{else}\nG1 X205 Y345 F20000\n{endif}\n{endif}",
-      "filament_toolchange_delay":"0",
-      "filament_type":"PETG",
-      "filament_unload_time":"0",
-      "filament_unloading_speed":"90",
-      "filament_unloading_speed_start":"100",
-      "filament_vendor":"Creality",
-      "filament_wipe":"nil",
-      "filament_wipe_distance":"nil",
-      "filament_z_hop":"nil",
-      "filament_z_hop_types":"nil",
-      "full_fan_speed_layer":"0",
-      "hot_plate_temp":"70",
-      "hot_plate_temp_initial_layer":"70",
-      "inherits":"fdm_filament_pet",
-      "material_flow_dependent_temperature":"0",
-      "material_flow_temp_graph":"",
-      "nozzle_temperature":"250",
-      "nozzle_temperature_initial_layer":"250",
-      "nozzle_temperature_range_high":"270",
-      "nozzle_temperature_range_low":"220",
-      "overhang_fan_speed":"100",
-      "overhang_fan_threshold":"25%",
-      "pressure_advance":"0.05",
-      "reduce_fan_stop_start_freq":"1",
-      "required_nozzle_HRC":"0",
-      "slow_down_for_layer_cooling":"1",
-      "slow_down_layer_time":"8",
-      "slow_down_min_speed":"20",
-      "support_material_interface_fan_speed":"-1",
       "temperature_vitrification":"75",
       "textured_plate_temp":"70",
       "textured_plate_temp_initial_layer":"70"
@@ -132,18 +52,7 @@ let testProfile = {
         "#000000"
       ],
       "density":1.275,
-      "diameter":"1.75",
-      "costPerMeter":0,
-      "weightPerMeter":0,
-      "rank":391,
-      "minTemp":220,
-      "maxTemp":260,
-      "isSoluble":false,
-      "isSupport":false,
-      "shrinkageRate":0,
-      "softeningTemp":0,
-      "dryingTemp":0,
-      "dryingTime":0
+      "diameter":"1.75"
     }
   }
 
