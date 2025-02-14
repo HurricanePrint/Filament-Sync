@@ -1,4 +1,3 @@
-const { error } = require('console')
 const fs = require('fs')
 const os = require('os')
 const defaultDatabaseFile = './source-data/material_database.json'

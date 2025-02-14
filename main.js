@@ -1,6 +1,6 @@
-const {createProfile, deleteProfile, readProfile, updateProfiles, convertToPrinterFormat} = require('./database-tool.js')
+const {createProfile, deleteProfile, updateProfiles, convertToPrinterFormat} = require('./database-tool.js')
 const {addFilament, removeFilament, removeType, removeVendor} = require('./options-tool.js')
-const {readDatabase, updateDatabase, readOptions, updateOptions, loadCustomProfiles, loadFilamentPresets, sendToPrinter} = require('./config.js')
+const {readDatabase, loadCustomProfiles, sendToPrinter} = require('./config.js')
 
 
 const addOptions = () => {
@@ -43,5 +43,6 @@ const addProfiles = () => {
 
 addProfiles()
 
-sendToPrinter()
+// TODO Check for deleted slicer profiles and remove from database
 
+sendToPrinter()
