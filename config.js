@@ -1,14 +1,15 @@
 const fs = require('fs')
 const os = require('os')
-const defaultDatabaseFile = './source-data/material_database.json'
-const defaultOptionFile = './source-data/material_option.json'
-const databaseFile = './data/material_database.json'
-const optionsFile = './data/material_option.json'
+const dirname = __dirname
+const defaultDatabaseFile = dirname+'/sourcedata/material_database.json'
+const defaultOptionFile = dirname+'/sourcedata/material_option.json'
+const databaseFile = dirname+'/data/material_database.json'
+const optionsFile = dirname+'/data/material_option.json'
 const material_database = JSON.parse(fs.readFileSync(databaseFile))
 const material_option = JSON.parse(fs.readFileSync(optionsFile))
 const {sendFile} = require('./sftp.js')
 
-const presetDirectory = './source-data/filamentpresets/'
+const presetDirectory = dirname+'/sourcedata/filamentpresets/'
 
 const writeOptions = (options) => {
     fs.writeFile(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
