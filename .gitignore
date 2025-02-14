@@ -2,6 +2,7 @@
 /data
 /temp
 /node_modules
+/testdata
 test_database.json
 test_options.json
 test_profile.json
