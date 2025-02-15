@@ -82,6 +82,12 @@ Open Terminal and enter the Filament-Sync folder
 
 #### Windows 
 
+Double-click the batch file in the Filament-Sync directory
+
+>   windows-sync.bat
+
+Or from the terminal
+
 >   cd .\Filament-Sync\
 
 >   node main.js
