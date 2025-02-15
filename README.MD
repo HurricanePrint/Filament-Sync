@@ -120,3 +120,11 @@ cd Filament-Sync
 ```
 node main.js
 ```
+
+## Updating
+
+If there is a new update all you have to do is re-clone the repo.
+
+```
+git clone https://github.com/HurricanePrint/Filament-Sync.git
+```
