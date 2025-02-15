@@ -9,7 +9,7 @@ const material_database = JSON.parse(fs.readFileSync(databaseFile))
 const material_option = JSON.parse(fs.readFileSync(optionsFile))
 const {sendFile} = require('./sftp.js')
 
-const presetDirectory = dirname+'/sourcedata/filamentpresets/'
+const presetDirectory = dirname+'/data/filamentpresets/'
 
 const writeOptions = (options) => {
     fs.writeFile(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
@@ -103,7 +103,7 @@ const loadCustomProfiles = () => {
             return presets
             break; 
         case 'Linux':  
-            directory = homeDir + '/.config/OrcaSlicer/user/default/filament/base'
+            directory = homeDir + '/.config/OrcaSlicer/user/default/filament/base/'
             directoryFiles = fs.readdirSync(directory)
             for (item in directoryFiles) {
                 if (directoryFiles[item].endsWith('.json')) {
@@ -113,7 +113,7 @@ const loadCustomProfiles = () => {
             return presets
             break; 
         case 'Windows_NT': 
-            directory = homeDir + "/AppData/Roaming/OrcaSlicer/user/default/filament/base"
+            directory = homeDir + "/AppData/Roaming/OrcaSlicer/user/default/filament/base/"
             directoryFiles = fs.readdirSync(directory)
             for (item in directoryFiles) {
                 if (directoryFiles[item].endsWith('.json')) {
@@ -140,5 +140,6 @@ const loadFilamentPresets = () => {
 const sendToPrinter = () => {
     sendFile('material_database.json', 'material_option.json')
 }
+
 
 module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter}

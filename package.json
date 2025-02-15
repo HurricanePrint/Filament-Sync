@@ -1,12 +1,12 @@
 {
   "name": "filament-sync",
   "version": "1.0.0",
-  "description": "init",
+  "description": "Tool to sync filament profiles to Creality printers",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "HurricanePrint",
   "license": "ISC",
   "dependencies": {
     "node-ssh": "^13.2.0",

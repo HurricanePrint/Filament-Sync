@@ -4,9 +4,11 @@ const {readDatabase, loadCustomProfiles, sendToPrinter} = require('./config.js')
 
 
 const addOptions = () => {
+    console.log('loading custom profiles')
     let customProfiles = loadCustomProfiles()
     for (item in customProfiles) {
         let curItem = customProfiles[item]
+        console.log(curItem)
         if(curItem.filament_notes != undefined) {
             let curItemData = JSON.parse(curItem.filament_notes)
             addFilament(curItemData.vendor, curItemData.type, curItemData.name)

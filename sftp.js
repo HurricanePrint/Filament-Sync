@@ -4,7 +4,7 @@ const { NodeSSH } = require('node-ssh');
 const ssh = new NodeSSH();
 
 const {PRINTERIP, USER, PASSWORD} = require('./network-config.js')
-const remoteFileDir = '/root/filament-sync-service/data/'
+const remoteFileDir = '/root/Filament-Sync-Service/data/'
 const localDataDir = './data/'
 
 let runCommand = async () => {
@@ -15,7 +15,7 @@ let runCommand = async () => {
             username: USER,
             password: PASSWORD
         });
-        await ssh.execCommand('sh /root/filament-sync-service/service/sync.sh');
+        await ssh.execCommand('sh /root/Filament-Sync-Service/service/sync.sh');
     } catch (error) {
         console.error('SSH connection or command execution error:', error);
     } finally {
