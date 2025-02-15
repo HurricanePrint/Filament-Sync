@@ -3,6 +3,28 @@
 # Filament Sync 
 This is the tool that reads the profiles from the slicer, converts them to crealitys database format and sends them to the printer.
 
+It's only working with custom profiles from Orcaslicer at the moment. Creality doesn't allow you to make custom profiles for some stupid reason.
+
+If you want to get your presets ready just copy your settings into a new custom filament profile
+
+Right side of the Filament section 
+Click "Set filaments to use"
+Click "Custom Filament" at the top then click "Create New"
+You will need to add this into the Notes section of the filament
+
+```
+{"id":"","vendor":"","type":"","name":""}
+```
+
+Here is an example
+
+```
+{"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
+
+```
+The "id" should be a 5 digit value that you will 
+also match with your custom RFID tags. 
+
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
 
 ## Prerequisites
