@@ -9,7 +9,7 @@ This is the tool that reads the profiles from the slicer, converts them to creal
 
 #### Install Filament-Sync-Service to printer
 
->   [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service)
+>[Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service)
 
 #### Install git if you are running Windows
 
@@ -19,26 +19,34 @@ In Terminal:
 
 #### Install Node.js
 
->   [Download Node.js](https://nodejs.org/en)
+
+>[Download Node.js](https://nodejs.org/en)
+
 
 #### For Windows:
 
 Running scripts is disabled by default. To enable them, open terminal and run
 
->   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-
+```
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
 ## Installation
 
 #### Clone this repo into your user folder
 
->   cd ~/
-    
+```
+cd ~/
+```
     git clone https://github.com/HurricanePrint/Filament-Sync.git
 
->   cd Filament-Sync/
+```
+cd Filament-Sync/
+```
 
->   npm install
+```
+npm install
+```
 
 ## Config
 
@@ -62,19 +70,25 @@ At the bottom of the "Others" tab of your slicing settings, find "Post-processin
 
 Replace "your-user-name" with your user folder name
 
->   C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
+```
+C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
+```
 
 ### Mac 
 
 Replace "your-user-name" with your user folder name
 
->   /usr/local/bin/node /Users/your-user-name/Filament-Sync/main.js;
+```
+/usr/local/bin/node /Users/your-user-name/Filament-Sync/main.js;
+```
 
 ### Linux
 
 Replace "your-user-name" with your user folder name
 
->   /usr/local/bin/node /home/your-user-name/Filament-Sync/main.js;
+```
+/usr/local/bin/node /home/your-user-name/Filament-Sync/main.js;
+```
 
 ## To sync manually
 
@@ -84,16 +98,25 @@ Open Terminal and enter the Filament-Sync folder
 
 Double-click the batch file in the Filament-Sync directory
 
->   windows-sync.bat
+```
+windows-sync.bat
+```
 
 Or from the terminal
 
->   cd .\Filament-Sync\
+```
+cd .\Filament-Sync\
+```
 
->   node main.js
-
+```
+node main.js
+```
 #### Mac & Linux
 
->   cd Filament-Sync
+```
+cd Filament-Sync
+```
 
->   node main.js
+```
+node main.js
+```
