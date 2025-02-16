@@ -178,4 +178,4 @@ cd Filament-Sync
 npm install
 ```
 
-Add your printers ip in the network-config.js file
+**Add your printers ip in the network-config.js file**
