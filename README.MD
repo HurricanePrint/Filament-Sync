@@ -7,7 +7,7 @@ When used with [Filament-Sync-Service](https://github.com/HurricanePrint/Filamen
 
 #### Creating custom filament presets
 
-It's only working with custom profiles from Orcaslicer at the moment. Creality doesn't allow you to make custom profiles for some stupid reason.
+Works with custom profiles on both Orcaslicer and CrealityPrint 6.
 
 If you want to get your presets ready just copy your settings into a new custom filament profile
 
@@ -26,8 +26,7 @@ Here is an example
 {"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
 
 ```
-The "id" should be a 5 digit value that you will 
-also match with your custom RFID tags. 
+The "id" should be a 5 digit value that you will also match with your custom RFID tags. 
 
 
 
