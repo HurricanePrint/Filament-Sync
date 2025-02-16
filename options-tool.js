@@ -1,7 +1,7 @@
 // Functions for material option
 const fs = require('fs')
 const dirname = __dirname
-const optionsFile = dirname+'/data/material_option.json'
+const optionsFile = dirname + '/data/material_option.json'
 
 const readOptions = () => {
     let options = JSON.parse(fs.readFileSync(optionsFile))
@@ -10,16 +10,8 @@ const readOptions = () => {
 
 const writeOptions = (options) => {
     fs.writeFileSync(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
-
-const updateOptions = (newOptions) => {
-    let oldOptions = readOptions()
-    let updatedOptions = Object.assign({}, oldOptions, newOptions)
-    writeOptions(updatedOptions)
+        if (err) { console.log(err) }
+    })
 }
 
 const addFilament = (vendor, type, name) => {
@@ -48,18 +40,17 @@ const addFilament = (vendor, type, name) => {
                             writeOptions(materialOption)
                             return
                         }
-                        
                     }
                 }
-            } 
-                const oldValues = materialOption[vendor]
-                const newValues = {
-                    [type]: name
-                }
-                const newData = Object.assign({}, oldValues, newValues)
-                materialOption[vendor] = newData
-                writeOptions(materialOption)
-                return
+            }
+            const oldValues = materialOption[vendor]
+            const newValues = {
+                [type]: name
+            }
+            const newData = Object.assign({}, oldValues, newValues)
+            materialOption[vendor] = newData
+            writeOptions(materialOption)
+            return
         }
     }
     const newVendor = new Object({
@@ -67,11 +58,9 @@ const addFilament = (vendor, type, name) => {
             [type]: name
         }
     })
-
     const newData = Object.assign({}, materialOption, newVendor)
     materialOption = newData
     writeOptions(materialOption)
 }
 
-
-module.exports = {addFilament, readOptions, writeOptions, updateOptions}
+module.exports = {addFilament}

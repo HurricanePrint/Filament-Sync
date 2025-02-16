@@ -1,6 +1,6 @@
 let Client = require('ssh2-sftp-client');
 let sftp = new Client();
-const { NodeSSH } = require('node-ssh');
+const {NodeSSH} = require('node-ssh');
 const ssh = new NodeSSH();
 
 const {PRINTERIP, USER, PASSWORD} = require('./network-config.js')
@@ -30,19 +30,19 @@ const sendFile = (database, option) => {
         username: USER,
         password: PASSWORD || 'creality_2024'
     }).then(() => {
-        const remoteDatabaseFile = remoteFileDir+database
-        const localDatabaseFile = localDataDir+database
+        const remoteDatabaseFile = remoteFileDir + database
+        const localDatabaseFile = localDataDir + database
         return sftp.put(localDatabaseFile, remoteDatabaseFile)
     }).then(() => {
-        const remoteOptionFile = remoteFileDir+option
-        const localOptionFile = localDataDir+option
+        const remoteOptionFile = remoteFileDir + option
+        const localOptionFile = localDataDir + option
         return sftp.put(localOptionFile, remoteOptionFile)
     }).then(() => {
         sftp.end()
     }).then(() => {
         runCommand()
     }).catch(err => {
-    console.log(err, 'catch error');
+        console.log(err, 'catch error');
     })
 }
 

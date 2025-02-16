@@ -1,7 +1,7 @@
 // Tools for material database
 const fs = require('fs')
 const dirname = __dirname
-const databaseFile = dirname+'/data/material_database.json'
+const databaseFile = dirname + '/data/material_database.json'
 
 const readDatabase = () => {
     let database = JSON.parse(fs.readFileSync(databaseFile))
@@ -11,9 +11,9 @@ const readDatabase = () => {
 const writeDatabase = (database) => {
     fs.writeFileSync(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
         if (err) {
-            console.log(err);
+            console.log(err)
         }
-    });
+    })
 }
 
 const findKey = (id) => {
@@ -29,9 +29,7 @@ const findKey = (id) => {
 
 const readProfile = (materialId) => {
     let materialKey = findKey(materialId)
-    let materialList = readDatabase().result.list
-    let material = materialList[materialKey]
-    return {material, materialKey}
+    return {materialKey}
 }
 
 let createProfile = (newMaterial) => {
@@ -49,4 +47,10 @@ const updateProfiles = (materialUpdate) => {
     writeDatabase(updatedDatabase)
 }
 
-module.exports = {createProfile, readProfile, updateProfiles, readDatabase, writeDatabase}
+module.exports = {
+    createProfile,
+    readProfile,
+    updateProfiles,
+    readDatabase,
+    writeDatabase
+}

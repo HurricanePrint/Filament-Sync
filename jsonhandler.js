@@ -88,7 +88,7 @@ const convertToPrinterFormat = (preset) => {
             "filament_z_hop": "",
             "filament_z_hop_types": "",
             "full_fan_speed_layer": "",
-            "hot_plate_temp": "", 
+            "hot_plate_temp": "",
             "hot_plate_temp_initial_layer": "",
             "inherits": "",
             "material_flow_dependent_temperature": "0",

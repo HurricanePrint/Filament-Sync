@@ -9,14 +9,12 @@ const addOptions = () => {
     let customProfiles = loadCustomProfiles()
     for (item in customProfiles) {
         let curItem = customProfiles[item]
-        if(curItem.filament_notes != undefined) {
+        if (curItem.filament_notes != undefined) {
             let curItemData = JSON.parse(curItem.filament_notes)
             addFilament(curItemData.vendor, curItemData.type, curItemData.name)
         } else console.log('Filament notes are missing')
     }
 }
-
-addOptions()
 
 const addProfiles = () => {
     let profiles = readDatabase().result.list
@@ -32,13 +30,14 @@ const addProfiles = () => {
             if (updatedFilamentEntry.base.id == curProfileItem.base.id) {
                 foundMatch = true
                 updateProfiles(updatedFilamentEntry)
-            } 
-            else if(profileItem == profiles.length - 1 && foundMatch == false) {
+            } else if (profileItem == profiles.length - 1 && foundMatch == false) {
                 createProfile(updatedFilamentEntry)
             }
         }
     }
 }
+
+addOptions()
 
 addProfiles()
 
