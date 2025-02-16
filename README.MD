@@ -145,7 +145,15 @@ node main.js
 
 ## Updating
 
-If there is a new update all you have to do is re-clone the repo.
+Remove the old folder either manually in explorer/finder
+
+or 
+
+```
+rm -rf Filament-Sync
+```
+
+Reclone the repo
 
 ```
 git clone https://github.com/HurricanePrint/Filament-Sync.git
