@@ -104,7 +104,6 @@ const loadCustomProfiles = () => {
     }
     return presets
 }
-loadCustomProfiles()
 
 const sendToPrinter = () => {
     sendFile('material_database.json', 'material_option.json')

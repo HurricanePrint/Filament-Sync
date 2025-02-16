@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const convertOrcaFormat = (preset) => {
+const convertSlicerFormat = (preset) => {
     let presetNotes = preset.filament_notes[0]
     for (value in preset) {
         preset[value] = preset[value][0]
@@ -12,7 +12,7 @@ const convertOrcaFormat = (preset) => {
 const convertToPrinterFormat = (preset) => {
     let newPreset
     let presetNotes
-    newPreset = convertOrcaFormat(preset)
+    newPreset = convertSlicerFormat(preset)
     presetNotes = preset.filament_notes
     let newObject = {
         "engineVersion": preset.version,
