@@ -32,8 +32,5 @@
     "PET":"Generic PET",
     "PC":"Generic PC",
     "ASA-CF":"Generic ASA-CF"
-  },
-  "Elegoo":{
-    "ASA": "ASA"
   }
 }

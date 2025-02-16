@@ -1,7 +1,7 @@
-const {createProfile, deleteProfile, updateProfiles, convertToPrinterFormat} = require('./database-tool.js')
-const {addFilament, removeFilament, removeType, removeVendor} = require('./options-tool.js')
+const {createProfile, updateProfiles} = require('./database-tool.js')
+const {addFilament} = require('./options-tool.js')
 const {readDatabase, loadCustomProfiles, sendToPrinter} = require('./config.js')
-
+const {convertToPrinterFormat} = require('./jsonhandler.js')
 
 const addOptions = () => {
     let customProfiles = loadCustomProfiles()
@@ -10,7 +10,7 @@ const addOptions = () => {
         if(curItem.filament_notes != undefined) {
             let curItemData = JSON.parse(curItem.filament_notes)
             addFilament(curItemData.vendor, curItemData.type, curItemData.name)
-        }
+        } else console.log('Filament notes are missing')
     }
 }
 
@@ -19,30 +19,25 @@ addOptions()
 const addProfiles = () => {
     let profiles = readDatabase().result.list
     let presets = loadCustomProfiles()
-    
+
     for (item in presets) {
         let foundMatch = false
         let curItem = presets[item]
+        let updatedFilamentEntry = convertToPrinterFormat(curItem)
+
         for (profileItem in profiles) {
             let curProfileItem = profiles[profileItem]
-            let curItemInfo = JSON.parse(curItem.filament_notes)
-            if (curItemInfo.name == curProfileItem.base.name && curItemInfo.vendor == curProfileItem.base.brand) {
+            if (updatedFilamentEntry.base.id == curProfileItem.base.id) {
                 foundMatch = true
-                let updatedFilamentEntry = convertToPrinterFormat(curItem)
                 updateProfiles(updatedFilamentEntry)
-                break
             } 
             else if(profileItem == profiles.length - 1 && foundMatch == false) {
-                let newFilamentEntry = convertToPrinterFormat(curItem)
-                createProfile(newFilamentEntry)
-                break
+                createProfile(updatedFilamentEntry)
             }
         }
     }
 }
 
 addProfiles()
-
-// TODO Check for deleted slicer profiles and remove from database
 
 sendToPrinter()

@@ -1,5 +1,6 @@
 const fs = require('fs')
 const os = require('os')
+const {sendFile} = require('./sftp.js')
 const dirname = __dirname
 const defaultDatabaseFile = dirname+'/sourcedata/material_database.json'
 const defaultOptionFile = dirname+'/sourcedata/material_option.json'
@@ -7,12 +8,10 @@ const databaseFile = dirname+'/data/material_database.json'
 const optionsFile = dirname+'/data/material_option.json'
 const material_database = JSON.parse(fs.readFileSync(databaseFile))
 const material_option = JSON.parse(fs.readFileSync(optionsFile))
-const {sendFile} = require('./sftp.js')
-
 const presetDirectory = dirname+'/data/filamentpresets/'
 
 const writeOptions = (options) => {
-    fs.writeFile(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
+    fs.writeFileSync(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
         if (err) {
             console.log(err);
         }
@@ -20,7 +19,7 @@ const writeOptions = (options) => {
 }
 
 const writeDatabase = (database) => {
-    fs.writeFile(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
+    fs.writeFileSync(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
         if (err) {
             console.log(err);
         }
@@ -74,6 +73,7 @@ const readOptions = () => {
     let options = JSON.parse(fs.readFileSync('./data/material_option.json'))
     return options
 }
+
 const updateOptions = (newOptions) => {
     let oldOptions = readOptions()
     let updatedOptions = Object.assign({}, oldOptions, newOptions)
@@ -89,42 +89,35 @@ const getOSInfo = () => {
 
 const loadCustomProfiles = () => {
     let {osType, homeDir} = getOSInfo()
+    let foundPresets = []
     let presets = []
-    let directory, directoryFiles
+    let directory, directoryFiles, orcaslicerDir, crealityPrintDir, printer
     switch(osType) { 
-        case 'Darwin': 
-            directory = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
-            directoryFiles = fs.readdirSync(directory)
-            for (item in directoryFiles) {
-                if (directoryFiles[item].endsWith('.json')) {
-                    presets.push(JSON.parse(fs.readFileSync(directory+directoryFiles[item])))
-                }
-            }
-            return presets
-            break; 
-        case 'Linux':  
-            directory = homeDir + '/.config/OrcaSlicer/user/default/filament/base/'
-            directoryFiles = fs.readdirSync(directory)
-            for (item in directoryFiles) {
-                if (directoryFiles[item].endsWith('.json')) {
-                    presets.push(JSON.parse(fs.readFileSync(directory+directoryFiles[item])))
-                }
-            }
-            return presets
-            break; 
+        case 'Darwin':
+            orcaslicerDir = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
+            directory = orcaslicerDir
+            directoryFiles = fs.readdirSync(orcaslicerDir)
+            if (directoryFiles[0] == '.DS_Store') directoryFiles.splice(0,1)
+            break
+        case 'Linux': 
+            orcaslicerDir = homeDir + '/.config/OrcaSlicer/user/default/filament/base/'
+            directory = orcaslicerDir
+            directoryFiles = fs.readdirSync(orcaslicerDir)
+            break
         case 'Windows_NT': 
-            directory = homeDir + "/AppData/Roaming/OrcaSlicer/user/default/filament/base/"
-            directoryFiles = fs.readdirSync(directory)
-            for (item in directoryFiles) {
-                if (directoryFiles[item].endsWith('.json')) {
-                    presets.push(JSON.parse(fs.readFileSync(directory+directoryFiles[item])))
-                }
-            }
-            return presets
-            break;     
+            orcaslicerDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/default/filament/base/'
+            directory = orcaslicerDir
+            directoryFiles = fs.readdirSync(orcaslicerDir)
+            break
         default:  
             console.log("Unsupported OS"); 
-    } 
+    }
+    foundPresets = directoryFiles.filter(preset => preset.includes('.json'))
+    for (item in foundPresets) {
+        let parsedPreset = JSON.parse(fs.readFileSync(directory+foundPresets[item]))
+        presets.push(parsedPreset)
+    }
+    return presets
 }
 
 const loadFilamentPresets = () => {
@@ -136,10 +129,8 @@ const loadFilamentPresets = () => {
     return presets
 } 
 
-
 const sendToPrinter = () => {
     sendFile('material_database.json', 'material_option.json')
 }
-
 
 module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter}
