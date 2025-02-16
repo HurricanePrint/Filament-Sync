@@ -2,12 +2,12 @@ const fs = require('fs')
 const os = require('os')
 const {sendFile} = require('./sftp.js')
 const dirname = __dirname
-const defaultDatabaseFile = dirname+'/sourcedata/material_database.json'
-const defaultOptionFile = dirname+'/sourcedata/material_option.json'
+const defaultDatabaseFile = fs.readFileSync(dirname+'/sourcedata/material_database.json')
+const defaultOptionFile = fs.readFileSync(dirname+'/sourcedata/material_option.json')
 const databaseFile = dirname+'/data/material_database.json'
 const optionsFile = dirname+'/data/material_option.json'
-const material_database = JSON.parse(fs.readFileSync(databaseFile))
-const material_option = JSON.parse(fs.readFileSync(optionsFile))
+let material_database, material_option
+
 const presetDirectory = dirname+'/data/filamentpresets/'
 
 const writeOptions = (options) => {
@@ -28,33 +28,19 @@ const writeDatabase = (database) => {
 
 const initData = () => {
     let dir = './data/'
-    let defaultDatabase = {'name': 'material_database.json', 'data': JSON.parse(fs.readFileSync(defaultDatabaseFile))}
-    let defaultOptions = {'name': 'material_option.json', 'data': JSON.parse(fs.readFileSync(defaultOptionFile))}
+    let defaultDatabase = {'name': 'material_database.json', 'data': JSON.parse(defaultDatabaseFile)}
+    let defaultOptions = {'name': 'material_option.json', 'data': JSON.parse(defaultOptionFile)}
     let files = [defaultDatabase, defaultOptions]
-    try {
-        fs.readdirSync(dir)
-        if(fs.readdirSync(dir).length == 0) {
-            for (file in files) {
-                fs.writeFileSync(dir+files[file].name, JSON.stringify(files[file].data, null, "\t"))
-            }
-        }
-    } catch(error) {
-        try {
-            fs.mkdirSync('data')
-        } catch(error) {
-            console.error(error)
-        }
+    if(fs.readdirSync(dir).length == 0) {
         for (file in files) {
             fs.writeFileSync(dir+files[file].name, JSON.stringify(files[file].data, null, "\t"))
         }
-    }
-    let tempDir = './temp/'
-    try {
-        fs.readdirSync(tempDir)
-    } catch(error) {
-        fs.mkdirSync(tempDir)
-    }
+    } else console.log('not empty')
+    material_database = JSON.parse(fs.readFileSync(databaseFile))
+    material_option = JSON.parse(fs.readFileSync(optionsFile))
 }
+
+initData()
 
 const readDatabase = () => {
     initData()
@@ -133,4 +119,4 @@ const sendToPrinter = () => {
     sendFile('material_database.json', 'material_option.json')
 }
 
-module.exports = {material_database, material_option, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter}
+module.exports = {initData, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter, material_database, material_option}
