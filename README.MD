@@ -1,9 +1,9 @@
-
-
 # Filament Sync 
 This is the tool that reads the profiles from Orcaslicer, converts them to creality's database format and sends them to the printer.
 
 When used with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer, your profiles are automatically synced to work with custom rfid tags.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
 
 #### Creating custom filament presets
 
@@ -29,7 +29,7 @@ Here is an example
 The "id" should be a 5 digit value that you will 
 also match with your custom RFID tags. 
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
+
 
 ## Prerequisites
 
