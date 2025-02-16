@@ -1,4 +1,26 @@
-const {readOptions, writeOptions} = require('./config.js')
+// Functions for material option
+const fs = require('fs')
+const dirname = __dirname
+const optionsFile = dirname+'/data/material_option.json'
+
+const readOptions = () => {
+    let options = JSON.parse(fs.readFileSync(optionsFile))
+    return options
+}
+
+const writeOptions = (options) => {
+    fs.writeFileSync(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
+
+const updateOptions = (newOptions) => {
+    let oldOptions = readOptions()
+    let updatedOptions = Object.assign({}, oldOptions, newOptions)
+    writeOptions(updatedOptions)
+}
 
 const addFilament = (vendor, type, name) => {
     let item, filamentType
@@ -112,4 +134,4 @@ const removeVendor = (vendor) => {
     writeOptions(materialOption)
 }
 
-module.exports = {addFilament, removeFilament, removeType, removeVendor}
+module.exports = {addFilament, readOptions, writeOptions, updateOptions}

@@ -1,4 +1,20 @@
-const {readDatabase, writeDatabase} = require('./config.js')
+// Tools for material database
+const fs = require('fs')
+const dirname = __dirname
+const databaseFile = dirname+'/data/material_database.json'
+
+const readDatabase = () => {
+    let database = JSON.parse(fs.readFileSync(databaseFile))
+    return database
+}
+
+const writeDatabase = (database) => {
+    fs.writeFileSync(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
 
 const findKey = (id) => {
     let index = 0
@@ -25,14 +41,6 @@ let createProfile = (newMaterial) => {
     writeDatabase(newDatabase)
 }
 
-let deleteProfile = (name) => {
-    let profile = findKey(name)
-    let newList = readDatabase()
-    newList.result.list.splice(profile,1)
-    newList.result.count -= 1
-    writeDatabase(newList)
-}
-
 const updateProfiles = (materialUpdate) => {
     let materialToUpdate = materialUpdate
     let {materialKey} = readProfile(materialToUpdate.base.id)
@@ -41,4 +49,4 @@ const updateProfiles = (materialUpdate) => {
     writeDatabase(updatedDatabase)
 }
 
-module.exports = {createProfile, deleteProfile, readProfile, updateProfiles}
+module.exports = {createProfile, readProfile, updateProfiles, readDatabase, writeDatabase}

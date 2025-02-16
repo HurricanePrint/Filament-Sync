@@ -1,6 +1,6 @@
-const {createProfile, updateProfiles} = require('./database-tool.js')
+const {createProfile, updateProfiles, readDatabase} = require('./database-tool.js')
 const {addFilament} = require('./options-tool.js')
-const {initData, readDatabase, loadCustomProfiles, sendToPrinter} = require('./config.js')
+const {initData, loadCustomProfiles, sendToPrinter} = require('./config.js')
 const {convertToPrinterFormat} = require('./jsonhandler.js')
 
 initData()
@@ -42,4 +42,4 @@ const addProfiles = () => {
 
 addProfiles()
 
-sendToPrinter()
+// sendToPrinter()
