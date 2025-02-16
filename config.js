@@ -1,9 +1,9 @@
 const fs = require('fs')
 const os = require('os')
-const {sendFile} = require('./sftp.js')
 const dirname = __dirname
 const defaultDatabaseFile = fs.readFileSync(dirname+'/sourcedata/material_database.json')
 const defaultOptionFile = fs.readFileSync(dirname+'/sourcedata/material_option.json')
+const {sendFile} = require('./sftp.js')
 
 const getOSInfo = () => {
     return {
@@ -29,36 +29,82 @@ const initData = () => {
 
 const loadCustomProfiles = () => {
     let {osType, homeDir} = getOSInfo()
-    let foundPresets = []
     let presets = []
-    let directory, directoryFiles, orcaslicerDir, crealityDir
+    let orcaFiles, crealityFiles
+    let orcaPresetDir, crealityPresetDir
     switch(osType) { 
         case 'Darwin':
-            orcaslicerDir = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
-            directory = orcaslicerDir
-            directoryFiles = fs.readdirSync(orcaslicerDir)
-            if (directoryFiles[0] == '.DS_Store') directoryFiles.splice(0,1)
+            orcaPresetDir = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
+            crealityPresetDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/default/filament/base/'
+            if (fs.existsSync(orcaPresetDir)) {
+                orcaFiles = fs.readdirSync(orcaPresetDir)
+                if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0,1)
+                orcaFiles = orcaFiles.filter(preset => preset.includes('.json'))
+                for (item in orcaFiles) {
+                    let parsedPreset = JSON.parse(fs.readFileSync(orcaPresetDir+orcaFiles[item]))
+                    presets.push(parsedPreset)
+                }
+            }
+            if (fs.existsSync(crealityPresetDir)) {
+                crealityFiles = fs.readdirSync(crealityPresetDir)
+                if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0,1)
+                crealityFiles = crealityFiles.filter(preset => preset.includes('.json'))
+                for (item in crealityFiles) {
+                    let parsedPreset = JSON.parse(fs.readFileSync(crealityPresetDir+crealityFiles[item]))
+                    presets.push(parsedPreset)
+                }
+            }
             break
         case 'Linux': 
-            orcaslicerDir = homeDir + '/.config/OrcaSlicer/user/default/filament/base/'
-            directory = orcaslicerDir
-            directoryFiles = fs.readdirSync(orcaslicerDir)
+            orcaPresetDir = homeDir + '/.config/OrcaSlicer/user/default/filament/base/'
+            crealityPresetDir = homeDir + '/.config/Creality/Creality Print/6.0/user/default/filament/base/'
+            if (fs.existsSync(orcaPresetDir)) {
+                orcaFiles = fs.readdirSync(orcaPresetDir)
+                if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0,1)
+                orcaFiles = orcaFiles.filter(preset => preset.includes('.json'))
+                for (item in orcaFiles) {
+                    let parsedPreset = JSON.parse(fs.readFileSync(orcaPresetDir+orcaFiles[item]))
+                    presets.push(parsedPreset)
+                }
+            }
+            if (fs.existsSync(crealityPresetDir)) {
+                crealityFiles = fs.readdirSync(crealityPresetDir)
+                if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0,1)
+                crealityFiles = crealityFiles.filter(preset => preset.includes('.json'))
+                for (item in crealityFiles) {
+                    let parsedPreset = JSON.parse(fs.readFileSync(crealityPresetDir+crealityFiles[item]))
+                    presets.push(parsedPreset)
+                }
+            }
             break
         case 'Windows_NT': 
-            orcaslicerDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/default/filament/base/'
-            directory = orcaslicerDir
-            directoryFiles = fs.readdirSync(orcaslicerDir)
+            orcaPresetDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/default/filament/base/'
+            crealityPresetDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/default/filament/base/'
+            if (fs.existsSync(orcaPresetDir)) {
+                orcaFiles = fs.readdirSync(orcaPresetDir)
+                if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0,1)
+                orcaFiles = orcaFiles.filter(preset => preset.includes('.json'))
+                for (item in orcaFiles) {
+                    let parsedPreset = JSON.parse(fs.readFileSync(orcaPresetDir+orcaFiles[item]))
+                    presets.push(parsedPreset)
+                }
+            }
+            if (fs.existsSync(crealityPresetDir)) {
+                crealityFiles = fs.readdirSync(crealityPresetDir)
+                if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0,1)
+                crealityFiles = crealityFiles.filter(preset => preset.includes('.json'))
+                for (item in crealityFiles) {
+                    let parsedPreset = JSON.parse(fs.readFileSync(crealityPresetDir+crealityFiles[item]))
+                    presets.push(parsedPreset)
+                }
+            }
             break
         default:  
             console.log("Unsupported OS"); 
     }
-    foundPresets = directoryFiles.filter(preset => preset.includes('.json'))
-    for (item in foundPresets) {
-        let parsedPreset = JSON.parse(fs.readFileSync(directory+foundPresets[item]))
-        presets.push(parsedPreset)
-    }
     return presets
 }
+loadCustomProfiles()
 
 const sendToPrinter = () => {
     sendFile('material_database.json', 'material_option.json')
