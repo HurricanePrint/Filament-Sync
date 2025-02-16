@@ -6,24 +6,14 @@ const defaultDatabaseFile = fs.readFileSync(dirname+'/sourcedata/material_databa
 const defaultOptionFile = fs.readFileSync(dirname+'/sourcedata/material_option.json')
 const databaseFile = dirname+'/data/material_database.json'
 const optionsFile = dirname+'/data/material_option.json'
-let material_database, material_option
 
 const presetDirectory = dirname+'/data/filamentpresets/'
 
-const writeOptions = (options) => {
-    fs.writeFileSync(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
-
-const writeDatabase = (database) => {
-    fs.writeFileSync(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+const getOSInfo = () => {
+    return {
+        'osType' : os.type(),
+        'homeDir' : os.userInfo().homedir
+    }
 }
 
 const initData = () => {
@@ -35,29 +25,21 @@ const initData = () => {
         for (file in files) {
             fs.writeFileSync(dir+files[file].name, JSON.stringify(files[file].data, null, "\t"))
         }
-    } else console.log('not empty')
-    material_database = JSON.parse(fs.readFileSync(databaseFile))
-    material_option = JSON.parse(fs.readFileSync(optionsFile))
+    }
 }
-
 initData()
 
-const readDatabase = () => {
-    initData()
-    let database = JSON.parse(fs.readFileSync('./data/material_database.json'))
-    return database
-}
-
-const updateDatabase = (newDatabase) => {
-    let oldDatabase = readDatabase()
-    let updatedDatabase = Object.assign({}, oldDatabase, newDatabase)
-    writeDatabase(updatedDatabase)
-}
-
 const readOptions = () => {
-    initData()
-    let options = JSON.parse(fs.readFileSync('./data/material_option.json'))
+    let options = JSON.parse(fs.readFileSync(optionsFile))
     return options
+}
+
+const writeOptions = (options) => {
+    fs.writeFileSync(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
 }
 
 const updateOptions = (newOptions) => {
@@ -66,18 +48,31 @@ const updateOptions = (newOptions) => {
     writeOptions(updatedOptions)
 }
 
-const getOSInfo = () => {
-    return {
-        'osType' : os.type(),
-        'homeDir' : os.userInfo().homedir
-    }
+const readDatabase = () => {
+    let database = JSON.parse(fs.readFileSync(databaseFile))
+    return database
+}
+
+const writeDatabase = (database) => {
+    fs.writeFileSync(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
+
+
+const updateDatabase = (newDatabase) => {
+    let oldDatabase = readDatabase()
+    let updatedDatabase = Object.assign({}, oldDatabase, newDatabase)
+    writeDatabase(updatedDatabase)
 }
 
 const loadCustomProfiles = () => {
     let {osType, homeDir} = getOSInfo()
     let foundPresets = []
     let presets = []
-    let directory, directoryFiles, orcaslicerDir, crealityPrintDir, printer
+    let directory, directoryFiles, orcaslicerDir
     switch(osType) { 
         case 'Darwin':
             orcaslicerDir = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
@@ -119,4 +114,4 @@ const sendToPrinter = () => {
     sendFile('material_database.json', 'material_option.json')
 }
 
-module.exports = {initData, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter, material_database, material_option}
+module.exports = {initData, loadCustomProfiles, loadFilamentPresets, writeOptions, writeDatabase, readDatabase, updateDatabase, readOptions, updateOptions, sendToPrinter}

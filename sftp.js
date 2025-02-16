@@ -30,13 +30,13 @@ const sendFile = (database, option) => {
         username: USER,
         password: PASSWORD || 'creality_2024'
     }).then(() => {
-        let remoteFile = remoteFileDir+database
-        let localFile = localDataDir+database
-        return sftp.put(localFile, remoteFile)
+        const remoteDatabaseFile = remoteFileDir+database
+        const localDatabaseFile = localDataDir+database
+        return sftp.put(localDatabaseFile, remoteDatabaseFile)
     }).then(() => {
-        let remoteFile = remoteFileDir+option
-        let localFile = localDataDir+option
-        return sftp.put(localFile, remoteFile)
+        const remoteOptionFile = remoteFileDir+option
+        const localOptionFile = localDataDir+option
+        return sftp.put(localOptionFile, remoteOptionFile)
     }).then(() => {
         sftp.end()
     }).then(() => {
@@ -45,6 +45,5 @@ const sendFile = (database, option) => {
     console.log(err, 'catch error');
     })
 }
-
 
 module.exports = {sendFile}

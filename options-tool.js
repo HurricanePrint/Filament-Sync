@@ -1,11 +1,13 @@
-const {material_option, writeOptions} = require('./config.js')
+const {readOptions, writeOptions} = require('./config.js')
 
 const addFilament = (vendor, type, name) => {
     let item, filamentType
-    let materialOption = material_option
-    for (item in materialOption) {
+    let options = readOptions()
+
+    for (item in options) {
+        materialOption = options
         if (item == vendor) {
-            for (filamentType in materialOption[item]) {
+            for (filamentType in options[item]) {
                 if (filamentType === type) {
                     let newString = materialOption[item][filamentType]
                     let word = name
@@ -14,6 +16,7 @@ const addFilament = (vendor, type, name) => {
                         return
                     } else {
                         if (filamentType == type) {
+                            console.log('4')
                             const oldValues = materialOption[vendor]
                             const tempName = oldValues[type] + "\n" + [name]
                             const newData = Object.assign({}, {
@@ -27,7 +30,7 @@ const addFilament = (vendor, type, name) => {
                         
                     }
                 }
-            }
+            } 
                 const oldValues = materialOption[vendor]
                 const newValues = {
                     [type]: name
@@ -36,7 +39,6 @@ const addFilament = (vendor, type, name) => {
                 materialOption[vendor] = newData
                 writeOptions(materialOption)
                 return
-
         }
     }
     const newVendor = new Object({
@@ -44,13 +46,14 @@ const addFilament = (vendor, type, name) => {
             [type]: name
         }
     })
-    const oldValues = materialOption
-    const newData = Object.assign({}, oldValues, newVendor)
+
+    const newData = Object.assign({}, materialOption, newVendor)
     materialOption = newData
     writeOptions(materialOption)
 }
 
 const removeFilament = (vendor, type, name) => {
+    let material_option = readOptions()
     let item, filamentType
     for(item in material_option) {
         if (item == vendor) {
@@ -90,7 +93,7 @@ const removeFilament = (vendor, type, name) => {
 }
 
 const removeType = (vendor, type) => {
-    let materialOption = material_option
+    let materialOption = readOptions()
     let tempOptions = materialOption[vendor]
     let removedType = delete tempOptions[type]
     let newOptions = Object.assign({}, tempOptions, removedType) 
@@ -101,7 +104,7 @@ const removeType = (vendor, type) => {
 
 
 const removeVendor = (vendor) => {
-    let materialOption = material_option
+    let materialOption = readOptions()
     let removedVendor = delete materialOption[vendor]
     let newOptions = Object.assign({}, materialOption, removedVendor)
     
