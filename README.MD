@@ -1,7 +1,11 @@
 
 
 # Filament Sync 
-This is the tool that reads the profiles from the slicer, converts them to crealitys database format and sends them to the printer.
+This is the tool that reads the profiles from Orcaslicer, converts them to creality's database format and sends them to the printer.
+
+When used with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer, your profiles are automatically synced to work with custom rfid tags.
+
+#### Creating custom filament presets
 
 It's only working with custom profiles from Orcaslicer at the moment. Creality doesn't allow you to make custom profiles for some stupid reason.
 
