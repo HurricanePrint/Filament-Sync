@@ -38,7 +38,6 @@ const addFilament = (vendor, type, name) => {
                         return
                     } else {
                         if (filamentType == type) {
-                            console.log('4')
                             const oldValues = materialOption[vendor]
                             const tempName = oldValues[type] + "\n" + [name]
                             const newData = Object.assign({}, {
