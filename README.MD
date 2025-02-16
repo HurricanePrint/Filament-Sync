@@ -158,3 +158,11 @@ Reclone the repo
 ```
 git clone https://github.com/HurricanePrint/Filament-Sync.git
 ```
+
+```
+cd Filament-Sync
+```
+
+```
+npm i
+```
