@@ -1,3 +1,6 @@
+### Update 021625
+- Creality support is added
+
 ### Update 021525
 - Moved json formatting to it's own script
 - Cleaned up json formatting function
