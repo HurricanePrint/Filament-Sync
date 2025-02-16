@@ -17,6 +17,9 @@ const getOSInfo = () => {
 }
 
 const initData = () => {
+    if (!fs.existsSync('./data')){
+        fs.mkdirSync('./data');
+    }
     let dir = './data/'
     let defaultDatabase = {'name': 'material_database.json', 'data': JSON.parse(defaultDatabaseFile)}
     let defaultOptions = {'name': 'material_option.json', 'data': JSON.parse(defaultOptionFile)}

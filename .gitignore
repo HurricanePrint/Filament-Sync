@@ -1,5 +1,4 @@
 .DS_Store
-/temp
 /node_modules
 /testdata
 test_database.json
