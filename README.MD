@@ -1,19 +1,24 @@
 # Filament Sync 
-This is the tool that reads the profiles from Orcaslicer, converts them to creality's database format and sends them to the printer.
+This is the tool that reads the profiles from Orcaslicer, converts them to creality's database format and sends them to the printer
 
-When used with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer, your profiles are automatically synced to work with custom rfid tags.
+When used with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer, your profiles are automatically synced to work with custom rfid tags
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
 
 #### Creating custom filament presets
 
-Works with custom profiles on both Orcaslicer and CrealityPrint 6.
+Works with custom profiles on both Orcaslicer and CrealityPrint 6
 
 If you want to get your presets ready just copy your settings into a new custom filament profile
 
 Right side of the Filament section 
-Click "Set filaments to use"
-Click "Custom Filament" at the top then click "Create New"
+
+Click "**Set filaments to use**"
+
+Click "**Custom Filament**" at the top then click "**Create New**"
+
+If you don't see this option on Creality Print, go into the options/preferences and set **User Role** to **Professional**
+
 You will need to add this into the Notes section of the filament
 
 ```
@@ -26,7 +31,7 @@ Here is an example
 {"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
 
 ```
-The "id" should be a 5 digit value that you will also match with your custom RFID tags. 
+The "id" should be a 5 digit value that you will also match with your custom RFID tags
 
 
 
@@ -50,7 +55,9 @@ In Terminal:
 
 #### For Windows:
 
-Running scripts is disabled by default. To enable them, open terminal and run
+Running scripts is disabled by default
+
+ To enable them, open terminal and run
 
 ```
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -75,9 +82,9 @@ npm install
 
 ## Config
 
-Open the network-config.js file with a text editor.
+Open the **network-config.js** file with a text editor
 
-Change PRINTERIP to the ip of your printer and save
+Change **PRINTERIP** to the ip of your printer and save
 
     const PRINTERIP = '127.0.0.1'
     const USER = 'root'
@@ -89,11 +96,11 @@ If you have changed your username or password they can also be updated here.
 
 This will sync everytime you slice and export gcode to the printer.
 
-At the bottom of the "Others" tab of your slicing settings, find "Post-processing Scripts" 
+At the bottom of the "**Others**" tab of your slicing settings, find "**Post-processing Scripts**" 
 
 #### Windows
 
-Replace "your-user-name" with your user folder name
+Replace "**your-user-name**" with your user folder name
 
 ```
 C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
@@ -101,7 +108,7 @@ C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
 
 ### Mac 
 
-Replace "your-user-name" with your user folder name
+Replace "**your-user-name**" with your user folder name
 
 ```
 /usr/local/bin/node /Users/your-user-name/Filament-Sync/main.js;
@@ -109,7 +116,7 @@ Replace "your-user-name" with your user folder name
 
 ### Linux
 
-Replace "your-user-name" with your user folder name
+Replace "**your-user-name**" with your user folder name
 
 ```
 /usr/local/bin/node /home/your-user-name/Filament-Sync/main.js;
@@ -117,9 +124,9 @@ Replace "your-user-name" with your user folder name
 
 ## To sync manually
 
-Open Terminal and enter the Filament-Sync folder
-
 #### Windows 
+
+In File Explorer
 
 Double-click the batch file in the Filament-Sync directory
 
@@ -136,6 +143,7 @@ cd .\Filament-Sync\
 ```
 node main.js
 ```
+
 #### Mac & Linux
 
 ```
@@ -167,7 +175,7 @@ cd Filament-Sync
 ```
 
 ```
-npm i
+npm install
 ```
 
 Add your printers ip in the network-config.js file
