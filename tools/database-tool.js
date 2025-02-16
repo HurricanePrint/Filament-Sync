@@ -1,7 +1,8 @@
 // Tools for material database
 const fs = require('fs')
-const dirname = __dirname
-const databaseFile = dirname + '/data/material_database.json'
+const path = require('path')
+const dirname = path.join(__dirname, '..', 'data/')
+const databaseFile = dirname + 'material_database.json'
 
 const readDatabase = () => {
     let database = JSON.parse(fs.readFileSync(databaseFile))

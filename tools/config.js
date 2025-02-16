@@ -1,8 +1,9 @@
 const fs = require('fs')
 const os = require('os')
-const dirname = __dirname
-const defaultDatabaseFile = fs.readFileSync(dirname + '/sourcedata/material_database.json')
-const defaultOptionFile = fs.readFileSync(dirname + '/sourcedata/material_option.json')
+const path = require('path')
+const dirname = path.join(__dirname, '..', 'sourcedata/')
+const defaultDatabaseFile = fs.readFileSync(dirname + 'material_database.json')
+const defaultOptionFile = fs.readFileSync(dirname + 'material_option.json')
 const {sendFile} = require('./sftp.js')
 
 const getOSInfo = () => {

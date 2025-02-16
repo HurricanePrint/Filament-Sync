@@ -1,9 +1,10 @@
-let Client = require('ssh2-sftp-client');
-let sftp = new Client();
+const Client = require('ssh2-sftp-client');
+const sftp = new Client();
 const {NodeSSH} = require('node-ssh');
 const ssh = new NodeSSH();
-
-const {PRINTERIP, USER, PASSWORD} = require('./network-config.js')
+const path = require('path')
+const dirname = path.join(__dirname, '..')
+const {PRINTERIP, USER, PASSWORD} = require(dirname + '/network-config.js')
 const remoteFileDir = '/root/Filament-Sync-Service/data/'
 const localDataDir = './data/'
 

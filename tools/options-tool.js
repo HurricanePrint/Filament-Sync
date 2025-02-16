@@ -1,7 +1,8 @@
 // Functions for material option
 const fs = require('fs')
-const dirname = __dirname
-const optionsFile = dirname + '/data/material_option.json'
+const path = require('path')
+const dirname = path.join(__dirname, '..', 'data/')
+const optionsFile = dirname + 'material_option.json'
 
 const readOptions = () => {
     let options = JSON.parse(fs.readFileSync(optionsFile))

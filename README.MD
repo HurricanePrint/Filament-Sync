@@ -29,7 +29,6 @@ Here is an example
 
 ```
 {"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
-
 ```
 The "id" should be a 5 digit value that you will also match with your custom RFID tags
 
