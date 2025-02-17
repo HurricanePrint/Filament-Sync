@@ -1,0 +1,40 @@
+{
+	"Creality": {
+		"PLA": "Hyper PLA\nENDER FAST PLA\nCR-PLA\nCR-Silk\nEnder-PLA\nEN-PLA+\nCR-PLA Carbon\nCR-PLA Matte\nCR-PLA Fluo\nCR-Wood\nHP Ultra PLA\nSoleyin Ultra PLA",
+		"PLA-CF": "Hyper PLA-CF",
+		"PETG": "Hyper PETG\nCR-PETG",
+		"ABS": "Hyper ABS\nCR-ABS",
+		"TPU": "HP-TPU\nCR-TPU",
+		"PA": "CR-Nylon",
+		"ASA": "HP-ASA",
+		"PA-CF": "Hyper PAHT-CF\nHyper PPA-CF",
+		"PC": "Hyper PC"
+	},
+	"Generic": {
+		"PLA": "Generic PLA\nGeneric PLA-Silk\nGeneric Support for PLA",
+		"PETG": "Generic PETG",
+		"ABS": "Generic ABS",
+		"TPU": "Generic TPU\nGeneric TPU 64D",
+		"PLA-CF": "Generic PLA-CF",
+		"ASA": "Generic ASA",
+		"PA": "Generic PA\nGeneric Support for PA",
+		"PA-CF": "Generic PA-CF\nGeneric PA612-CF\nGeneric PA12-CF",
+		"BVOH": "Generic BVOH",
+		"PVA": "Generic PVA",
+		"HIPS": "Generic HIPS",
+		"PET-CF": "Generic PET-CF",
+		"PETG-CF": "Generic PETG-CF",
+		"PA6-CF": "Generic PA6-CF",
+		"PAHT-CF": "Generic PAHT-CF",
+		"PPS": "Generic PPS",
+		"PPS-CF": "Generic PPS-CF",
+		"PP": "Generic PP",
+		"PET": "Generic PET",
+		"PC": "Generic PC",
+		"ASA-CF": "Generic ASA-CF"
+	},
+	"Elegoo": {
+		"ASA": "ASA",
+		"PLA": "Fast"
+	}
+}
