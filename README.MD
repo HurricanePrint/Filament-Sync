@@ -30,7 +30,9 @@ Here is an example
 ```
 {"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
 ```
-The "id" should be a 5 digit value that you will also match with your custom RFID tags
+The "id" should be a unique 5 digit value that you will also match with your custom RFID tags
+
+It is still required even if you are not using RFID tags
 
 
 
@@ -89,15 +91,15 @@ Change **PRINTERIP** to the ip of your printer and save
     const USER = 'root'
     const PASSWORD = 'creality_2024'
 
-If you have changed your username or password they can also be updated here.
+If you have changed your username or password they can also be updated here
 
 ## Run as post-processing script in slicer
 
-This will sync everytime you slice and export gcode to the printer.
+This will sync everytime you slice and export gcode to the printer
 
 At the bottom of the "**Others**" tab of your slicing settings, find "**Post-processing Scripts**" 
 
-#### Windows
+### Windows
 
 Replace "**your-user-name**" with your user folder name
 
@@ -123,7 +125,7 @@ Replace "**your-user-name**" with your user folder name
 
 ## To sync manually
 
-#### Windows 
+### Windows 
 
 In File Explorer
 
@@ -143,7 +145,7 @@ cd .\Filament-Sync\
 node main.js
 ```
 
-#### Mac & Linux
+### Mac & Linux
 
 ```
 cd Filament-Sync
@@ -178,3 +180,36 @@ npm install
 ```
 
 **Add your printers ip in the network-config.js file**
+
+
+## Troubleshooting
+
+As of now there are only two things that can cause the tool to not work and crash
+
+### Not adding the required info to the filament notes section
+
+```
+{"id":"","vendor":"","type":"","name":""}
+```
+
+Here is an example
+
+```
+{"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
+```
+The "id" should be a unique 5 digit value that you will also match with your custom RFID tags.
+
+It is still required even if you are not using RFID tags
+
+
+### Not configuring the network-config file
+
+Open the **network-config.js** file with a text editor
+
+Change **PRINTERIP** to the ip of your printer and save
+
+    const PRINTERIP = '127.0.0.1'
+    const USER = 'root'
+    const PASSWORD = 'creality_2024'
+
+If you have changed your username or password they can also be updated here
