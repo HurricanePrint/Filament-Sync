@@ -1,9 +1,7 @@
 # Filament Sync 
 This is the tool that reads the profiles from your slicer, converts them to Creality's filament database format and sends them to the printer
 
-Combined with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer, your profiles are automatically synced to work with custom rfid tags
-
-Custom RFID tags aren't required to use the tool, it will also update the menus for manual selection
+Combined with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer, your profiles are automatically synced to work with custom rfid tags or manual selection of filaments in the menu
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
 
