@@ -1,13 +1,11 @@
 # Filament Sync 
-This is the tool that reads the profiles from Orcaslicer, converts them to creality's database format and sends them to the printer
+This tool reads custom filament profiles from Orcaslicer and Creality Print, converts them to Creality's database format and then sends them to the printer to pick manually with the screen or automatically with custom RFID tags
 
-When used with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer, your profiles are automatically synced to work with custom rfid tags
+Use with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
 
 ### Creating custom filament presets
-
-Works with custom profiles on both Orcaslicer and CrealityPrint 6
 
 If you want to get your presets ready just copy your settings into a new custom filament profile
 
@@ -30,13 +28,14 @@ Here is an example
 ```
 {"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
 ```
-The "id" should be a 5 digit value that you will also match with your custom RFID tags
+The "id" should be a unique 5 digit value that you will also match with your custom RFID tags
 
+An id is still required even if you are not using RFID tags as the tool searches by id when updating filament settings
 
 
 ## Prerequisites
 
-#### Install Filament-Sync-Service to printer
+#### Install Filament-Sync-Service on your printer
 
 >[Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service)
 
@@ -89,11 +88,11 @@ Change **PRINTERIP** to the ip of your printer and save
     const USER = 'root'
     const PASSWORD = 'creality_2024'
 
-If you have changed your username or password they can also be updated here.
+If you have changed your username or password they can also be updated here
 
 ## Run as post-processing script in slicer
 
-This will sync everytime you slice and export gcode to the printer.
+This will sync everytime you slice and export gcode to the printer
 
 At the bottom of the "**Others**" tab of your slicing settings, find "**Post-processing Scripts**" 
 
