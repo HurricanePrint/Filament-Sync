@@ -7,9 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "HurricanePrint",
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "dependencies": {
-    "node-ssh": "^13.2.0",
-    "ssh2-sftp-client": "^11.0.0"
+    "node-scp": "^0.0.23"
   }
 }
