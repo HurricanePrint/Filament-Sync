@@ -167,6 +167,3 @@ git pull
 ```
 
 Make sure your Printer IP is correct in network-config.js 
-
-
-**Add your printers ip in the network-config.js file**
