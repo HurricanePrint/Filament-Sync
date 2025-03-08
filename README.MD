@@ -154,28 +154,17 @@ node main.js
 
 ## Updating
 
-Remove the old folder either manually in explorer/finder
-
-or 
-
-```
-rm -rf Filament-Sync
-```
-
-Reclone the repo
-
-```
-git clone https://github.com/HurricanePrint/Filament-Sync.git
-```
+Open Terminal and enter the Filament Sync directory
 
 ```
 cd Filament-Sync
 ```
 
+Pull the new changes
+
 ```
-npm install
+git pull
 ```
 
-Test
 
 **Add your printers ip in the network-config.js file**
