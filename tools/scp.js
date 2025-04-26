@@ -16,7 +16,7 @@ let runCommand = async (directory) => {
             username: USER,
             password: PASSWORD
         });
-        await ssh.execCommand('sh' + directory + '/service/sync.sh');
+        await ssh.execCommand('sh ' + directory + '/service/sync.sh');
     } catch (error) {
         console.error('SSH connection or command execution error:', error);
     } finally {
