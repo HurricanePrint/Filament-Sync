@@ -44,7 +44,6 @@ const loadCustomProfiles = () => {
         case 'Darwin':
             orcaPresetDir = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
             crealityPresetDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + CCUSERID + '/filament/base'
-            console.log(crealityPresetDir)
             if (fs.existsSync(orcaPresetDir)) {
                 orcaFiles = fs.readdirSync(orcaPresetDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
