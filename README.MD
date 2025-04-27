@@ -180,4 +180,4 @@ Pull the new changes
 git pull
 ```
 
-Make sure your Printer IP is correct in user-config.js 
+Make sure your settings are correct in user-config.js 
