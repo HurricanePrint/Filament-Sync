@@ -80,7 +80,7 @@ npm install
 
 ## Config
 
-Open the **network-config.js** file with a text editor
+Open the **user-config.js** file with a text editor
 
 Change **PRINTERIP** to the ip of your printer and save
 
@@ -89,6 +89,20 @@ Change **PRINTERIP** to the ip of your printer and save
     const PASSWORD = 'creality_2024'
 
 If you have changed your username or password they can also be updated here
+
+If you are using CrealityPrint and have logged into your cloud account
+
+Change **CCUSERID** to the unique id number that creality has set for the user folder.
+
+Where to find it
+
+Mac: `/Library/Application Support/Creality/Creality Print/6.0/user/`
+
+Linux: `/.config/Creality/Creality Print/6.0/user/`
+
+Windows: `/AppData/Roaming/Creality/Creality Print/6.0/user/`
+
+
 
 ## Run as post-processing script in slicer
 
@@ -166,4 +180,4 @@ Pull the new changes
 git pull
 ```
 
-Make sure your Printer IP is correct in network-config.js 
+Make sure your Printer IP is correct in user-config.js 

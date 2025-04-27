@@ -5,6 +5,7 @@ const dirname = path.join(__dirname, 'sourcedata/')
 const defaultDatabaseFile = fs.readFileSync(dirname + 'material_database.json')
 const defaultOptionFile = fs.readFileSync(dirname + 'material_option.json')
 const {sendFiles} = require('./scp')
+const {CCUSERID} = require('../user-config')
 
 const getOSInfo = () => {
     return {
@@ -42,7 +43,8 @@ const loadCustomProfiles = () => {
     switch (osType) {
         case 'Darwin':
             orcaPresetDir = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
-            crealityPresetDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/default/filament/base/'
+            crealityPresetDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + CCUSERID + '/filament/base'
+            console.log(crealityPresetDir)
             if (fs.existsSync(orcaPresetDir)) {
                 orcaFiles = fs.readdirSync(orcaPresetDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
@@ -63,8 +65,8 @@ const loadCustomProfiles = () => {
             }
             break
         case 'Linux':
-            orcaPresetDir = homeDir + '/.config/OrcaSlicer/user/default/filament/base/'
-            crealityPresetDir = homeDir + '/.config/Creality/Creality Print/6.0/user/default/filament/base/'
+            orcaPresetDir = homeDir + '/.config/OrcaSlicer/user/default/filament/base'
+            crealityPresetDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + CCUSERID + '/filament/base'
             if (fs.existsSync(orcaPresetDir)) {
                 orcaFiles = fs.readdirSync(orcaPresetDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
@@ -85,8 +87,8 @@ const loadCustomProfiles = () => {
             }
             break
         case 'Windows_NT':
-            orcaPresetDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/default/filament/base/'
-            crealityPresetDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/default/filament/base/'
+            orcaPresetDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/default/filament/base'
+            crealityPresetDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + CCUSERID + '/filament/base'
             if (fs.existsSync(orcaPresetDir)) {
                 orcaFiles = fs.readdirSync(orcaPresetDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
