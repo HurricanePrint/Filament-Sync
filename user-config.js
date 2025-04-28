@@ -1,4 +1,4 @@
-const PRINTERIP = '192.168.1.247'
+const PRINTERIP = '127.0.0.1'
 const USER = 'root'
 const PASSWORD = 'creality_2024'
 
