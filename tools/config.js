@@ -108,7 +108,7 @@ const loadCustomProfiles = () => {
             }
             break
         default:
-            console.log("Unsupported OS");
+            console.error("Unsupported OS");
     }
     return presets
 }

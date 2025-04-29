@@ -9,10 +9,14 @@ const addOptions = () => {
     let customProfiles = loadCustomProfiles()
     for (item in customProfiles) {
         let curItem = customProfiles[item]
-        if (curItem.filament_notes != undefined) {
+        if (curItem.filament_notes != undefined && curItem.filament_notes.length != 0) {
             let curItemData = JSON.parse(curItem.filament_notes)
             addFilament(curItemData.vendor, curItemData.type, curItemData.name)
-        } else console.log('Filament notes are missing')
+        } else {
+            console.error('\nFilament notes are missing')
+            console.error('https://github.com/HurricanePrint/Filament-Sync#creating-custom-filament-presets')
+            process.exit()
+        }
     }
 }
 

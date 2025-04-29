@@ -11,7 +11,11 @@ const readOptions = () => {
 
 const writeOptions = (options) => {
     fs.writeFileSync(optionsFile, JSON.stringify(options, null, "\t"), function (err) {
-        if (err) { console.log(err) }
+        if (err) {
+            console.error('\nError creating options file')
+            console.error("Make sure directory isn't set read-only") 
+            console.error(err) 
+        }
     })
 }
 

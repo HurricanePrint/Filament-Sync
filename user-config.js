@@ -7,7 +7,6 @@ const PASSWORD = 'creality_2024'
 // Mac: /Library/Application Support/Creality/Creality Print/6.0/user/UNIQUEID#
 // Linux: /.config/Creality/Creality Print/6.0/user/UNIQUEID#
 // Windows: /AppData/Roaming/Creality/Creality Print/6.0/user/UNIQUEID#
-
 const CCUSERID = 'default'
 
 module.exports = {PRINTERIP, USER, PASSWORD, CCUSERID}

@@ -12,7 +12,9 @@ const readDatabase = () => {
 const writeDatabase = (database) => {
     fs.writeFileSync(databaseFile, JSON.stringify(database, null, "\t"), function (err) {
         if (err) {
-            console.log(err)
+            console.error('\nError creating database file')
+            console.error("Make sure directory isn't set read-only")
+            console.error(err)
         }
     })
 }
