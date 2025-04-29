@@ -13,7 +13,8 @@ const addOptions = () => {
             let curItemData = JSON.parse(curItem.filament_notes)
             addFilament(curItemData.vendor, curItemData.type, curItemData.name)
         } else {
-            console.error('\nFilament notes are missing')
+            console.error('\nFilament notes are missing in filament', curItem.filament_vendor[0], curItem.name)
+            console.error('Check the instructions for info on how to add them')
             console.error('https://github.com/HurricanePrint/Filament-Sync#creating-custom-filament-presets')
             process.exit()
         }
