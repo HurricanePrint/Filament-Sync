@@ -3,6 +3,8 @@ const fs = require('fs')
 const path = require('path')
 const dirname = path.join(__dirname, '..', 'data/')
 const databaseFile = dirname + 'material_database.json'
+const {loadCustomProfiles} = require('./config')
+const convertToPrinterFormat = require('./jsonhandler.js')
 
 const readDatabase = () => {
     let database = JSON.parse(fs.readFileSync(databaseFile))
@@ -50,10 +52,25 @@ const updateProfiles = (materialUpdate) => {
     writeDatabase(updatedDatabase)
 }
 
-module.exports = {
-    createProfile,
-    readProfile,
-    updateProfiles,
-    readDatabase,
-    writeDatabase
+const addProfiles = () => {
+    let profiles = readDatabase().result.list
+    let presets = loadCustomProfiles()
+
+    for (item in presets) {
+        let foundMatch = false
+        let curItem = presets[item]
+        let updatedFilamentEntry = convertToPrinterFormat(curItem)
+
+        for (profileItem in profiles) {
+            let curProfileItem = profiles[profileItem]
+            if (updatedFilamentEntry.base.id == curProfileItem.base.id) {
+                foundMatch = true
+                updateProfiles(updatedFilamentEntry)
+            } else if (profileItem == profiles.length - 1 && foundMatch == false) {
+                createProfile(updatedFilamentEntry)
+            }
+        }
+    }
 }
+
+module.exports = addProfiles

@@ -141,4 +141,4 @@ const convertToPrinterFormat = (preset) => {
     return newObject
 }
 
-module.exports = {convertToPrinterFormat}
+module.exports = convertToPrinterFormat
