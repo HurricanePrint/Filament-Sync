@@ -178,7 +178,11 @@ cd Filament-Sync
 Pull the new changes
 
 ```
-git pull
+git fetch --all
+```
+
+```
+git reset --hard origin/main 
 ```
 
 ```
