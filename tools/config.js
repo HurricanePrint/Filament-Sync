@@ -5,7 +5,7 @@ const dirname = path.join(__dirname, 'sourcedata/')
 const defaultDatabaseFile = fs.readFileSync(dirname + 'material_database.json')
 const defaultOptionFile = fs.readFileSync(dirname + 'material_option.json')
 const {sendFiles} = require('./scp')
-const {CCUSERID} = require('../user-config')
+const {SLICER, CCUSERID} = require('../user-config')
 let loadedProfiles = []
 let filteredProfiles = []
 
@@ -25,7 +25,7 @@ const loadCustomProfiles = () => {
         case 'Darwin':
             orcaProfileDir = homeDir + '/Library/Application Support/OrcaSlicer/user/default/filament/base/'
             crealityProfileDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + CCUSERID + '/filament/base/'
-            if (fs.existsSync(orcaProfileDir)) {
+            if (SLICER == 'orca') {
                 orcaFiles = fs.readdirSync(orcaProfileDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
                 orcaFiles = orcaFiles.filter(profile => profile.includes('.json'))
@@ -34,7 +34,7 @@ const loadCustomProfiles = () => {
                     profiles.push(parsedProfile)
                 }
             }
-            if (fs.existsSync(crealityProfileDir)) {
+            if (SLICER == 'creality') {
                 crealityFiles = fs.readdirSync(crealityProfileDir)
                 if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
                 crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
@@ -47,7 +47,7 @@ const loadCustomProfiles = () => {
         case 'Linux':
             orcaProfileDir = homeDir + '/.config/OrcaSlicer/user/default/filament/base/'
             crealityProfileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + CCUSERID + '/filament/base/'
-            if (fs.existsSync(orcaProfileDir)) {
+            if (SLICER == 'orca') {
                 orcaFiles = fs.readdirSync(orcaProfileDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
                 orcaFiles = orcaFiles.filter(profile => profile.includes('.json'))
@@ -56,7 +56,7 @@ const loadCustomProfiles = () => {
                     profiles.push(parsedProfile)
                 }
             }
-            if (fs.existsSync(crealityProfileDir)) {
+            if (SLICER == 'creality') {
                 crealityFiles = fs.readdirSync(crealityProfileDir)
                 if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
                 crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
@@ -69,7 +69,7 @@ const loadCustomProfiles = () => {
         case 'Windows_NT':
             orcaProfileDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/default/filament/base/'
             crealityProfileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + CCUSERID + '/filament/base/'
-            if (fs.existsSync(orcaProfileDir)) {
+            if (SLICER == 'orca') {
                 orcaFiles = fs.readdirSync(orcaProfileDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
                 orcaFiles = orcaFiles.filter(profile => profile.includes('.json'))
@@ -78,7 +78,7 @@ const loadCustomProfiles = () => {
                     profiles.push(parsedProfile)
                 }
             }
-            if (fs.existsSync(crealityProfileDir)) {
+            if (SLICER == 'creality') {
                 crealityFiles = fs.readdirSync(crealityProfileDir)
                 if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
                 crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
@@ -91,8 +91,6 @@ const loadCustomProfiles = () => {
         default:
             console.error("Unsupported OS");
     }
-
-
     loadedProfiles = profiles
 }
 

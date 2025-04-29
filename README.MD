@@ -80,15 +80,28 @@ Open the **user-config.js** file with a text editor
 
 Change **PRINTERIP** to the ip of your printer and save
 
-    const PRINTERIP = '127.0.0.1'
-    const USER = 'root'
-    const PASSWORD = 'creality_2024'
-
+```
+const PRINTERIP = '127.0.0.1'
+const USER = 'root'
+const PASSWORD = 'creality_2024'
+```
 If you have changed your username or password they can also be updated here
+
+Change **SLICER** to select the slicer you want to sync from 
+
+* Enter 'orca' or 'creality'
+
+```
+const SLICER = 'orca'
+```
 
 If you are using CrealityPrint and have logged into your cloud account
 
 Change **CCUSERID** to the unique id number that creality has set for the user folder.
+
+```
+const CCUSERID = 'default'
+```
 
 Where to find it
 
