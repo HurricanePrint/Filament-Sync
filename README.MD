@@ -110,14 +110,6 @@ This will sync everytime you slice and export gcode to the printer
 
 At the bottom of the "**Others**" tab of your slicing settings, find "**Post-processing Scripts**" 
 
-#### Windows
-
-Replace "**your-user-name**" with your user folder name
-
-```
-C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
-```
-
 ### Mac 
 
 Replace "**your-user-name**" with your user folder name
@@ -134,7 +126,26 @@ Replace "**your-user-name**" with your user folder name
 /usr/local/bin/node /home/your-user-name/Filament-Sync/main.js;
 ```
 
+#### Windows
+
+Replace "**your-user-name**" with your user folder name
+
+```
+C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
+```
+
 ## To sync manually
+
+
+#### Mac & Linux
+
+```
+cd Filament-Sync
+```
+
+```
+node main.js
+```
 
 #### Windows 
 
@@ -156,16 +167,6 @@ cd .\Filament-Sync\
 node main.js
 ```
 
-#### Mac & Linux
-
-```
-cd Filament-Sync
-```
-
-```
-node main.js
-```
-
 ## Updating
 
 Open Terminal and enter the Filament Sync directory
@@ -180,4 +181,14 @@ Pull the new changes
 git pull
 ```
 
+```
+npm i
+```
+
 Make sure your settings are correct in user-config.js 
+
+## Troubleshooting
+
+If running as post-processing script and it isn't syncing correctly. Run the script manually in the terminal and refer to the error messages in the console to see what needs to be fixed.
+
+If the error fix isn't described, create a [New Issue](https://github.com/HurricanePrint/Filament-Sync/issues/new/choose) and copy & paste the terminal output. 
