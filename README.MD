@@ -23,15 +23,15 @@ You will need to add this into the Notes section of the filament
 {"id":"","vendor":"","type":"","name":""}
 ```
 
+The "id" should be a unique 5 digit value that you will also match with your custom RFID tags if you are using them
+
+An id is still required even if you are not using RFID tags as the tool searches by id when updating filament settings
+
 Here is an example
 
 ```
 {"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
 ```
-The "id" should be a unique 5 digit value that you will also match with your custom RFID tags if you are using them
-
-An id is still required even if you are not using RFID tags as the tool searches by id when updating filament settings
-
 
 ## Prerequisites
 
