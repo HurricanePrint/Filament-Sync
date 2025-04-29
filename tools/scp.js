@@ -18,7 +18,7 @@ let runCommand = async (directory) => {
         });
         await ssh.execCommand('sh ' + directory + '/service/sync.sh');
     } catch (error) {
-        console.error('\nCheck User-Config.js to make sure printer info is set correctly\n')
+        console.error('\nCheck user-config.js to make sure printer info is set correctly\n')
         console.error('SSH connection or command execution error:', error);
     } finally {
         ssh.dispose();
@@ -45,7 +45,7 @@ let checkDirectory = new Promise((resolve,reject) => {
             resolve(remoteDir)
         })
     }).catch(error => {
-        console.error('\nCheck User-Config.js to make sure printer info is set correctly\n')
+        console.error('\nCheck user-config.js to make sure printer info is set correctly\n')
         console.error(error)
     })
 })
@@ -69,7 +69,7 @@ const sendFiles = () => {
                 commandDir = path.join(remoteDir, '..')
                 runCommand(commandDir)
             }).catch(error => {
-                console.error('\nCheck User-Config.js to make sure printer info is set correctly\n')
+                console.error('\nCheck user-config.js to make sure printer info is set correctly\n')
                 console.error(error)
             })
         })
