@@ -39,21 +39,17 @@ Here is an example
 
 >[Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service)
 
+#### Install Node.js
+
+>[Download Node.js](https://nodejs.org/en)
+
 #### Install git if you are running Windows
 
 In Terminal:
 
     winget install --id Git.Git -e --source winget
 
-#### Install Node.js
-
-
->[Download Node.js](https://nodejs.org/en)
-
-
-#### For Windows:
-
-Running scripts is disabled by default
+Running scripts is disabled by default in windows
 
  To enable them, open terminal and run
 
