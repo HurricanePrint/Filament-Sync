@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const dirname = path.join(__dirname, '..', 'data/')
 const databaseFile = dirname + 'material_database.json'
-const {loadCustomProfiles} = require('./config')
+const {readProfiles} = require('./config')
 const convertToPrinterFormat = require('./jsonhandler.js')
 
 const readDatabase = () => {
@@ -54,7 +54,7 @@ const updateProfiles = (materialUpdate) => {
 
 const addProfiles = () => {
     let profiles = readDatabase().result.list
-    let presets = loadCustomProfiles()
+    let presets = readProfiles()
 
     for (item in presets) {
         let foundMatch = false

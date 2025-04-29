@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const dirname = path.join(__dirname, '..', 'data/')
 const optionsFile = dirname + 'material_option.json'
-const {loadCustomProfiles} = require('./config')
+const {readProfiles} = require('./config')
 
 const readOptions = () => {
     let options = JSON.parse(fs.readFileSync(optionsFile))
@@ -70,18 +70,11 @@ const addFilament = (vendor, type, name) => {
 }
 
 const addOptions = () => {
-    let customProfiles = loadCustomProfiles()
+    let customProfiles = readProfiles()
     for (item in customProfiles) {
         let curItem = customProfiles[item]
-        if (curItem.filament_notes != undefined && curItem.filament_notes.length != 0) {
-            let curItemData = JSON.parse(curItem.filament_notes)
-            addFilament(curItemData.vendor, curItemData.type, curItemData.name)
-        } else {
-            console.error('\nFilament notes are missing in filament', curItem.filament_vendor[0], curItem.name)
-            console.error('Check the instructions for info on how to add them')
-            console.error('https://github.com/HurricanePrint/Filament-Sync#creating-custom-filament-presets')
-            process.exit()
-        }
+        let curItemData = JSON.parse(curItem.filament_notes)
+        addFilament(curItemData.vendor, curItemData.type, curItemData.name)
     }
 }
 
