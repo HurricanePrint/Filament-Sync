@@ -25,31 +25,6 @@ let runCommand = async (directory) => {
     }
 }
 
-// const checkDirectory = new Promise((resolve,reject) => {
-//     let remoteDir = ''
-//     Client({
-//         host: PRINTERIP,
-//         port: 22,
-//         username: USER,
-//         password: PASSWORD,
-//     }).then((client) => {
-//         const result = client.exists(jaminFileDir)
-//         .then(result => {
-//             if (result != false) {
-//                 remoteDir = jaminFileDir
-//             } else {
-//                 remoteDir = remoteFileDir
-//             }
-//         }).then(()=> {
-//             client.close()
-//             resolve(remoteDir)
-//         })
-//     }).catch(error => {
-//         console.error('\nCheck user-config.js to make sure printer info is set correctly\n')
-//         console.error(error)
-//     })
-// })
-
 const checkDirectory = () => {
     return new Promise((resolve,reject) => {
         let remoteDir = ''
@@ -76,8 +51,6 @@ const checkDirectory = () => {
         })
     })
 } 
-
-
 
 const sendFiles = () => {
     let remoteDir = ''
