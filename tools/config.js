@@ -16,6 +16,17 @@ const getOSInfo = () => {
     }
 }
 
+const checkCrealityFormatting = (profiles) => {
+    for(let profile of profiles) {
+        if(typeof Object.values(profile)[0] != 'object') {
+            for(let key in profile) {
+                profile[key] = [profile[key]]
+            }
+        }
+    }
+    return profiles
+}
+
 const loadCustomProfiles = () => {
     const {osType, homeDir} = getOSInfo()
     let profiles = []
@@ -91,7 +102,9 @@ const loadCustomProfiles = () => {
         default:
             console.error("Unsupported OS");
     }
-    loadedProfiles = profiles
+    if(SLICER == 'creality') {
+        loadedProfiles = checkCrealityFormatting(profiles)
+    }else loadedProfiles = profiles
 }
 
 const filterProfiles = () => {
