@@ -114,7 +114,7 @@ const filterProfiles = () => {
         process.exit()
     }
     for(let profile in profiles) {
-        if(profiles[profile].filament_notes != undefined) {
+        if(profiles[profile].filament_notes != undefined && profiles[profile].filament_notes != '') {
             filteredProfiles.push(profiles[profile])
         } else {
             console.error('Ignoring Filament', `[`+profiles[profile].filament_vendor[0], profiles[profile].name+`]`, "since it's missing required filament notes")

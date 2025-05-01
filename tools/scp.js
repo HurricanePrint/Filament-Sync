@@ -8,23 +8,6 @@ const remoteFileDir = '/root/Filament-Sync-Service/data'
 const jaminFileDir = '/mnt/UDISK/root/Filament-Sync-Service/data'
 const localDataDir = dirname + '/data'
 
-let runCommand = async (directory) => {
-    try {
-        await ssh.connect({
-            host: PRINTERIP,
-            port: '22',
-            username: USER,
-            password: PASSWORD
-        });
-        await ssh.execCommand('sh ' + directory + '/service/sync.sh');
-    } catch (error) {
-        console.error('\nCheck user-config.js to make sure printer info is set correctly\n')
-        console.error('SSH connection or command execution error:', error);
-    } finally {
-        ssh.dispose();
-    }
-}
-
 const checkDirectory = () => {
     return new Promise((resolve,reject) => {
         let remoteDir = ''
@@ -66,9 +49,6 @@ const sendFiles = () => {
                 client.uploadDir(localDataDir, remoteDir)
                     .then(response => {
                         client.close() 
-            }).then(() => {
-                commandDir = path.join(remoteDir, '..')
-                runCommand(commandDir)
             }).catch(error => {
                 console.error('\nCheck user-config.js to make sure printer info is set correctly\n')
                 console.error(error)
