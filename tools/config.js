@@ -142,10 +142,8 @@ const initData = () => {
         'data': JSON.parse(defaultOptionFile)
     }
     let files = [defaultDatabase, defaultOptions]
-    if (fs.readdirSync(dir).length == 0) {
-        for (file in files) {
-            fs.writeFileSync(dir + files[file].name, JSON.stringify(files[file].data, null, "\t"))
-        }
+    for (file in files) {
+        fs.writeFileSync(dir + files[file].name, JSON.stringify(files[file].data, null, "\t"))
     }
     loadCustomProfiles()
     filterProfiles()
