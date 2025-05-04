@@ -78,7 +78,7 @@ npm install
 
 Open the **user-config.js** file with a text editor
 
-Change **PRINTERIP** to the ip of your printer and save
+Change **PRINTERIP** to the ip of your printer
 
 ```
 const PRINTERIP = '127.0.0.1'
@@ -95,22 +95,23 @@ Change **SLICER** to select the slicer you want to sync from
 const SLICER = 'orca'
 ```
 
-If you are using CrealityPrint and have logged into your cloud account
-
-Change **CCUSERID** to the unique id number that creality has set for the user folder.
+If you are using logged into an account in OrcaSlicer or CrealityPrint, change **USERID** to the unique id number that the slicer has set for the user folder.
 
 ```
-const CCUSERID = 'default'
+const USERID = 'default'
 ```
 
-Where to find it
+OrcaSlicer
 
-Mac: `/Library/Application Support/Creality/Creality Print/6.0/user/`
+    Mac: /Library/Application Support/OrcaSlicer/user/USERID#
+    Linux: /.config/OrcaSlicerOrcaSlicer/user/USERID#
+    Windows: /AppData/Roaming/OrcaSlicer/user/USERID#
 
-Linux: `/.config/Creality/Creality Print/6.0/user/`
+CrealityPrint
 
-Windows: `/AppData/Roaming/Creality/Creality Print/6.0/user/`
-
+    Mac: /Library/Application Support/Creality/Creality Print/6.0/user/USERID#
+    Linux: /.config/Creality/Creality Print/6.0/user/USERID#
+    Windows: /AppData/Roaming/Creality/Creality Print/6.0/user/USERID#
 
 
 ## Run as post-processing script in slicer
