@@ -1,9 +1,14 @@
 # Filament Sync 
 This tool reads custom filament profiles from Orcaslicer and Creality Print, converts them to Creality's database format and then sends them to the printer to pick manually with the screen or automatically with custom RFID tags
 
-Use with [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) installed on your printer
+Creality has recently added syncing of your filaments with Creality Print in the latest K2 firmware, but this comes with some caveats. It will put all of your profiles under the "Generic" brand and does not allow the use of custom RFID tags. 
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
+My tool will categorize your profiles under the correct brand name, filament type, and a more readable name. It also allows automatic assigning when using custom RFID tags with the CFS and side spool. Using custom RFID tags will also enable tracking filament usage and showing remaining amount on the filament selection screen.
+
+
+## Dependencies
+
+Install [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) on your printer
 
 ### Creating custom filament presets
 
@@ -32,6 +37,8 @@ Here is an example
 ```
 {"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
 ```
+
+Use the advanced mode to set the id as "Material Code" in the RFID for CFS app.
 
 ## Prerequisites
 
@@ -206,3 +213,6 @@ Make sure your settings are correct in user-config.js
 If running as post-processing script and it isn't syncing correctly. Run the script manually in the terminal and refer to the error messages in the console to see what needs to be fixed.
 
 If the error fix isn't described, create a [New Issue](https://github.com/HurricanePrint/Filament-Sync/issues/new/choose) and copy & paste the terminal output. 
+
+## Donations
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
