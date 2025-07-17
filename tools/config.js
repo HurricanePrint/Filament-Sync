@@ -35,7 +35,7 @@ const loadCustomProfiles = () => {
     switch (osType) {
         case 'Darwin':
             orcaProfileDir = homeDir + '/Library/Application Support/OrcaSlicer/user/' + USERID + '/filament/base/'
-            crealityProfileDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
+            crealityProfileDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
             if (SLICER == 'orca') {
                 orcaFiles = fs.readdirSync(orcaProfileDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
@@ -57,7 +57,7 @@ const loadCustomProfiles = () => {
             break
         case 'Linux':
             orcaProfileDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/base/'
-            crealityProfileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
+            crealityProfileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
             if (SLICER == 'orca') {
                 orcaFiles = fs.readdirSync(orcaProfileDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
@@ -79,7 +79,7 @@ const loadCustomProfiles = () => {
             break
         case 'Windows_NT':
             orcaProfileDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/' + USERID + '/filament/base/'
-            crealityProfileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
+            crealityProfileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
             if (SLICER == 'orca') {
                 orcaFiles = fs.readdirSync(orcaProfileDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
