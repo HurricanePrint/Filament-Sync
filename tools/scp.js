@@ -1,6 +1,4 @@
 const {Client} = require('node-scp')
-const { NodeSSH } = require('node-ssh');
-const ssh = new NodeSSH();
 const path = require('path')
 const dirname = path.join(__dirname, '..')
 const {PRINTERIP, USER, PASSWORD} = require(dirname + '/user-config.js')
