@@ -9,6 +9,7 @@
   "author": "HurricanePrint",
   "license": "GPL-3.0",
   "dependencies": {
-    "node-scp": "^0.0.23"
+    "node-scp": "^0.0.23",
+    "node-ssh": "^13.2.1"
   }
 }

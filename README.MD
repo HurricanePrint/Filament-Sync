@@ -1,14 +1,13 @@
+## Donations
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
+
+
 # Filament Sync 
 This tool reads custom filament profiles from Orcaslicer and Creality Print, converts them to Creality's database format and then sends them to the printer to pick manually with the screen or automatically with custom RFID tags
 
 Creality has recently added syncing of your filaments with Creality Print in the latest K2 firmware, but this comes with some caveats. It will put all of your profiles under the "Generic" brand and does not allow the use of custom RFID tags. 
 
 My tool will categorize your profiles under the correct brand name, filament type, and a more readable name. It also allows automatic assigning when using custom RFID tags with the CFS and side spool. Using custom RFID tags will also enable tracking filament usage and showing remaining amount on the filament selection screen.
-
-
-## Dependencies
-
-Install [Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service) on your printer
 
 ### Creating custom filament presets
 
@@ -40,46 +39,26 @@ Here is an example
 
 Use the advanced mode to set the id as "Material Code" in the RFID for CFS app.
 
+
+
 ## Prerequisites
-
-#### Install Filament-Sync-Service on your printer
-
->[Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service)
 
 #### Install Node.js
 
 >[Download Node.js](https://nodejs.org/en)
 
-#### Install git if you are running Windows
+#### Install Filament-Sync-Service on your printer
 
-In Terminal:
+>[Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service)
 
-    winget install --id Git.Git -e --source winget
-
-Running scripts is disabled by default in windows
-
- To enable them, open terminal and run
-
-```
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
 
 ## Installation
 
-#### Clone this repo into your user folder
+#### Download Filament-Sync
 
-```
-cd ~/
-```
-    git clone https://github.com/HurricanePrint/Filament-Sync.git
+[Latest release](https://github.com/hurricaneprint/Filament-Sync/releases/latest)
 
-```
-cd Filament-Sync/
-```
-
-```
-npm install
-```
+Extract the folder on your computer
 
 ## Config
 
@@ -121,15 +100,15 @@ CrealityPrint
     Windows: /AppData/Roaming/Creality/Creality Print/6.0/user/USERID#
 
 
-## Run as post-processing script in slicer
+## Set to run as post-processing script in slicer
 
 This will sync everytime you slice and export gcode to the printer
 
 At the bottom of the "**Others**" tab of your slicing settings, find "**Post-processing Scripts**" 
 
-### Mac 
+Make sure to change the path to where you put the extracted Filament-Sync folder
 
-Replace "**your-user-name**" with your user folder name
+### Mac 
 
 ```
 /usr/local/bin/node /Users/your-user-name/Filament-Sync/main.js;
@@ -137,15 +116,11 @@ Replace "**your-user-name**" with your user folder name
 
 ### Linux
 
-Replace "**your-user-name**" with your user folder name
-
 ```
 /usr/local/bin/node /home/your-user-name/Filament-Sync/main.js;
 ```
 
 #### Windows
-
-Replace "**your-user-name**" with your user folder name
 
 ```
 C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
@@ -153,66 +128,16 @@ C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
 
 ## To sync manually
 
-
-#### Mac & Linux
-
-```
-cd Filament-Sync
-```
-
+In Terminal/Powershell enter the Filament-Sync folder
+then run
 ```
 node main.js
 ```
 
-#### Windows 
-
-In File Explorer
-
-Double-click the batch file in the Filament-Sync directory
-
-```
-windows-sync.bat
-```
-
-Or from the terminal
-
-```
-cd .\Filament-Sync\
-```
-
-```
-node main.js
-```
-
-## Updating
-
-Open Terminal and enter the Filament Sync directory
-
-```
-cd Filament-Sync
-```
-
-Pull the new changes
-
-```
-git fetch --all
-```
-
-```
-git reset --hard origin/main 
-```
-
-```
-npm i
-```
-
-Make sure your settings are correct in user-config.js 
+Windows users can also run the windows-sync.bat file 
 
 ## Troubleshooting
 
 If running as post-processing script and it isn't syncing correctly. Run the script manually in the terminal and refer to the error messages in the console to see what needs to be fixed.
 
 If the error fix isn't described, create a [New Issue](https://github.com/HurricanePrint/Filament-Sync/issues/new/choose) and copy & paste the terminal output. 
-
-## Donations
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
