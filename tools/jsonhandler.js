@@ -3,7 +3,12 @@ const fs = require('fs')
 const convertSlicerFormat = (preset) => {
     let presetNotes = preset.filament_notes[0]
     for (value in preset) {
-        preset[value] = preset[value][0]
+        if(Array.isArray(preset[value])) {
+            preset[value] = preset[value][0]
+        }
+        else {
+            preset[value] = preset[value]
+        }
     }
     preset.filament_notes = JSON.parse(presetNotes)
     return preset
