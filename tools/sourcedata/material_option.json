@@ -1,14 +1,16 @@
 {
   "Creality":{
-    "PLA":"Hyper PLA\nENDER FAST PLA\nCR-PLA\nCR-Silk\nEnder-PLA\nEN-PLA+\nCR-PLA Carbon\nCR-PLA Matte\nCR-PLA Fluo\nCR-Wood\nHP Ultra PLA\nSoleyin Ultra PLA",
-    "PLA-CF":"Hyper PLA-CF",
+    "PLA":"Hyper PLA\nENDER FAST PLA\nCR-PLA\nCR-Silk\nEnder-PLA\nEN-PLA+\nCR-PLA Matte\nCR-PLA Fluo\nCR-Wood\nHP Ultra PLA\nSoleyin Ultra PLA\nHyper L-W PLA\nHyper Stardust\nHyper Marble",
+    "PLA-CF":"Hyper PLA-CF\nCR-PLA Carbon",
     "PETG":"Hyper PETG\nCR-PETG",
     "ABS":"Hyper ABS\nCR-ABS",
     "TPU":"HP-TPU\nCR-TPU",
     "PA":"CR-Nylon",
     "ASA":"HP-ASA",
-    "PA-CF":"Hyper PAHT-CF\nHyper PPA-CF",
-    "PC":"Hyper PC"
+    "PA-CF":"Hyper PAHT-CF\nHyper PPA-CF\nHyper PA612-CF\nHyper PA6-CF",
+    "PC":"Hyper PC",
+    "PETG-CF":"Hyper PETG-CF",
+    "PETG-GF":"Hyper PETG-GF"
   },
   "Generic":{
     "PLA":"Generic PLA\nGeneric PLA-Silk\nGeneric Support for PLA",
@@ -18,19 +20,27 @@
     "PLA-CF":"Generic PLA-CF",
     "ASA":"Generic ASA",
     "PA":"Generic PA\nGeneric Support for PA",
-    "PA-CF":"Generic PA-CF\nGeneric PA612-CF\nGeneric PA12-CF",
+    "PA-CF":"Generic PA-CF\nGeneric PA6-CF\nGeneric PAHT-CF\nGeneric PA12-CF\nGeneric PA612-CF",
     "BVOH":"Generic BVOH",
     "PVA":"Generic PVA",
     "HIPS":"Generic HIPS",
     "PET-CF":"Generic PET-CF",
     "PETG-CF":"Generic PETG-CF",
-    "PA6-CF":"Generic PA6-CF",
-    "PAHT-CF":"Generic PAHT-CF",
     "PPS":"Generic PPS",
     "PPS-CF":"Generic PPS-CF",
     "PP":"Generic PP",
     "PET":"Generic PET",
     "PC":"Generic PC",
-    "ASA-CF":"Generic ASA-CF"
+    "ASA-CF":"Generic ASA-CF",
+    "PA-GF":"Generic PA6-GF",
+    "PETG-GF":"Generic PETG-GF",
+    "PP-CF":"Generic PP-CF",
+    "PCTG":"Generic PCTG"
+  },
+  "eSUN":{
+    "PLA":"PLA-LW\nPLA+\nPLA-Silk\nPLA-Matte\nPLA-Lite"
+  },
+  "Polymaker":{
+    "PLA":"Panchroma PLA Satin\nPolySonic PLA Pro\nPanchroma PLA Matte\nPolySonic PLA"
   }
 }
