@@ -2,7 +2,7 @@ const {Client} = require('node-scp')
 const path = require('path')
 const dirname = path.join(__dirname, '..')
 const {PRINTERIP, USER, PASSWORD} = require(dirname + '/user-config.js')
-const remoteDir = '/mnt/UDISK/printer_data/config/Filament-Sync-Service/data'
+const remoteDir = '/usr/share/Filament-Sync'
 const localDataDir = dirname + '/data'
 
 const sendFiles = () => {

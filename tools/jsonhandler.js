@@ -20,8 +20,8 @@ const convertToPrinterFormat = (preset) => {
     newPreset = convertSlicerFormat(preset)
     presetNotes = preset.filament_notes
     let newObject = {
-        "engineVersion": preset.version,
-        "printerIntName": "F0008",
+        "engineVersion": "3.0.0",
+        "printerIntName": "F008",
         "nozzleDiameter": ["0.4"],
         "kvParam": {
             "activate_air_filtration": "",
@@ -123,13 +123,13 @@ const convertToPrinterFormat = (preset) => {
             "colors": [
                 "#ffffff"
             ],
-            "density": preset.filament_density,
+            "density": Number(preset.filament_density),
             "diameter": preset.filament_diameter,
             "costPerMeter": 0,
             "weightPerMeter": 0,
             "rank": 280,
-            "minTemp": preset.nozzle_temperature_range_low,
-            "maxTemp": preset.nozzle_temperature_range_high,
+            "minTemp": Number(preset.nozzle_temperature_range_low),
+            "maxTemp": Number(preset.nozzle_temperature_range_high),
             "isSoluble": preset.filament_soluble == 1 ? true : false,
             "isSupport": preset.filament_is_support == 1 ? true : false,
             "shrinkageRate": 0,

@@ -4,7 +4,7 @@ const {initData, sendToPrinter} = require('./tools/config.js')
 
 initData()
 
-addOptions()
+// addOptions()
 
 addProfiles()
 

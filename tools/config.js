@@ -137,11 +137,12 @@ const initData = () => {
         'name': 'material_database.json',
         'data': JSON.parse(defaultDatabaseFile)
     }
-    let defaultOptions = {
-        'name': 'material_option.json',
-        'data': JSON.parse(defaultOptionFile)
-    }
-    let files = [defaultDatabase, defaultOptions]
+    // let defaultOptions = {
+    //     'name': 'material_option.json',
+    //     'data': JSON.parse(defaultOptionFile)
+    // }
+    // let files = [defaultDatabase, defaultOptions]
+    let files = [defaultDatabase]
     for (file in files) {
         fs.writeFileSync(dir + files[file].name, JSON.stringify(files[file].data, null, "\t"))
     }
