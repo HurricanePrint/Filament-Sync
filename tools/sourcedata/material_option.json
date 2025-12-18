@@ -41,6 +41,13 @@
     "PLA":"PLA-LW\nPLA+\nPLA-Silk\nPLA-Matte\nPLA-Lite"
   },
   "Polymaker":{
-    "PLA":"Panchroma PLA Satin\nPolySonic PLA Pro\nPanchroma PLA Matte\nPolySonic PLA"
+    "PLA":"Panchroma PLA Satin\nPolySonic PLA Pro\nPanchroma PLA Matte\nPolySonic PLA\nPolyLite PLA Pro"
+  },
+  "Elegoo":{
+    "ASA":"Elegoo ASA",
+    "PLA":"Fast PLA"
+  },
+  "Sunlu":{
+    "TPU":"TPU"
   }
 }
