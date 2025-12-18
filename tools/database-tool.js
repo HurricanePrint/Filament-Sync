@@ -31,7 +31,6 @@ const removeDuplicates = () => {
         let entryID = databaseList[entry].base.id
         for(id of newIds) {
             if(entryID == id) {
-                console.log('remove')
                 filteredDatabase = databaseList.slice(entry+1, newDatabase.count)
                 newDatabase.result.count -=1
             }
