@@ -137,6 +137,7 @@ const initData = () => {
         'name': 'material_database.json',
         'data': JSON.parse(defaultDatabaseFile)
     }
+    // Disabling adding options for now. It seems the printer now builds this file automatically.
     // let defaultOptions = {
     //     'name': 'material_option.json',
     //     'data': JSON.parse(defaultOptionFile)
@@ -150,8 +151,4 @@ const initData = () => {
     filterProfiles()
 }
 
-const sendToPrinter = () => {
-    sendFiles()
-}
-
-module.exports = {initData, readProfiles, sendToPrinter}
+module.exports = {initData, readProfiles}

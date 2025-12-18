@@ -1,9 +1,11 @@
 const addOptions = require('./tools/options-tool.js')
 const addProfiles = require ('./tools/database-tool.js')
-const {initData, sendToPrinter} = require('./tools/config.js')
+const {initData} = require('./tools/config.js')
+const sendToPrinter = require('./tools/scp.js')
 
 initData()
 
+// Disabling adding options for now. It seems the printer now builds this file automatically.
 // addOptions()
 
 addProfiles()

@@ -5,7 +5,7 @@ const {PRINTERIP, USER, PASSWORD} = require(dirname + '/user-config.js')
 const remoteDir = '/usr/share/Filament-Sync'
 const localDataDir = dirname + '/data'
 
-const sendFiles = () => {
+const sendToPrinter = () => {
     Client({
         host: PRINTERIP,
         port: 22,
@@ -22,4 +22,4 @@ const sendFiles = () => {
     })
 }
  
-module.exports = {sendFiles}
+module.exports = sendToPrinter
