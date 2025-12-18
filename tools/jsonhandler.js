@@ -127,7 +127,7 @@ const convertToPrinterFormat = (preset) => {
             "diameter": preset.filament_diameter,
             "costPerMeter": 0,
             "weightPerMeter": 0,
-            "rank": 280,
+            "rank": 10000,
             "minTemp": Number(preset.nozzle_temperature_range_low),
             "maxTemp": Number(preset.nozzle_temperature_range_high),
             "isSoluble": preset.filament_soluble == 1 ? true : false,
