@@ -21,6 +21,5 @@ const sendFiles = () => {
         })
     })
 }
-sendFiles()
  
 module.exports = {sendFiles}
