@@ -143,6 +143,7 @@ const convertToPrinterFormat = (preset) => {
         kvParam[item] = preset[item]
         if (kvParam[item] == undefined) kvParam[item] = ""
     }
+    newObject.kvParam = kvParam
     return newObject
 }
 

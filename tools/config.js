@@ -137,13 +137,11 @@ const initData = () => {
         'name': 'material_database.json',
         'data': JSON.parse(defaultDatabaseFile)
     }
-    // Disabling adding options for now. It seems the printer now builds this file automatically.
-    // let defaultOptions = {
-    //     'name': 'material_option.json',
-    //     'data': JSON.parse(defaultOptionFile)
-    // }
-    // let files = [defaultDatabase, defaultOptions]
-    let files = [defaultDatabase]
+    let defaultOptions = {
+        'name': 'material_option.json',
+        'data': JSON.parse(defaultOptionFile)
+    }
+    let files = [defaultDatabase, defaultOptions]
     for (file in files) {
         fs.writeFileSync(dir + files[file].name, JSON.stringify(files[file].data, null, "\t"))
     }

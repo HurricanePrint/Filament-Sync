@@ -5,8 +5,7 @@ const sendToPrinter = require('./tools/scp.js')
 
 initData()
 
-// Disabling adding options for now. It seems the printer now builds this file automatically.
-// addOptions()
+addOptions()
 
 addProfiles()
 
