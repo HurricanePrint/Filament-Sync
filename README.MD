@@ -15,11 +15,13 @@ If you want to get your presets ready just copy your settings into a new custom 
 
 Right side of the Filament section 
 
-Click "**Set filaments to use**"
+Click "**Set filaments to use**" icon
 
 Click "**Custom Filament**" at the top then click "**Create New**"
 
 If you don't see this option on Creality Print, go into the options/preferences and set **User Role** to **Professional**
+
+Select "**Copy Current Filament Preset**" and choose a generic profile 
 
 You will need to add this into the Notes section of the filament
 
@@ -29,15 +31,19 @@ You will need to add this into the Notes section of the filament
 
 The "id" should be a unique 5 digit value that you will also match with your custom RFID tags if you are using them
 
+You can ⌘/CTRL-F in the material_database.json to make sure the id you pick isn't already being used
+
 An id is still required even if you are not using RFID tags as the tool searches by id when updating filament settings
 
 Here is an example
 
 ```
-{"id":"02345","vendor":"Elegoo","type":"PLA","name":"Fast PLA"}
+{"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
 ```
 
-Use the advanced mode to set the id as "Material Code" in the RFID for CFS app.
+Use the advanced mode to set the id you picked as "Material Code" in the RFID for CFS app
+
+
 
 
 
@@ -87,6 +93,8 @@ If you are using logged into an account in OrcaSlicer or CrealityPrint, change *
 const USERID = 'default'
 ```
 
+You can find your user id by clicking the **Help** tab in your slicer and then clicking **Show Configuration Folder**
+
 OrcaSlicer
 
     Mac: /Library/Application Support/OrcaSlicer/user/USERID#
@@ -98,7 +106,6 @@ CrealityPrint
     Mac: /Library/Application Support/Creality/Creality Print/6.0/user/USERID#
     Linux: /.config/Creality/Creality Print/6.0/user/USERID#
     Windows: /AppData/Roaming/Creality/Creality Print/6.0/user/USERID#
-
 
 ## Set to run as post-processing script in slicer
 
@@ -126,7 +133,7 @@ Make sure to change the path to where you put the extracted Filament-Sync folder
 C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
 ```
 
-## To sync manually
+### To sync manually
 
 In Terminal/Powershell enter the Filament-Sync folder
 then run
@@ -138,6 +145,12 @@ Windows users can also run the windows-sync.bat file
 
 ## Troubleshooting
 
-If running as post-processing script and it isn't syncing correctly. Run the script manually in the terminal and refer to the error messages in the console to see what needs to be fixed.
+### If the printer fails to start prints and shows a EEPROM_DEBUG error
+
+Go into the folder where your presets are stored and make sure that the preset json files show all of the filament settings and not just a short list of the ones that you edited. If the custom profile wasn't created correctly it won't show all of the settings. The full list should be around 300 lines.
+
+### If running as post-processing script and it isn't syncing correctly
+
+Run the script manually in the terminal and refer to the error messages in the console to see what needs to be fixed.
 
 If the error fix isn't described, create a [New Issue](https://github.com/HurricanePrint/Filament-Sync/issues/new/choose) and copy & paste the terminal output. 
