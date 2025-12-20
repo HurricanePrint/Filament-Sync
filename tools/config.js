@@ -34,6 +34,8 @@ const loadCustomProfiles = () => {
     let orcaProfileDir, crealityProfileDir
     switch (osType) {
         case 'Darwin':
+            // DO NOT REMOVE /base from the path. The profiles in /filament are not custom profiles
+            // Check the readme for instructions on creating custom profiles
             orcaProfileDir = homeDir + '/Library/Application Support/OrcaSlicer/user/' + USERID + '/filament/base/'
             crealityProfileDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
             if (SLICER == 'orca') {
@@ -56,6 +58,8 @@ const loadCustomProfiles = () => {
             }
             break
         case 'Linux':
+            // DO NOT REMOVE /base from the path. The profiles in /filament are not custom profiles
+            // Check the readme for instructions on creating custom profiles
             orcaProfileDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/base/'
             crealityProfileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
             if (SLICER == 'orca') {
@@ -78,6 +82,8 @@ const loadCustomProfiles = () => {
             }
             break
         case 'Windows_NT':
+            // DO NOT REMOVE /base from the path. The profiles in /filament are not custom profiles
+            // Check the readme for instructions on creating custom profiles
             orcaProfileDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/' + USERID + '/filament/base/'
             crealityProfileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
             if (SLICER == 'orca') {
