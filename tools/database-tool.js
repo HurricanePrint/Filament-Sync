@@ -26,7 +26,7 @@ const writeDatabase = (database) => {
 
 const removeDuplicates = () => {
     let databaseList = newDatabase.result.list
-    let filteredDatabase
+    let filteredDatabase = databaseList
     for(let entry = 0; entry <= startCount-1; entry++) {
         let entryID = databaseList[entry].base.id
         for(id of newIds) {
