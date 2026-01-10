@@ -1,24 +1,25 @@
-const {Client} = require('node-scp')
+const { execFile } = require('child_process')
 const path = require('path')
 const dirname = path.join(__dirname, '..')
 const {PRINTERIP, USER, PASSWORD} = require(dirname + '/user-config.js')
-const remoteDir = '/usr/share/Filament-Sync'
+const remoteDir = '/mnt/UDISK/printer_data/config/Filament-Sync-Service/data'
 const localDataDir = dirname + '/data'
 
 const sendToPrinter = () => {
-    Client({
-        host: PRINTERIP,
-        port: 22,
-        username: USER,
-        password: PASSWORD,
-    }).then(client => {
-        client.uploadDir(localDataDir, remoteDir)
-            .then(response => {
-                client.close() 
-        }).catch(error => {
-            console.error('\nCheck user-config.js to make sure printer info is set correctly\n')
-            console.error(error)
-        })
+    const args = [
+        '-O',
+        '-r',
+        localDataDir + '/',
+        `${USER}@${PRINTERIP}:${remoteDir}/`
+    ]
+
+    execFile('scp', args, (error, stdout, stderr) => {
+        if (error) {
+            console.error('SCP failed')
+            console.error(stderr)
+            return
+        }
+        console.log('Filament data uploaded successfully')
     })
 }
  
