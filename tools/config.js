@@ -59,14 +59,16 @@ const loadCustomProfiles = () => {
         case 'Linux':
             // DO NOT REMOVE /base from the path. The profiles in /filament are not custom profiles
             // Check the readme for instructions on creating custom profiles
-            orcaProfileDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/base/'
-
+            if (fs.existsSync(homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/base/')) {
+                orcaProfileDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/base/'
+            } else if (fs.existsSync(homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/base/')) {
+                orcaProfileDir = homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/base/'
+            }
             if (fs.existsSync(homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/')) {
                 crealityProfileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
             } else if (fs.existsSync(homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/base/')) {
                 crealityProfileDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/base/'
             }
-            
             if (SLICER == 'orca') {
                 orcaFiles = fs.readdirSync(orcaProfileDir)
                 if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
