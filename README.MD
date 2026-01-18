@@ -3,6 +3,9 @@
 
 
 # Filament Sync 
+
+Supports K2 and Hi Series printers. Contact me if you can figure out how to write a service file for K1 printers with CFS, as I don't own one to test with.
+
 This tool reads custom filament profiles from Orcaslicer and Creality Print, converts them to Creality's database format and then sends them to the printer to pick manually with the screen or automatically with custom RFID tags
 
 Creality has recently added syncing of your filaments with Creality Print in the latest K2 firmware, but this comes with some caveats. It will put all of your profiles under the "Generic" brand and does not allow the use of custom RFID tags. 
