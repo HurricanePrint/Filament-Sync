@@ -43,20 +43,11 @@ Here is an example
 
 Use the advanced mode to set the id you picked as "Material Code" in the RFID for CFS app
 
-
-
-
-
 ## Prerequisites
 
 #### Install Node.js
 
 >[Download Node.js](https://nodejs.org/en)
-
-#### Install Filament-Sync-Service on your printer
-
->[Filament-Sync-Service](https://github.com/HurricanePrint/Filament-Sync-Service)
-
 
 ## Installation
 
@@ -65,6 +56,8 @@ Use the advanced mode to set the id you picked as "Material Code" in the RFID fo
 [Latest release](https://github.com/hurricaneprint/Filament-Sync/releases/latest)
 
 Extract the folder on your computer
+
+### Check the troubleshooting section before modifying paths in the scripts
 
 ## Config
 
@@ -111,6 +104,8 @@ CrealityPrint
 
 This will sync everytime you slice and export gcode to the printer
 
+You may encounter an error the first time it runs the script. This is normal as the service is being installed to the printer and sometimes the slicer loses its connection. It should work normally every time after this.
+
 At the bottom of the "**Others**" tab of your slicing settings, find "**Post-processing Scripts**" 
 
 Make sure to change the path to where you put the extracted Filament-Sync folder
@@ -144,6 +139,9 @@ node main.js
 Windows users can also run the windows-sync.bat file 
 
 ## Troubleshooting
+
+### Do not remove /base from the slicer profile path
+This has been reported several times. The /base folder contains fully custom profiles, the preceeding folder does not. If your profiles are not in the /base folder, you are not creating them correctly. See the directions above for the correct procedure. The profiles outside of the /base folder do not contain all the needed parameters.
 
 ### If the printer fails to start prints and shows a EEPROM_DEBUG error
 
