@@ -58,6 +58,8 @@ Use the advanced mode to set the id you picked as "Material Code" in the RFID fo
 
 Extract the folder on your computer
 
+If you haven't already connected to your printer with SSH, use terminal or powershell to connect and generate the RSA keys needed for the script to run correctly
+
 ### Check the troubleshooting section before modifying paths in the scripts
 
 ## Config
