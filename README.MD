@@ -30,21 +30,9 @@ Here is an example
 {"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
 ```
 
-Use the advanced mode to set the id you picked as "Material Code" in the RFID for CFS app
-
-### Creating custom filament presets(Recommended, but no longer required)
-
-If you want to get your presets ready just copy your settings into a new custom filament profile
-
-Right side of the Filament section 
-
-Click "**Set filaments to use**" icon
-
-Click "**Custom Filament**" at the top then click "**Create New**"
-
-If you don't see this option on Creality Print, go into the options/preferences and set **User Role** to **Professional**
-
-Select "**Copy Current Filament Preset**" and choose a generic profile 
+### If you are using custom RFID tags
+Set the "Material Code" to the id that you set in the profile.
+In the RFID for CFS app, turn on advanced mode to enable setting custom codes
 
 ## Prerequisites
 
@@ -142,6 +130,20 @@ node main.js
 ```
 
 Windows users can also run the windows-sync.bat file 
+
+### Creating custom filament presets(Recommended, but no longer required)
+
+If you want to get your presets ready just copy your settings into a new custom filament profile
+
+Right side of the Filament section 
+
+Click "**Set filaments to use**" icon
+
+Click "**Custom Filament**" at the top then click "**Create New**"
+
+If you don't see this option on Creality Print, go into the options/preferences and set **User Role** to **Professional**
+
+Select "**Copy Current Filament Preset**" and choose a generic profile 
 
 ## Troubleshooting
 
