@@ -10,19 +10,7 @@ Creality has recently added syncing of your filaments with Creality Print in the
 
 My tool will categorize your profiles under the correct brand name, filament type, and a more readable name. It also allows automatic assigning when using custom RFID tags with the CFS and side spool. Using custom RFID tags will also enable tracking filament usage and showing remaining amount on the filament selection screen.
 
-### Creating custom filament presets
-
-If you want to get your presets ready just copy your settings into a new custom filament profile
-
-Right side of the Filament section 
-
-Click "**Set filaments to use**" icon
-
-Click "**Custom Filament**" at the top then click "**Create New**"
-
-If you don't see this option on Creality Print, go into the options/preferences and set **User Role** to **Professional**
-
-Select "**Copy Current Filament Preset**" and choose a generic profile 
+### Add required info to your profiles
 
 You will need to add this into the Notes section of the filament
 
@@ -43,6 +31,20 @@ Here is an example
 ```
 
 Use the advanced mode to set the id you picked as "Material Code" in the RFID for CFS app
+
+### Creating custom filament presets(Recommended, but no longer required)
+
+If you want to get your presets ready just copy your settings into a new custom filament profile
+
+Right side of the Filament section 
+
+Click "**Set filaments to use**" icon
+
+Click "**Custom Filament**" at the top then click "**Create New**"
+
+If you don't see this option on Creality Print, go into the options/preferences and set **User Role** to **Professional**
+
+Select "**Copy Current Filament Preset**" and choose a generic profile 
 
 ## Prerequisites
 
