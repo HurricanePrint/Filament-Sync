@@ -5,6 +5,8 @@ const dirname = path.join(__dirname, 'sourcedata/')
 const defaultDatabaseFile = fs.readFileSync(dirname + 'material_database.json')
 const defaultOptionFile = fs.readFileSync(dirname + 'material_option.json')
 const {SLICER, USERID} = require('../user-config')
+const createCustomProfile = require('./inheritedprofile')
+let profileDir, genericDir
 let loadedProfiles = []
 let filteredProfiles = []
 
@@ -30,94 +32,61 @@ const loadCustomProfiles = () => {
     const {osType, homeDir} = getOSInfo()
     let profiles = []
     let orcaFiles, crealityFiles
-    let orcaProfileDir, crealityProfileDir
-    switch (osType) {
-        case 'Darwin':
-            // DO NOT REMOVE /base from the path. The profiles in /filament are not custom profiles
-            // Check the readme for instructions on creating custom profiles
-            orcaProfileDir = homeDir + '/Library/Application Support/OrcaSlicer/user/' + USERID + '/filament/base/'
-            crealityProfileDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
-            if (SLICER == 'orca') {
-                orcaFiles = fs.readdirSync(orcaProfileDir)
-                if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
-                orcaFiles = orcaFiles.filter(profile => profile.includes('.json'))
-                for (item in orcaFiles) {
-                    let parsedProfile = JSON.parse(fs.readFileSync(orcaProfileDir + orcaFiles[item]))
-                    profiles.push(parsedProfile)
+    if (SLICER == 'orca') {
+        switch(osType) {
+            case 'Darwin':
+                profileDir = homeDir + '/Library/Application Support/OrcaSlicer/user/' + USERID + '/filament/'
+                genericDir = homeDir + '/Library/Application Support/OrcaSlicer/system/'
+                break
+            case 'Linux':
+                if (fs.existsSync(homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/')) {
+                    profileDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/'
+                    genericDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/'
+                } else if (fs.existsSync(homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/')) {
+                    profileDir = homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/'
+                    genericDir = homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/system/'
                 }
-            }
-            if (SLICER == 'creality') {
-                crealityFiles = fs.readdirSync(crealityProfileDir)
-                if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
-                crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
-                for (item in crealityFiles) {
-                    let parsedProfile = JSON.parse(fs.readFileSync(crealityProfileDir + crealityFiles[item]))
-                    profiles.push(parsedProfile)
+                break
+            case 'Windows_NT':
+                profileDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/' + USERID + '/filament/'
+                genericDir = homeDir + '/AppData/Roaming/OrcaSlicer/system/'
+        }
+        orcaFiles = fs.readdirSync(profileDir,{recursive: true})
+        if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
+        orcaFiles = orcaFiles.filter(profile => profile.includes('.json'))
+        for (item in orcaFiles) {
+            let parsedProfile = JSON.parse(fs.readFileSync(profileDir + orcaFiles[item]))
+            profiles.push(parsedProfile)
+        }
+        loadedProfiles = profiles
+    }else if (SLICER == 'creality') {
+                switch(osType) {
+            case 'Darwin':
+                profileDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                genericDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                break
+            case 'Linux':
+                if (fs.existsSync(homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/')) {
+                    profileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                    genericDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                } else if (fs.existsSync(homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/')) {
+                    profileDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
+                    genericDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
                 }
-            }
-            break
-        case 'Linux':
-            // DO NOT REMOVE /base from the path. The profiles in /filament are not custom profiles
-            // Check the readme for instructions on creating custom profiles
-            if (fs.existsSync(homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/base/')) {
-                orcaProfileDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/base/'
-            } else if (fs.existsSync(homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/base/')) {
-                orcaProfileDir = homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/base/'
-            }
-            if (fs.existsSync(homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/')) {
-                crealityProfileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
-            } else if (fs.existsSync(homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/base/')) {
-                crealityProfileDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/base/'
-            }
-            if (SLICER == 'orca') {
-                orcaFiles = fs.readdirSync(orcaProfileDir)
-                if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
-                orcaFiles = orcaFiles.filter(profile => profile.includes('.json'))
-                for (item in orcaFiles) {
-                    let parsedProfile = JSON.parse(fs.readFileSync(orcaProfileDir + orcaFiles[item]))
-                    profiles.push(parsedProfile)
-                }
-            }
-            if (SLICER == 'creality') {
-                crealityFiles = fs.readdirSync(crealityProfileDir)
-                if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
-                crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
-                for (item in crealityFiles) {
-                    let parsedProfile = JSON.parse(fs.readFileSync(crealityProfileDir + crealityFiles[item]))
-                    profiles.push(parsedProfile)
-                }
-            }
-            break
-        case 'Windows_NT':
-            // DO NOT REMOVE /base from the path. The profiles in /filament are not custom profiles
-            // Check the readme for instructions on creating custom profiles
-            orcaProfileDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/' + USERID + '/filament/base/'
-            crealityProfileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/base/'
-            if (SLICER == 'orca') {
-                orcaFiles = fs.readdirSync(orcaProfileDir)
-                if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
-                orcaFiles = orcaFiles.filter(profile => profile.includes('.json'))
-                for (item in orcaFiles) {
-                    let parsedProfile = JSON.parse(fs.readFileSync(orcaProfileDir + orcaFiles[item]))
-                    profiles.push(parsedProfile)
-                }
-            }
-            if (SLICER == 'creality') {
-                crealityFiles = fs.readdirSync(crealityProfileDir)
-                if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
-                crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
-                for (item in crealityFiles) {
-                    let parsedProfile = JSON.parse(fs.readFileSync(crealityProfileDir + crealityFiles[item]))
-                    profiles.push(parsedProfile)
-                }
-            }
-            break
-        default:
-            console.error("Unsupported OS");
-    }
-    if(SLICER == 'creality') {
+                break
+            case 'Windows_NT':
+                profileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                genericDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+        }
+        crealityFiles = fs.readdirSync(profileDir,{recursive: true})
+        if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
+        crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
+        for (item in crealityFiles) {
+            let parsedProfile = JSON.parse(fs.readFileSync(profileDir + crealityFiles[item]))
+            profiles.push(parsedProfile)
+        }
         loadedProfiles = checkCrealityFormatting(profiles)
-    }else loadedProfiles = profiles
+    }
 }
 
 const filterProfiles = () => {
@@ -128,11 +97,12 @@ const filterProfiles = () => {
     }
     for(let profile in profiles) {
         if(profiles[profile].filament_notes != undefined && profiles[profile].filament_notes != '') {
-            filteredProfiles.push(profiles[profile])
-        } else {
-            console.error('Ignoring Filament', `[`+profiles[profile].filament_vendor[0], profiles[profile].name+`]`, "since it's missing required filament notes")
-            console.error('Check the instructions for info on how to add them')
-            console.error('https://github.com/HurricanePrint/Filament-Sync#creating-custom-filament-presets')
+            if(Object.keys(profiles[profile]).length <= 100) {
+                profiles[profile] = createCustomProfile(profiles[profile], genericDir)
+                filteredProfiles.push(profiles[profile])
+            } else {
+                filteredProfiles.push(profiles[profile])
+            }          
         }
     }
 }
