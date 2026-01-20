@@ -50,8 +50,6 @@ Extract the folder on your computer
 
 If you haven't already connected to your printer with SSH, use terminal or powershell to connect and generate the RSA keys needed for the script to run correctly
 
-### Check the troubleshooting section before modifying paths in the scripts
-
 ## Config
 
 Open the **user-config.js** file with a text editor
@@ -146,9 +144,6 @@ If you don't see this option on Creality Print, go into the options/preferences 
 Select "**Copy Current Filament Preset**" and choose a generic profile 
 
 ## Troubleshooting
-
-### Do not remove /base from the slicer profile path
-This has been reported several times. The /base folder contains fully custom profiles, the preceeding folder does not. If your profiles are not in the /base folder, you are not creating them correctly. See the directions above for the correct procedure. The profiles outside of the /base folder do not contain all the needed parameters.
 
 ### If the printer fails to start prints and shows a EEPROM_DEBUG error
 
