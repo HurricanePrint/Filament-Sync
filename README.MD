@@ -48,7 +48,11 @@ In the RFID for CFS app, turn on advanced mode to enable setting custom codes
 
 Extract the folder on your computer
 
-If you haven't already connected to your printer with SSH, use terminal or powershell to connect and generate the RSA keys needed for the script to run correctly
+#### If you haven't already connected to your printer with SSH, use terminal or powershell to connect and generate the RSA keys needed for the script to run correctly
+
+```
+ssh root@your-printer-ip
+```
 
 ## Config
 
