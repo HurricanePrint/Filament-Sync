@@ -50,6 +50,7 @@ const loadCustomProfiles = () => {
             case 'Windows_NT':
                 profileDir = homeDir + '/AppData/Roaming/OrcaSlicer/user/' + USERID + '/filament/'
                 genericDir = homeDir + '/AppData/Roaming/OrcaSlicer/system/'
+                break
         }
         orcaFiles = fs.readdirSync(profileDir,{recursive: true})
         if (orcaFiles[0] == '.DS_Store') orcaFiles.splice(0, 1)
@@ -62,21 +63,22 @@ const loadCustomProfiles = () => {
     }else if (SLICER == 'creality') {
                 switch(osType) {
             case 'Darwin':
-                profileDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
-                genericDir = homeDir + '/Library/Application Support/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                profileDir = homeDir + '/Library/Application Support/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
+                genericDir = homeDir + '/Library/Application Support/Creality/Creality Print/7.0/system/Creality/filament'
                 break
             case 'Linux':
-                if (fs.existsSync(homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/')) {
-                    profileDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
-                    genericDir = homeDir + '/.config/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                if (fs.existsSync(homeDir + '/.config/Creality/Creality Print/7.0/user/' + USERID + '/filament/')) {
+                    profileDir = homeDir + '/.config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
+                    genericDir = homeDir + '/.config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
                 } else if (fs.existsSync(homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/')) {
                     profileDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
-                    genericDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
+                    genericDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/system/Creality/filament'
                 }
                 break
             case 'Windows_NT':
-                profileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
-                genericDir = homeDir + '/AppData/Roaming/Creality/Creality Print/6.0/user/' + USERID + '/filament/'
+                profileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
+                genericDir = homeDir + '/AppData/Roaming/Creality/Creality Print/7.0/system/Creality/filament'
+                break
         }
         crealityFiles = fs.readdirSync(profileDir,{recursive: true})
         if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
