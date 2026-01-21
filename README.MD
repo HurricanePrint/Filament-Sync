@@ -87,13 +87,15 @@ OrcaSlicer
 
     Mac: /Library/Application Support/OrcaSlicer/user/USERID#
     Linux: /.config/OrcaSlicerOrcaSlicer/user/USERID#
+    Flatpak: /.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/
     Windows: /AppData/Roaming/OrcaSlicer/user/USERID#
 
 CrealityPrint
 
-    Mac: /Library/Application Support/Creality/Creality Print/6.0/user/USERID#
-    Linux: /.config/Creality/Creality Print/6.0/user/USERID#
-    Windows: /AppData/Roaming/Creality/Creality Print/6.0/user/USERID#
+    Mac: /Library/Application Support/Creality/Creality Print/7.0/user/USERID#
+    Linux: /.config/Creality/Creality Print/7.0/user/USERID#
+    Flatpak: /.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/
+    Windows: /AppData/Roaming/Creality/Creality Print/7.0/user/USERID#
 
 ## Set to run as post-processing script in slicer
 
