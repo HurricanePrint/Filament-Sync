@@ -2,11 +2,13 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
 
 
-# Filament Sync 
+# Filament Sync
+
+Compatible with K2 and Hi series printers
 
 This tool reads custom filament profiles from Orcaslicer and Creality Print, converts them to Creality's database format and then sends them to the printer to pick manually with the screen or automatically with custom RFID tags
 
-Creality has recently added syncing of your filaments with Creality Print in the latest K2 firmware, but this comes with some caveats. It will put all of your profiles under the "Generic" brand and does not allow the use of custom RFID tags. 
+Creality has recently added syncing of your filaments with Creality Print, but this comes with some caveats. It will put all of your profiles under the "Generic" brand and does not allow the use of custom RFID tags. It requires creating a cloud account which also collects telemetrics and print data which can be a privacy/security risk for some users and organizations. 
 
 My tool will categorize your profiles under the correct brand name, filament type, and a more readable name. It also allows automatic assigning when using custom RFID tags with the CFS and side spool. Using custom RFID tags will also enable tracking filament usage and showing remaining amount on the filament selection screen.
 
@@ -53,6 +55,7 @@ Extract the folder on your computer
 ```
 ssh root@your-printer-ip
 ```
+Check the enable root menu on your printer for the password. K2 Plus uses ```creality_2024```, Hi uses ```Creality2024```
 
 ## Config
 
@@ -151,12 +154,8 @@ Select "**Copy Current Filament Preset**" and choose a generic profile
 
 ## Troubleshooting
 
-### If the printer fails to start prints and shows a EEPROM_DEBUG error
-
-Go into the folder where your presets are stored and make sure that the preset json files show all of the filament settings and not just a short list of the ones that you edited. If the custom profile wasn't created correctly it won't show all of the settings. The full list should be around 300 lines.
-
 ### If running as post-processing script and it isn't syncing correctly
 
 Run the script manually in the terminal and refer to the error messages in the console to see what needs to be fixed.
 
-If the error fix isn't described, create a [New Issue](https://github.com/HurricanePrint/Filament-Sync/issues/new/choose) and copy & paste the terminal output. 
+If the error fix isn't described, create a [New Issue](https://github.com/HurricanePrint/Filament-Sync/issues/new/choose) and include the terminal output. 
