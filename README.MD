@@ -42,6 +42,11 @@ In the RFID for CFS app, turn on advanced mode to enable setting custom codes
 
 >[Download Node.js](https://nodejs.org/en)
 
+#### Windows
+
+Git needs to be installed on windows
+>[Download Git](https://git-scm.com/install/windows)
+
 ## Installation
 
 #### Download Filament-Sync
