@@ -7,103 +7,113 @@ const { Client } = require('ssh2')
 const repoUrl = "https://github.com/HurricanePrint/Filament-Sync-Service.git"
 const remotePath = "/mnt/UDISK/printer_data/config/Filament-Sync-Service"
 const dirname = path.join(__dirname, '..')
-const { PRINTERIP, USER, PASSWORD } = require(path.join(dirname, 'user-config.js'))
 
-const config = {
-    host: PRINTERIP,
-    port: 22,
-    username: USER,
-    password: PASSWORD,
-    readyTimeout: 10000 // 10 second timeout
-}
+const { PRINTERS } = require(path.join(dirname, 'user-config.js'))
 
-const getAllFiles = (dirPath, arrayOfFiles) => {
-  const files = fs.readdirSync(dirPath)
-  arrayOfFiles = arrayOfFiles || []
-
-  files.forEach((file) => {
-    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-      arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
-    } else {
-      arrayOfFiles.push(path.join(dirPath, "/", file))
-    }
-  })
-
-  return arrayOfFiles
-}
-
-const install = async () => {
-    const client = new Client()
+const prepareLocalArchivePackage = () => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'git-transfer-'))
     const localRepoPath = path.join(tmpDir, 'cloned_repo')
     const tarPath = path.join(tmpDir, 'repo.tar')
-    const remotePath = "/mnt/UDISK/printer_data/config/Filament-Sync-Service"
 
+    try {
+        console.log('Cloning repository')
+        execSync(`git clone ${repoUrl} ${localRepoPath}`, { stdio: 'ignore' })
+
+        console.log('Creating installation archive')
+        execSync(`tar -cf ${tarPath} -C ${localRepoPath} .`)
+
+        const stats = fs.statSync(tarPath)
+        return { tmpDir, tarPath, archiveSize: stats.size }
+    } catch (archiveError) {
+        if (fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true, force: true })
+        throw new Error(`Failed to compile local asset package: ${archiveError.message}`)
+    }
+}
+
+const executeRemoteInstallationPipeline = (printer, tarPath, archiveSize) => {
     return new Promise((resolve, reject) => {
-        try {
-            console.log('Cloning repository...')
-            execSync(`git clone ${repoUrl} ${localRepoPath}`, { stdio: 'ignore' })
+        const client = new Client()
+        const config = {
+            host: printer.ip,
+            port: 22,
+            username: printer.user,
+            password: printer.pass,
+            readyTimeout: 10000
+        }
 
-            console.log('Creating archive...')
-            execSync(`tar -cf ${tarPath} -C ${localRepoPath} .`)
+        client.on('error', (err) => reject(new Error(`SSH Connection failure: ${err.message}`)))
 
-            const stats = fs.statSync(tarPath)
+        client.on('ready', () => {
+            console.log(`[${printer.name}] Connected. Initializing directories`)
+            
+            client.exec(`mkdir -p ${remotePath} && scp -t ${remotePath}`, (err, stream) => {
+                if (err) {
+                    client.end()
+                    return reject(err)
+                }
 
-            client.on('ready', () => {
-                console.log('SSH Ready. Preparing remote directory...')
+                stream.write(`C0644 ${archiveSize} repo.tar\n`)
                 
-                client.exec(`mkdir -p ${remotePath} && scp -t ${remotePath}`, (err, stream) => {
-                    if (err) return reject(err)
+                stream.once('data', (data) => {
+                    if (data[0] !== 0x00) {
+                        client.end()
+                        return reject(new Error('SCP handshaking execution rejected by remote device'))
+                    }
 
-                    stream.write(`C0644 ${stats.size} repo.tar\n`)
-                    
-                    stream.once('data', (data) => {
-                        if (data[0] !== 0x00) return reject(new Error('SCP Handshake Failed'))
+                    const readStream = fs.createReadStream(tarPath)
+                    readStream.pipe(stream, { end: false })
 
-                        const readStream = fs.createReadStream(tarPath)
-                        readStream.pipe(stream, { end: false })
+                    readStream.on('end', () => {
+                        stream.write('\x00')
+                        
+                        stream.once('data', (ack) => {
+                            if (ack[0] !== 0x00) {
+                                client.end()
+                                return reject(new Error('SCP packet transfer confirmation dropped'))
+                            }
+                            stream.end()
 
-                        readStream.on('end', () => {
-                            stream.write('\x00')
+                            console.log(`[${printer.name}] Extracting files and starting service`)
+                            const remoteCmd = `cd ${remotePath} && tar -xf repo.tar && rm repo.tar && sh install.sh`
                             
-                            stream.once('data', (ack) => {
-                                if (ack[0] !== 0x00) return reject(new Error('SCP Transfer Failed'))
-                                stream.end()
-
-                                console.log('Extracting and installing...')
-                                const remoteCmd = `cd ${remotePath} && tar -xf repo.tar && rm repo.tar && sh install.sh`
+                            client.exec(remoteCmd, (err, installStream) => {
+                                if (err) {
+                                    client.end()
+                                    return reject(err)
+                                }
                                 
-                                client.exec(remoteCmd, (err, installStream) => {
-                                    if (err) return reject(err)
-                                    
-                                    installStream.on('close', (code) => {
-                                        client.end()
-                                        if (code === 0) {
-                                            fs.rmSync(tmpDir, { recursive: true, force: true })
-                                            resolve()
-                                        } else {
-                                            reject(new Error('Remote extraction or install failed'))
-                                        }
-                                    })
-                                    installStream.resume()
+                                installStream.on('close', (code) => {
+                                    client.end()
+                                    if (code === 0) {
+                                        resolve()
+                                    } else {
+                                        reject(new Error(`Install scripts exited with error flag code: ${code}`))
+                                    }
                                 })
+                                installStream.resume()
                             })
                         })
                     })
                 })
-            }).on('error', reject).connect(config)
-        } catch (err) {
-            if (fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true })
-            reject(err)
-        }
+            })
+        }).connect(config)
     })
 }
 
-const installService = () => {
-    const client = new Client();
-    const normalizedRemotePath = remotePath.replace(/\/$/, '');
-
+const verifyAndDeployToSinglePrinter = async (printer, tarPath, archiveSize) => {
     return new Promise((resolve, reject) => {
+        const client = new Client()
+        const normalizedRemotePath = remotePath.replace(/\/$/, '')
+        const config = {
+            host: printer.ip,
+            port: 22,
+            username: printer.user,
+            password: printer.pass,
+            readyTimeout: 5000
+        }
+
+        client.on('error', (err) => reject(new Error(`Pre-check failed to establish link: ${err.message}`)))
+
         client.on('ready', () => {
             client.exec(`test -d ${normalizedRemotePath}`, (err, stream) => {
                 if (err) { 
@@ -114,20 +124,67 @@ const installService = () => {
                 stream.on('close', async (code) => {
                     client.end()
                     if (code !== 0) {
-                        console.log('Service not found. Starting installation...')
+                        console.log(`[${printer.name}] Sync-Service absent. Deploying files...`)
                         try {
-                            await install()
+                            await executeRemoteInstallationPipeline(printer, tarPath, archiveSize)
+                            console.log(`[${printer.name}] Sync-Service successfully established.`)
                             resolve()
-                        } catch (e) { reject(e) }
+                        } catch (installErr) { 
+                            reject(installErr) 
+                        }
                     } else {
-                        console.log('Service directory already exists. Skipping install.')
+                        console.log(`[${printer.name}] Service directory discovered. Skipping installation block.`)
                         resolve()
                     }
                 })
                 stream.resume()
             })
-        }).on('error', reject).connect(config)
+        }).connect(config)
     })
+}
+
+const installService = async () => {
+    console.log(`Initializing deployment across ${PRINTERS.length} printers`)
+    
+    let localAssets = null
+    
+    try {
+        localAssets = prepareLocalArchivePackage()
+        
+        const deploymentPromises = PRINTERS.map(printer => 
+            verifyAndDeployToSinglePrinter(printer, localAssets.tarPath, localAssets.archiveSize)
+        )
+
+        const runtimeStatuses = await Promise.allSettled(deploymentPromises)
+
+        let successCounter = 0
+        let failureCounter = 0
+
+        runtimeStatuses.forEach((status, idx) => {
+            const printerLabel = PRINTERS[idx].name
+            if (status.status === 'fulfilled') {
+                successCounter++
+            } else {
+                console.error(`[${printerLabel}] job aborted -> ${status.reason.message}`)
+                failureCounter++
+            }
+        })
+
+        console.log(`\nDeployment Summary: ${successCounter} printers configured, ${failureCounter} skipped.`)
+        
+        if (successCounter === 0 && PRINTERS.length > 0) {
+            throw new Error("Fleet deployment failed completely across all endpoints.")
+        }
+
+    } catch (globalCrashError) {
+        console.error(`Installer Crash: ${globalCrashError.message}`)
+        process.exit(1)
+    } finally {
+        if (localAssets && fs.existsSync(localAssets.tmpDir)) {
+            console.log('Cleaning temp files')
+            fs.rmSync(localAssets.tmpDir, { recursive: true, force: true })
+        }
+    }
 }
 
 module.exports = installService
