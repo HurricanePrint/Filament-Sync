@@ -42,9 +42,12 @@ const loadCustomProfiles = () => {
                 if (fs.existsSync(homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/')) {
                     profileDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/'
                     genericDir = homeDir + '/.config/OrcaSlicer/user/' + USERID + '/filament/'
-                } else if (fs.existsSync(homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/')) {
+                } if (fs.existsSync(homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/')) {
                     profileDir = homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/'
                     genericDir = homeDir + '/.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/system/'
+                } else if (fs.existsSync(homeDir + '/.var/app/com.orcaslicer.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/')) {
+                    profileDir = homeDir + '/.var/app/com.orcaslicer.OrcaSlicer/config/OrcaSlicer/user/' + USERID + '/filament/'
+                    genericDir = homeDir + '/.var/app/com.orcaslicer.OrcaSlicer/config/OrcaSlicer/system/'
                 }
                 break
             case 'Windows_NT':
