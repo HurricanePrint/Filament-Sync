@@ -1,10 +1,6 @@
-const PRINTERIP = '10.0.0.215'
-const USER = 'root'
-const PASSWORD = 'creality_2024'
-
-
-// Enter the slicer you want to sync from 
-// 'orca' or 'creality'
+/*
+Enter the slicer you want to sync from 'orca' or 'creality'
+*/
 const SLICER = 'orca'
 
 /*
@@ -24,5 +20,21 @@ CrealityPrint
 Not logged in: 'default'
 */
 const USERID = 'default'
+//const USERID = 'e09a8c1e-cadc-41a7-b166-bb19fb225b44'
 
-module.exports = {PRINTERIP, USER, PASSWORD, SLICER, USERID}
+/*
+Supports syncing to multiple printers
+Remove the // from the lines below to add more
+If the printers share username or password you can reuse the variables below or enter individually
+*/
+const USER = 'root'
+const PASSWORD = 'creality_2024'
+
+const PRINTERS = [
+  { name: "Printer1", ip: "10.0.0.50", user: USER, pass: PASSWORD },
+  { name: "Printer2", ip: "10.0.0.51", user: "user", pass: "pass" },
+  //{ name: "Printer3", ip: "10.0.0.52", user: "user2", pass: "pass2" },
+
+]
+
+module.exports = {PRINTERS, SLICER, USERID}

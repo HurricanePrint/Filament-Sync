@@ -1,66 +1,127 @@
 const fs = require('fs')
 const path = require('path')
 const dirname = path.join(__dirname, '..')
-const {PRINTERIP, USER, PASSWORD} = require(dirname + '/user-config.js')
+const {PRINTERS} = require(dirname + '/user-config.js')
+const printerClients = {}
+const { Client } = require('ssh2')
 const remoteDir = '/mnt/UDISK/printer_data/config/Filament-Sync-Service/data'
 const localDataDir = dirname + '/data'
-const { Client } = require('ssh2')
-
-const client = new Client()
-const config = {
-  host: PRINTERIP,
-  port: 22,
-  username: USER,
-  password: PASSWORD
-}
-
 const filesToUpload = ['material_database.json', 'material_option.json']
 
-const sendToPrinter = () => {
-    client.on('ready', () => {
-        client.exec(`scp -t ${remoteDir}`, (err, stream) => {
-            if (err) throw err
-            let fileIndex = 0
+const generatePrinterClients = () => {
+    for(let printer of PRINTERS) {
+        let printerKey = `${printer.name}Client`
+        printerClients[printerKey] = new Client()
+        printerClients[printerKey].config = {
+            host: printer.ip,
+            port: 22,
+            username: printer.user,
+            password: printer.pass,
+            readyTimeout: 5000
+        }
+    }
+}   
 
-            const sendNextFile = () => {
-                if (fileIndex >= filesToUpload.length) {
-                    stream.end()
-                    client.end()
-                    return
+const uploadSingleFile = (stream, localPath, fileName) => {
+    return new Promise((resolve, reject) => {
+        try {
+            if (!fs.existsSync(localPath)) {
+                return reject(new Error(`Local file asset not found: ${localPath}`))
+            }
+
+            const stats = fs.statSync(localPath)
+            
+            stream.write(`C0644 ${stats.size} ${fileName}\n`)
+            
+            stream.once('data', (data) => {
+                if (data[0] !== 0x00) {
+                    return reject(new Error(`Server rejected file header for ${fileName}: ${data.toString()}`))
                 }
-                console.log("sending ", filesToUpload[fileIndex])
-                const fileName = filesToUpload[fileIndex]
-                const localPath = path.join(localDataDir, fileName)
+                const readStream = fs.createReadStream(localPath)
+                readStream.on('error', (fsErr) => reject(new Error(`Local I/O Error: ${fsErr.message}`)))
                 
-                if (!fs.existsSync(localPath)) {
-                    console.error(`Files not found: ${localPath}`)
-                    client.end()
-                }
-                const stats = fs.statSync(localPath)
-                stream.write(`C0644 ${stats.size} ${fileName}\n`)
-                stream.once('data', (data) => {
-                    if (data[0] !== 0x00) {
-                        console.error(`Server rejected metadata for ${fileName}:`, data.toString())
-                        return
-                    }
-                    const readStream = fs.createReadStream(localPath)
-                    readStream.pipe(stream, { end: false })
-                    readStream.on('end', () => {
-                        stream.write('\x00')
-                        stream.once('data', (ack) => {
-                            if (ack[0] === 0x00) {
-                                fileIndex++
-                                sendNextFile()
-                            } else {
-                                console.error(`Error finishing transfer for ${fileName}`)
-                            }
-                        })
+                readStream.pipe(stream, { end: false })
+                
+                readStream.on('end', () => {
+                    stream.write('\x00')      
+                    stream.once('data', (ack) => {
+                        if (ack[0] === 0x00) {
+                            resolve()
+                        } else {
+                            reject(new Error(`Protocol failure terminating stream for ${fileName}`))
+                        }
                     })
                 })
-            }
-            sendNextFile()
-        })
-    }).connect(config)
+            })
+        } catch (err) {
+            reject(err)
+        }
+    })
 }
+
+const syncSinglePrinter = (clientKey, clientInstance) => {
+    return new Promise((resolve, reject) => {
+        clientInstance.on('error', (connErr) => {
+            reject(new Error(`Connection failed: ${connErr.message}`))
+        })
+
+        clientInstance.on('ready', () => {
+            clientInstance.exec(`scp -t ${remoteDir}`, async (err, stream) => {
+                try {
+                    if (err) throw new Error(`SSH Command Execution Failure: ${err.message}`)
+
+                    // Loop across specified source database assets sequentially
+                    for (const fileName of filesToUpload) {
+                        console.log(`📤 [${clientKey}] Streaming: ${fileName}`)
+                        const localPath = path.join(localDataDir, fileName)
+                        
+                        // Await completion before passing next index
+                        await uploadSingleFile(stream, localPath, fileName)
+                    }
+
+                    console.log(`✅ [${clientKey}] Fleet update applied successfully.`)
+                    resolve() // Mark this specific printer job complete
+                } catch (pipelineError) {
+                    reject(pipelineError)
+                } finally {
+                    if (stream) stream.end()
+                    clientInstance.end()
+                }
+            })
+        })
+
+        // Execute connection using bound internal configuration credentials
+        clientInstance.connect(clientInstance.config)
+    })
+}
+
+const sendToPrinter = async () => {
+    generatePrinterClients()
+    const clientKeys = Object.keys(printerClients)
+
+    const syncPromises = clientKeys.map(clientKey => 
+        syncSinglePrinter(clientKey, printerClients[clientKey])
+    )
+    const results = await Promise.allSettled(syncPromises)
+
+    let successes = 0
+    let failures = 0
+
+    results.forEach((result, idx) => {
+        const targetLabel = clientKeys[idx]
+        if (result.status === 'fulfilled') {
+            successes++
+        } else {
+            console.error(`[${targetLabel}] sync failed -> ${result.reason.message}`)
+            failures++
+        }
+    })
+
+    console.log(`\nSync Summary: ${successes} complete, ${failures} skipped.`)
+    if (successes === 0 && clientKeys.length > 0) {
+        process.exit(1)
+    }
+}
+
  
 module.exports = sendToPrinter
