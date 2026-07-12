@@ -3,9 +3,11 @@ const addProfiles = require ('./tools/database-tool.js')
 const {initData} = require('./tools/config.js')
 const sendToPrinter = require('./tools/scp.js')
 const installService = require('./tools/service-installer.js')
+const autoUpdate = require('./tools/update.js')
 
 const main = async () => {
     try {
+        await autoUpdate()
         await installService()
         initData()
         addOptions()
