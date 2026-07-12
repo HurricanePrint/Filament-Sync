@@ -1,81 +1,129 @@
-## Donations
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
-
-
 # Filament Sync
 
-Compatible with K2 and Hi series printers
 
-This tool reads custom filament profiles from Orcaslicer and Creality Print, converts them to Creality's database format and then sends them to the printer to pick manually with the screen or automatically with custom RFID tags
+> **Compatibility:** K2 and Hi series printers
 
-Creality has recently added syncing of your filaments with Creality Print, but this comes with some caveats. It will put all of your profiles under the "Generic" brand and does not allow the use of custom RFID tags. It requires creating a cloud account which also collects telemetrics and print data which can be a privacy/security risk for some users and organizations. 
+This tool reads custom filament profiles from **Orcaslicer** and **Creality Print**, converts them to Creality's database format, and sends them to the printer. This allows you to pick them manually on the screen or automatically using custom RFID tags.
 
-My tool will categorize your profiles under the correct brand name, filament type, and a more readable name. It also allows automatic assigning when using custom RFID tags with the CFS and side spool. Using custom RFID tags will also enable tracking filament usage and showing remaining amount on the filament selection screen.
+---
 
-### Add required info to your profiles
+## 📖 Table of Contents
+* [✨ Features & Benefits](#-features--benefits)
+* [🛠️ Prerequisites](#️-prerequisites)
+    * [Connect to your printer](#1-connect-to-your-printer-with-ssh)
+    * [NodeJS](#2-all-operating-systems-require-nodejs)
+    * [Windows](#windows)
+    * [Mac](#mac)
+    * [Linux](#linux)
+* [📦 Installation](#-installation)
+* [💻 Slicer and RFID Configuration](#-slicer-configuration)
+    * [1. Add required info to your profiles](#1-add-required-info-to-your-profiles)
+    * [2. If you are using custom RFID tags](#2-if-you-are-using-custom-rfid-tags)
+* [🔧 Tool Configuration](#-tool-configuration)
+    * [1. Pick Slicer](#1-change-slicer-to-select-the-slicer-you-want-to-sync-from-)
+    * [2. Slicer UserID](#2-set-your-slicer-userid)
+    * [3. Select Printers](#3-setup-your-printers)
+* [🔄 Syncing](#-syncing)
+    * [Manual Sync](#to-sync-manually)
+    * [Automatic Sync](#to-sync-automatically)
+* [☕ Donations](#-donations)
 
-You will need to add this into the Notes section of the filament
+---
 
-```
-{"id":"","vendor":"","type":"","name":""}
-```
+## ✨ Features & Benefits
 
-The "id" should be a unique 5 digit value that you will also match with your custom RFID tags if you are using them
+Creality recently added filament syncing with Creality Print, but it has some major limitations. **Filament Sync** fixes these issues:
 
-You can ⌘/CTRL-F in the material_database.json to make sure the id you pick isn't already being used
+| Feature | Creality Print Sync | Filament Sync (This Tool) |
+| :--- | :---: | :---: |
+| **Profile Categorization** | Forces everything under "Generic" | Organizes by correct Brand, Type, and Name |
+| **Custom RFID Tags** | ❌ Not supported |  Supported (CFS & Side Spool) |
+| **Filament Tracking** | ❌ Not supported |  Tracks usage & displays remaining amount |
+| **Privacy & Security** | ⚠️ Requires cloud account & data collection |  100% Local / Private |
 
-An id is still required even if you are not using RFID tags as the tool searches by id when updating filament settings
+---
 
-Here is an example
+## 🛠️ Prerequisites
 
-```
-{"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
-```
+### 1. Connect to your printer with SSH
 
-### If you are using custom RFID tags
-Set the "Material Code" to the id that you set in the profile.
-In the RFID for CFS app, turn on advanced mode to enable setting custom codes
+You may need to enable root access in the settings on your printer. Once enabled it will show the default username and password.
 
-## Prerequisites
-
-#### Install Node.js
-
->[Download Node.js](https://nodejs.org/en)
-
-#### Windows
-
-Git needs to be installed on windows
->[Download Git](https://git-scm.com/install/windows)
-
-## Installation
-
-#### Download Filament-Sync
-
-[Latest release](https://github.com/hurricaneprint/Filament-Sync/releases/latest)
-
-Extract the folder on your computer
-
-#### If you haven't already connected to your printer with SSH, use terminal or powershell to connect and generate the RSA keys needed for the script to run correctly
+If you haven't already connected to your printer with SSH at least once, use terminal or powershell to connect and generate the RSA keys needed for the script to run correctly
 
 ```
 ssh root@your-printer-ip
 ```
-Check the enable root menu on your printer for the password. K2 Plus uses ```creality_2024```, Hi uses ```Creality2024```
 
-## Config
+### 2. All operating systems require **Node.js**. 
+
+Download it from the official site:
+[Download Node.js](https://nodejs.org)
+
+### 3. Install git
+
+#### Windows
+* **Git** must be installed on your system.
+* [Download Git for Windows](https://git-scm.com)
+
+#### Mac
+* **Git** is usually installed by default. You can check by running `git --version` in your terminal.
+
+If you do not have Git installed, you will need **Homebrew** installed first to manage dependencies, use the official installation script from [Brew.sh](https://brew.sh/):
+  ```bash
+  /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+  Then run `brew install git`.
+
+#### Linux
+* **Git** is usually installed by default. You can check by running `git --version` in your terminal.
+
+If you do not have Git installed
+* **Ubuntu/Debian:** `sudo apt install git`
+* **Fedora:** `sudo dnf install git`
+* **Arch:** `sudo pacman -S git`
+
+---
+
+## 📦 Installation
+
+Download the [Latest release](https://github.com/hurricaneprint/Filament-Sync/releases/latest) 
+
+Extract the folder
+
+---
+
+## 💻 Slicer Configuration
+
+### 1. Add required info to your profiles
+You must add a JSON metadata string into the **Notes** section of your filament profile in Orcaslicer or Creality Print.
+
+Copy and paste this template into your profile notes:
+```json
+{"id":"","vendor":"","type":"","name":""}
+```
+
+#### Important Rules for IDs:
+* The `"id"` must be a **unique 5-digit value**. 
+* If you are using custom RFID tags, this ID must match the tag.
+* ⚠️ **An ID is required** even if you don't use RFID tags, as the tool uses it to update printer settings.
+
+**Example configuration:**
+```json
+{"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
+```
+
+### 2. If you are using custom RFID tags
+1. Set the **Material Code** in your RFID app to the exact `id` you specified in your profile notes.
+2. In the *RFID for CFS* app, enable **Advanced Mode** to unlock custom code settings.
+
+---
+
+## 🔧 Tool Configuration
 
 Open the **user-config.js** file with a text editor
 
-Change **PRINTERIP** to the ip of your printer
-
-```
-const PRINTERIP = '127.0.0.1'
-const USER = 'root'
-const PASSWORD = 'creality_2024'
-```
-If you have changed your username or password they can also be updated here
-
-Change **SLICER** to select the slicer you want to sync from 
+### 1. Change **SLICER** to select the slicer you want to sync from .
 
 * Enter 'orca' or 'creality'
 
@@ -83,33 +131,65 @@ Change **SLICER** to select the slicer you want to sync from
 const SLICER = 'orca'
 ```
 
-If you are using logged into an account in OrcaSlicer or CrealityPrint, change **USERID** to the unique id number that the slicer has set for the user folder.
+### 2. Set your slicer userid
+If you are using logged into a cloud account in OrcaSlicer or CrealityPrint, change **USERID** to the unique id number that the slicer has set for the user folder.
 
 ```
 const USERID = 'default'
 ```
 
-You can find your user id by clicking the **Help** tab in your slicer and then clicking **Show Configuration Folder**
+You can find your user id by clicking the **Help** tab in your slicer and then clicking **Show Configuration Folder**.
 
 OrcaSlicer
 
+    Windows: /AppData/Roaming/OrcaSlicer/user/USERID#
     Mac: /Library/Application Support/OrcaSlicer/user/USERID#
     Linux: /.config/OrcaSlicerOrcaSlicer/user/USERID#
     Flatpak: /.var/app/io.github.softfever.OrcaSlicer/config/OrcaSlicer/user/
-    Windows: /AppData/Roaming/OrcaSlicer/user/USERID#
 
 CrealityPrint
 
+    Windows: /AppData/Roaming/Creality/Creality Print/7.0/user/USERID#
     Mac: /Library/Application Support/Creality/Creality Print/7.0/user/USERID#
     Linux: /.config/Creality/Creality Print/7.0/user/USERID#
     Flatpak: /.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/
-    Windows: /AppData/Roaming/Creality/Creality Print/7.0/user/USERID#
 
-## Set to run as post-processing script in slicer
+### 3. Setup your printers
 
-This will sync everytime you slice and export gcode to the printer
+Supports syncing to one or multiple printers.
 
-You may encounter an error the first time it runs the script. This is normal as the service is being installed to the printer and sometimes the slicer loses its connection. It should work normally every time after this.
+If the printers share username or password you can reuse the variables below or enter individually in the ``PRINTERS`` list
+```
+const USER = 'root'
+const PASSWORD = 'creality_2024'
+```
+```
+const PRINTERS = [
+  { name: "Printer1", ip: "10.0.0.50", user: USER, pass: PASSWORD },
+  //{ name: "Printer2", ip: "10.0.0.51", user: "user", pass: "pass" },
+  //{ name: "Printer3", ip: "10.0.0.52", user: "user2", pass: "pass2" },
+]
+```
+To add more printers to the list remove the comment ``//`` from the lines. You can also add more printers by pasting the following line
+```
+{ name: "OfficePrinter", ip: "192.168.1.150", user: "user", pass: "pass" },
+```
+
+---
+
+## 🔄 Syncing
+
+It is suggested to run the script manually the first time as the slicer may encounter an error the first time it runs the script as a Post-Process Script. Running it manually will also allow you to see if there are any installation or syncing errors.
+
+### To sync manually
+
+In Terminal/Powershell enter the Filament-Sync folder
+then run
+```
+node main.js
+```
+
+### To sync automatically
 
 At the bottom of the "**Others**" tab of your slicing settings, find "**Post-processing Scripts**" 
 
@@ -133,34 +213,8 @@ Make sure to change the path to where you put the extracted Filament-Sync folder
 C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
 ```
 
-### To sync manually
+## ☕ Donations
 
-In Terminal/Powershell enter the Filament-Sync folder
-then run
-```
-node main.js
-```
+If this tool saved you from cloud account hassles or helped organize your workshop, consider supporting the project!
 
-Windows users can also run the windows-sync.bat file 
-
-### Creating custom filament presets(Recommended, but no longer required)
-
-If you want to get your presets ready just copy your settings into a new custom filament profile
-
-Right side of the Filament section 
-
-Click "**Set filaments to use**" icon
-
-Click "**Custom Filament**" at the top then click "**Create New**"
-
-If you don't see this option on Creality Print, go into the options/preferences and set **User Role** to **Professional**
-
-Select "**Copy Current Filament Preset**" and choose a generic profile 
-
-## Troubleshooting
-
-### If running as post-processing script and it isn't syncing correctly
-
-Run the script manually in the terminal and refer to the error messages in the console to see what needs to be fixed.
-
-If the error fix isn't described, create a [New Issue](https://github.com/HurricanePrint/Filament-Sync/issues/new/choose) and include the terminal output. 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P11AL9ZR)
