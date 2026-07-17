@@ -70,17 +70,14 @@ const syncSinglePrinter = (clientKey, clientInstance) => {
                 try {
                     if (err) throw new Error(`SSH Command Execution Failure: ${err.message}`)
 
-                    // Loop across specified source database assets sequentially
                     for (const fileName of filesToUpload) {
-                        console.log(`📤 [${clientKey}] Streaming: ${fileName}`)
                         const localPath = path.join(localDataDir, fileName)
                         
-                        // Await completion before passing next index
                         await uploadSingleFile(stream, localPath, fileName)
                     }
 
-                    console.log(`✅ [${clientKey}] Fleet update applied successfully.`)
-                    resolve() // Mark this specific printer job complete
+                    console.log(`[${clientKey}] profiles synced successfully.`)
+                    resolve()
                 } catch (pipelineError) {
                     reject(pipelineError)
                 } finally {
@@ -90,7 +87,6 @@ const syncSinglePrinter = (clientKey, clientInstance) => {
             })
         })
 
-        // Execute connection using bound internal configuration credentials
         clientInstance.connect(clientInstance.config)
     })
 }
@@ -117,7 +113,7 @@ const sendToPrinter = async () => {
         }
     })
 
-    console.log(`\nSync Summary: ${successes} complete, ${failures} skipped.`)
+    console.log(`\nSync Summary: ${successes} printer synced, ${failures} printers skipped`)
     if (successes === 0 && clientKeys.length > 0) {
         process.exit(1)
     }
