@@ -19,7 +19,7 @@ const getGenericProfile = (profile, genericDir) => {
                 }
                 break   
             }
-            genericProfile = fs.readFileSync(entries[entry].path+ '/' + name + '.json')
+            genericProfile = fs.readFileSync(entries[entry].parentPath+ '/' + name + '.json')
             genericProfileJson = JSON.parse(genericProfile)
             if(genericProfileJson.inherits){
                 profiles.push(genericProfileJson)
