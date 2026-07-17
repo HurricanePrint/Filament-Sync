@@ -13,7 +13,7 @@ async function autoUpdate() {
         await execAsync('git stash pop').catch(() => {})
 
         if (stdout.includes('Already up to date.')) {
-            console.log('Tool is up to date.')
+            console.log('Tool is up to date')
         } else {
             console.log('Updates downloaded successfully! Relaunching script')
             
