@@ -92,6 +92,7 @@ const syncSinglePrinter = (clientKey, clientInstance) => {
 }
 
 const sendToPrinter = async () => {
+    console.log("\nSyncing with printers")
     generatePrinterClients()
     const clientKeys = Object.keys(printerClients)
 
