@@ -16,13 +16,13 @@ This tool reads custom filament profiles from **Orcaslicer** and **Creality Prin
     * [Mac](#mac)
     * [Linux](#linux)
 * [📦 Installation](#-installation)
-* [💻 Slicer and RFID Configuration](#-slicer-configuration)
-    * [1. Add required info to your profiles](#1-add-required-info-to-your-profiles)
-    * [2. If you are using custom RFID tags](#2-if-you-are-using-custom-rfid-tags)
 * [🔧 Tool Configuration](#-tool-configuration)
     * [1. Pick Slicer](#1-change-slicer-to-select-the-slicer-you-want-to-sync-from-)
     * [2. Slicer UserID](#2-set-your-slicer-userid)
     * [3. Select Printers](#3-setup-your-printers)
+* [💻 Slicer and RFID Configuration](#-slicer-configuration)
+    * [1. Add required info to your profiles](#1-add-required-info-to-your-profiles)
+    * [2. If you are using custom RFID tags](#2-if-you-are-using-custom-rfid-tags)
 * [🔄 Syncing](#-syncing)
     * [Manual Sync](#to-sync-manually)
     * [Automatic Sync](#to-sync-automatically)
@@ -87,39 +87,12 @@ If you do not have Git installed
 
 ## 📦 Installation
 
-#### Simple
 Download the [Latest release](https://github.com/hurricaneprint/Filament-Sync/releases/latest) 
 
 Extract the folder
 
 
 *If you clone the repo instead of downloading the latest release, you will need to run* ```npm i``` *to install the required submodules.*
-
----
-
-## 💻 Slicer Configuration
-
-### 1. Add required info to your profiles
-You must add a JSON metadata string into the **Notes** section of your filament profile in Orcaslicer or Creality Print.
-
-Copy and paste this template into your profile notes:
-```json
-{"id":"","vendor":"","type":"","name":""}
-```
-
-#### Important Rules for IDs:
-* The `"id"` must be a **unique 5-digit value**. 
-* If you are using custom RFID tags, this ID must match the tag.
-* ⚠️ **An ID is required** even if you don't use RFID tags, as the tool uses it to update printer settings.
-
-**Example configuration:**
-```json
-{"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
-```
-
-### 2. If you are using custom RFID tags
-1. Set the **Material Code** in your RFID app to the exact `id` you specified in your profile notes.
-2. In the *RFID for CFS* app, enable **Advanced Mode** to unlock custom code settings.
 
 ---
 
@@ -181,6 +154,32 @@ To add more printers to the list remove the comment ``//`` from the lines. You c
 
 ---
 
+## 💻 Slicer Configuration
+
+### 1. Add required info to your profiles
+You must add a JSON metadata string into the **Notes** section of your filament profile in Orcaslicer or Creality Print.
+
+Copy and paste this template into your profile notes:
+```json
+{"id":"","vendor":"","type":"","name":""}
+```
+
+#### Important Rules for IDs:
+* The `"id"` must be a **unique 5-digit value**. 
+* If you are using custom RFID tags, this ID must match the tag.
+* ⚠️ **An ID is required** even if you don't use RFID tags, as the tool uses it to update printer settings.
+
+**Example configuration:**
+```json
+{"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
+```
+
+### 2. If you are using custom RFID tags
+1. Set the **Material Code** in your RFID app to the exact `id` you specified in your profile notes.
+2. In the *RFID for CFS* app, enable **Advanced Mode** to unlock custom code settings.
+
+---
+
 ## 🔄 Syncing
 
 It is suggested to run the script manually the first time as the slicer may encounter an error the first time it runs the script as a Post-Process Script. Running it manually will also allow you to see if there are any installation or syncing errors.
@@ -199,6 +198,12 @@ At the bottom of the "**Others**" tab of your slicing settings, find "**Post-pro
 
 Make sure to change the path to where you put the extracted Filament-Sync folder
 
+### Windows
+
+```
+C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
+```
+
 ### Mac 
 
 ```
@@ -211,10 +216,24 @@ Make sure to change the path to where you put the extracted Filament-Sync folder
 /usr/local/bin/node /home/your-user-name/Filament-Sync/main.js;
 ```
 
-#### Windows
+### If using a Flatpak install
+
+Give your slicer permission to access node and the tool
+
+In terminal
+```
+flatpak override --user --filesystem=host com.orcaslicer.OrcaSlicer
+```
+
+Find the path to node and copy it
 
 ```
-C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
+which node
+```
+
+Replace the path to where the tool and node is located
+```
+flatpak-spawn --host bash -c 'cd /home/your-user-name/Filament-Sync && /home/your-user-name/.nvm/versions/node/v26.5.0/bin/node main.js';
 ```
 
 ## ☕ Donations
