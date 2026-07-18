@@ -87,9 +87,13 @@ If you do not have Git installed
 
 ## 📦 Installation
 
+#### Simple
 Download the [Latest release](https://github.com/hurricaneprint/Filament-Sync/releases/latest) 
 
 Extract the folder
+
+
+*If you clone the repo instead of downloading the latest release, you will need to run* ```npm i``` *to install the required submodules.*
 
 ---
 
