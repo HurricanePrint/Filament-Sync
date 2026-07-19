@@ -86,7 +86,10 @@ const executeRemoteInstallationPipeline = (printer, tarPath, archiveSize) => {
                             stream.end()
 
                             console.log(`[${printer.name}] Extracting files and starting service`)
-                            const remoteCmd = `cd ${remotePath} && tar -xf service.tar && rm service.tar && sh install.sh`
+                            const baseCmd = `cd ${remotePath} && tar -xf service.tar && rm service.tar`;
+                            const remoteCmd = printer.k1 
+                                ? `${baseCmd} && git checkout k1-test && sh install.sh k1` 
+                                : `${baseCmd} && sh install.sh`;
                             
                             client.exec(remoteCmd, (err, installStream) => {
                                 if (err) {

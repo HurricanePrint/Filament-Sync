@@ -3,6 +3,12 @@
 
 > **Compatibility:** K2 and Hi series printers
 
+> [!WARNING]
+> **K1 Support is Experimental**
+> 
+> Compatibility with the Creality K1 line is currently experimental. Please report whether it works successfully or encounters errors in your setup!
+
+
 This tool reads custom filament profiles from **Orcaslicer** and **Creality Print**, converts them to Creality's database format, and sends them to the printer. This allows you to pick them manually on the screen or automatically using custom RFID tags.
 
 ---
@@ -142,14 +148,15 @@ const PASSWORD = 'creality_2024'
 ```
 ```
 const PRINTERS = [
-  { name: "Printer1", ip: "10.0.0.50", user: USER, pass: PASSWORD },
-  //{ name: "Printer2", ip: "10.0.0.51", user: "user", pass: "pass" },
-  //{ name: "Printer3", ip: "10.0.0.52", user: "user2", pass: "pass2" },
+  { name: "Printer1", ip: "10.0.0.50", user: USER, pass: PASSWORD, k1: false },
+  //{ name: "Printer2", ip: "10.0.0.51", user: "user", pass: "pass", k1: false},
+  //{ name: "Printer3", ip: "10.0.0.52", user: "user2", pass: "pass2" k1: true},
 ]
+```
 ```
 To add more printers to the list remove the comment ``//`` from the lines. You can also add more printers by pasting the following line
 ```
-{ name: "OfficePrinter", ip: "192.168.1.150", user: "user", pass: "pass" },
+{ name: "OfficePrinter", ip: "192.168.1.150", user: "user", pass: "pass", k1: false },
 ```
 
 ---
