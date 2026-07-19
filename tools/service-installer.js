@@ -148,16 +148,8 @@ const verifyAndDeployToSinglePrinter = async (printer, tarPath, archiveSize) => 
                             reject(installErr) 
                         }
                     } else {
-                            console.log(`[${printer.name}] Service directory discovered. Updating via git pull...`)
-                            try {
-                                const targetDir = '/mnt/UDISK/printer_data/config/Filament-Sync-Service'
-                                await executeRemoteCommand(printer, `git -C "${targetDir}" pull`)      
-                                console.log(`[${printer.name}] Service successfully updated`)
-                                resolve()
-                            } catch (updateErr) {
-                                console.error(`[${printer.name}] Failed to run git pull:`, updateErr.message)                              // Resolve anyway to prevent a network/git glitch from crashing your main orchestration pipeline
-                                resolve() 
-                            }
+                                console.log(`[${printer.name}] Service directory discovered, skipping installation`)                            // Resolve anyway to prevent a network/git glitch from crashing your main orchestration pipeline
+                                resolve()     
                     }
                 })
                 stream.resume()
