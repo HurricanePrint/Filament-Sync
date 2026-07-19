@@ -57,7 +57,7 @@ You may need to enable root access in the settings on your printer. Once enabled
 
 If you haven't already connected to your printer with SSH at least once, use terminal or powershell to connect and generate the RSA keys needed for the script to run correctly
 
-```
+```bash
 ssh root@your-printer-ip
 ```
 
@@ -110,14 +110,14 @@ Open the **user-config.js** file with a text editor
 
 * Enter 'orca' or 'creality'
 
-```
+```js
 const SLICER = 'orca'
 ```
 
 ### 2. Set your slicer userid
 If you are using logged into a cloud account in OrcaSlicer or CrealityPrint, change **USERID** to the unique id number that the slicer has set for the user folder.
 
-```
+```js
 const USERID = 'default'
 ```
 
@@ -142,20 +142,21 @@ CrealityPrint
 Supports syncing to one or multiple printers.
 
 If the printers share username or password you can reuse the variables below or enter individually in the ``PRINTERS`` list
-```
+
+```js
 const USER = 'root'
 const PASSWORD = 'creality_2024'
 ```
-```
+```js
 const PRINTERS = [
   { name: "Printer1", ip: "10.0.0.50", user: USER, pass: PASSWORD, k1: false },
   //{ name: "Printer2", ip: "10.0.0.51", user: "user", pass: "pass", k1: false},
   //{ name: "Printer3", ip: "10.0.0.52", user: "user2", pass: "pass2" k1: true},
 ]
 ```
-```
+
 To add more printers to the list remove the comment ``//`` from the lines. You can also add more printers by pasting the following line
-```
+```js
 { name: "OfficePrinter", ip: "192.168.1.150", user: "user", pass: "pass", k1: false },
 ```
 
@@ -195,7 +196,7 @@ It is suggested to run the script manually the first time as the slicer may enco
 
 In Terminal/Powershell enter the Filament-Sync folder
 then run
-```
+```bash
 node main.js
 ```
 
@@ -207,19 +208,19 @@ Make sure to change the path to where you put the extracted Filament-Sync folder
 
 ### Windows
 
-```
+```cmd
 C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
 ```
 
 ### Mac 
 
-```
+```bash
 /usr/local/bin/node /Users/your-user-name/Filament-Sync/main.js;
 ```
 
 ### Linux
 
-```
+```bash
 /usr/local/bin/node /home/your-user-name/Filament-Sync/main.js;
 ```
 
@@ -228,18 +229,18 @@ C:\Users\your-user-name\Filament-Sync\windows-sync.bat;
 Give your slicer permission to access node and the tool
 
 In terminal
-```
+```bash
 flatpak override --user --filesystem=host com.orcaslicer.OrcaSlicer
 ```
 
 Find the path to node and copy it
 
-```
+```bash
 which node
 ```
 
 Replace the path to where the tool and node is located
-```
+```bash
 flatpak-spawn --host bash -c 'cd /home/your-user-name/Filament-Sync && /home/your-user-name/.nvm/versions/node/v26.5.0/bin/node main.js';
 ```
 
