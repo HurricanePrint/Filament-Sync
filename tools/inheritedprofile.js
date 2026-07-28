@@ -11,7 +11,7 @@ const getGenericProfile = (profile, genericDir) => {
             if(name.endsWith('@System')) {
                 baseName = name.slice(0,-7)
                 baseName += '@base'
-                genericProfile = fs.readFileSync(entries[entry].path+ '/' + baseName + '.json')
+                genericProfile = fs.readFileSync(entries[entry].parentPath+ '/' + baseName + '.json')
                 genericProfileJson = JSON.parse(genericProfile)
                 if(genericProfileJson.inherits){
                     profiles.push(genericProfileJson)
