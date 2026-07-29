@@ -25,18 +25,11 @@ const writeDatabase = (database) => {
 }
 
 const removeDuplicates = () => {
-    let databaseList = newDatabase.result.list
-    let filteredDatabase = databaseList
-    for(let entry = 0; entry <= startCount-1; entry++) {
-        let entryID = databaseList[entry].base.id
-        for(id of newIds) {
-            if(entryID == id) {
-                filteredDatabase = filteredDatabase.slice(entry+1, newDatabase.count)
-                newDatabase.result.count -=1
-            }
-        }
-    }
-    newDatabase.result.list = filteredDatabase
+    // Keep every profile we just added, plus any stock entry a custom profile didn't override
+    newDatabase.result.list = newDatabase.result.list.filter((entry, index) => {
+        return index >= startCount || !newIds.includes(entry.base.id)
+    })
+    newDatabase.result.count = newDatabase.result.list.length
     writeDatabase(newDatabase)
 }
 
