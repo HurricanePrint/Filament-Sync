@@ -34,6 +34,7 @@ const getGenericProfile = (profile, genericDir) => {
 }
 
 const createCustomProfile = (profile, genericDir) => {
+    profiles = []
     profiles.push(profile)
     const genericProfiles = getGenericProfile(profile, genericDir)
     let newProfile = {}
