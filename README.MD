@@ -47,7 +47,7 @@ Creality recently added filament syncing with Creality Print, but it has some ma
 | **Custom RFID Tags** | ❌ Not supported | ✅ Supported (CFS & Side Spool) |
 | **Filament Tracking** | ❌ Not supported | ✅ Tracks usage & remaining amount |
 | **Multi-Printer Sync** | ❌ Manual | ✅ Simultaneous multi-IP sync |
-| **Privacy & Security** | ⚠️ Cloud-based | ✅ 100% Local / Private |
+| **Privacy & Security** | ⚠️ Requires cloud account & data collection | ✅ 100% Local / Private |
 
 ---
 
