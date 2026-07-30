@@ -40,12 +40,14 @@ This tool reads custom filament profiles from **Orcaslicer** and **Creality Prin
 
 Creality recently added filament syncing with Creality Print, but it has some major limitations. **Filament Sync** fixes these issues:
 
-| Feature | Creality Print Sync | Filament Sync (This Tool) |
+| Features | Creality Print Sync | Filament Sync (This Tool) |
 | :--- | :---: | :---: |
-| **Profile Categorization** | Forces everything under "Generic" | Organizes by correct Brand, Type, and Name |
-| **Custom RFID Tags** | ❌ Not supported |  Supported (CFS & Side Spool) |
-| **Filament Tracking** | ❌ Not supported |  Tracks usage & displays remaining amount |
-| **Privacy & Security** | ⚠️ Requires cloud account & data collection |  100% Local / Private |
+| **Slicer Compatibility** | ❌ Locked to Creality Print | ✅ OrcaSlicer & Creality Print |
+| **Profile Categorization** | ❌ Forces "Generic" | ✅ Organized by Brand/Type/Name |
+| **Custom RFID Tags** | ❌ Not supported | ✅ Supported (CFS & Side Spool) |
+| **Filament Tracking** | ❌ Not supported | ✅ Tracks usage & remaining amount |
+| **Multi-Printer Sync** | ❌ Manual | ✅ Simultaneous multi-IP sync |
+| **Privacy & Security** | ⚠️ Cloud-based | ✅ 100% Local / Private |
 
 ---
 
