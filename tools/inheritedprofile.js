@@ -8,10 +8,10 @@ const getGenericProfile = (profile, genericDir) => {
     for (entry in entries) {
         let name = entries[entry].name.slice(0, -5)
         if (name == genericName) {
-            if(name.endsWith('@System')) {
+            if(name.endsWith('@System') && fs.existsSync(entries[entry].parentPath + '/' + name.slice(0,-7) + '@base.json')) {
                 baseName = name.slice(0,-7)
                 baseName += '@base'
-                genericProfile = fs.readFileSync(entries[entry].path+ '/' + baseName + '.json')
+                genericProfile = fs.readFileSync(entries[entry].parentPath+ '/' + baseName + '.json')
                 genericProfileJson = JSON.parse(genericProfile)
                 if(genericProfileJson.inherits){
                     profiles.push(genericProfileJson)
