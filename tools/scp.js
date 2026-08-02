@@ -2,25 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const dirname = path.join(__dirname, '..')
 const {PRINTERS} = require(dirname + '/user-config.js')
-const printerClients = {}
 const { Client } = require('ssh2')
 const remoteDir = '/mnt/UDISK/printer_data/config/Filament-Sync-Service/data'
 const localDataDir = dirname + '/data'
 const filesToUpload = ['material_database.json', 'material_option.json']
-
-const generatePrinterClients = () => {
-    for(let printer of PRINTERS) {
-        let printerKey = `${printer.name}Client`
-        printerClients[printerKey] = new Client()
-        printerClients[printerKey].config = {
-            host: printer.ip,
-            port: 22,
-            username: printer.user,
-            password: printer.pass,
-            readyTimeout: 5000
-        }
-    }
-}   
 
 const uploadSingleFile = (stream, localPath, fileName) => {
     return new Promise((resolve, reject) => {
@@ -30,7 +15,6 @@ const uploadSingleFile = (stream, localPath, fileName) => {
             }
 
             const stats = fs.statSync(localPath)
-            
             stream.write(`C0644 ${stats.size} ${fileName}\n`)
             
             stream.once('data', (data) => {
@@ -59,66 +43,78 @@ const uploadSingleFile = (stream, localPath, fileName) => {
     })
 }
 
-const syncSinglePrinter = (clientKey, clientInstance) => {
+const syncSinglePrinter = (printer) => {
+    const clientKey = `${printer.name}Client`
+    const clientInstance = new Client()
+
     return new Promise((resolve, reject) => {
         clientInstance.on('error', (connErr) => {
             reject(new Error(`Connection failed: ${connErr.message}`))
         })
 
-        clientInstance.on('ready', () => {
-            clientInstance.exec(`scp -t ${remoteDir}`, async (err, stream) => {
-                try {
-                    if (err) throw new Error(`SSH Command Execution Failure: ${err.message}`)
+        clientInstance.on('ready', async () => {
+            try {
 
-                    for (const fileName of filesToUpload) {
-                        const localPath = path.join(localDataDir, fileName)
-                        
-                        await uploadSingleFile(stream, localPath, fileName)
-                    }
+                await new Promise((resSync, rejSync) => {
+                    clientInstance.exec(`scp -t ${remoteDir}`, async (err, stream) => {
+                        try {
+                            if (err) throw new Error(`SSH Command Execution Failure: ${err.message}`)
 
-                    console.log(`[${clientKey}] profiles synced successfully.`)
-                    resolve()
-                } catch (pipelineError) {
-                    reject(pipelineError)
-                } finally {
-                    if (stream) stream.end()
-                    clientInstance.end()
-                }
-            })
+                            for (const fileName of filesToUpload) {
+                                const localPath = path.join(localDataDir, fileName)
+                                await uploadSingleFile(stream, localPath, fileName)
+                            }
+                            if (stream) stream.end()
+                            resSync()
+                        } catch (pipelineError) {
+                            if (stream) stream.end()
+                            rejSync(pipelineError)
+                        }
+                    })
+                })
+
+                console.log(`[${clientKey}] Profiles synced successfully.`)
+                resolve()
+            } catch (pipelineError) {
+                reject(pipelineError)
+            } finally {
+                clientInstance.end()
+            }
         })
 
-        clientInstance.connect(clientInstance.config)
+        clientInstance.connect({
+            host: printer.ip,
+            port: 22,
+            username: printer.user,
+            password: printer.pass,
+            readyTimeout: 5000
+        })
     })
 }
 
 const sendToPrinter = async () => {
-    console.log("\nSyncing with printers")
-    generatePrinterClients()
-    const clientKeys = Object.keys(printerClients)
+    console.log("\nSyncing with printers...")
 
-    const syncPromises = clientKeys.map(clientKey => 
-        syncSinglePrinter(clientKey, printerClients[clientKey])
-    )
+    const syncPromises = PRINTERS.map(printer => syncSinglePrinter(printer))
     const results = await Promise.allSettled(syncPromises)
 
     let successes = 0
     let failures = 0
 
     results.forEach((result, idx) => {
-        const targetLabel = clientKeys[idx]
+        const targetLabel = `${PRINTERS[idx].name}Client`
         if (result.status === 'fulfilled') {
             successes++
         } else {
-            console.error(`[${targetLabel}] sync failed -> ${result.reason.message}`)
+            console.error(`[${targetLabel}] Sync failed -> ${result.reason.message}`)
             failures++
         }
     })
 
-    console.log(`\nSync Summary: ${successes} printer synced, ${failures} printers skipped`)
-    if (successes === 0 && clientKeys.length > 0) {
+    console.log(`\nSync Summary: ${successes} printer(s) synced, ${failures} printer(s) skipped`)
+    if (successes === 0 && PRINTERS.length > 0) {
         process.exit(1)
     }
 }
 
- 
 module.exports = sendToPrinter
