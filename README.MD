@@ -175,13 +175,34 @@ Copy and paste this template into your profile notes:
 ```
 
 #### Important Rules for IDs:
-* The `"id"` must be a **unique 5-digit value**. 
+* The `"id"` must be a **unique 5-digit value**.
+* Unique means unique across **all** of your profiles, and not one of the IDs the printer's own filaments already use (see below).
 * If you are using custom RFID tags, this ID must match the tag.
 * ⚠️ **An ID is required** even if you don't use RFID tags, as the tool uses it to update printer settings.
 
 **Example configuration:**
 ```json
 {"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
+```
+
+#### IDs already used by the built in filaments
+
+**Anything from `90000` up is free, so it's the easiest range to pick from.**
+
+If you give a profile one of the IDs below, your filament takes that slot and the built in filament stops showing on the printer. The tool warns you when it spots this, and asks before syncing if you're running it from a terminal. Nothing is lost permanently, change the ID back to a free one and sync again and the built in filament returns.
+
+If you already wrote the ID to an RFID tag, note that the tag still points at the old ID, so you'd need to rewrite the tag as well.
+
+```
+00001, 00002, 00003, 00004, 00005, 00006, 00007, 00008, 00009,
+00010, 00011, 00012, 00013, 00014, 00015, 00016, 00017, 00018,
+00019, 00020, 00021, 00022, 00023, 00024, 00025, 00026, 00027,
+00031, 00032, 00033, 00034, 00035, 01001, 01002, 01004, 01601,
+02001, 03001, 04001, 05001, 06001, 06002, 06003, 06004, 07001,
+07002, 08001, 09001, 09002, 10001, 11001, 12002, 12003, 12004,
+12005, 13001, 14001, 15001, 16001, 17001, 18001, 19001, 29001,
+E1001, E1002, E1003, E1004, E1005, E1006, E2001, E2002, P1001,
+P1002, P1003, P1004
 ```
 
 ### 2. If you are using custom RFID tags
