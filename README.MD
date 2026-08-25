@@ -180,7 +180,7 @@ Copy and paste this template into your profile notes:
 * ⚠️ **An ID is required** even if you don't use RFID tags, as the tool uses it to update printer settings.
 * If you pick an already used id from a default profile, the profile will be overwritten with your custom profile. This is intended as you may want to update settings on stock profiles.
 * 30000–99999 is a safe unused range of id's
-* You can also use letters or a prefix in your id, such as `S1005` or `PLA01`
+* You can also use letters or a prefix in your id, such as `FS001` or `PLA01`
 
 **Example configuration:**
 ```json
