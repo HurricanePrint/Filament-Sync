@@ -184,7 +184,7 @@ Copy and paste this template into your profile notes:
 
 **Example configuration:**
 ```json
-{"id":"02345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
+{"id":"FS345","vendor":"ELEGOO","type":"PLA","name":"Fast PLA"}
 ```
 
 ### 2. If you are using custom RFID tags
