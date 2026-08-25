@@ -137,11 +137,16 @@ async function autoUpdate() {
         child.unref()
         process.exit(0)
     } catch (error) {
+    console.error('Update failed:', error.message)
+        if (error.stdout) {
+            console.error('Git output:', error.stdout)
+        }
+        if (error.stderr) {
+            console.error('Git error:', error.stderr)
+        }
         if (originalConfigSource) {
             fs.writeFileSync(configPath, originalConfigSource)
         }
-
-        console.log('Could not check for updates (offline or Git missing)')
     }
 }
 
