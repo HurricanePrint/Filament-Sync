@@ -194,6 +194,8 @@ Copy and paste this template into your profile notes:
 
 It is suggested to run the script manually the first time as the slicer may encounter an error the first time it runs the script as a Post-Process Script. Running it manually will also allow you to see if there are any installation or syncing errors.
 
+Sometimes you may not immediately see the updated profiles in the filament picker. It may take a few seconds for the printer to refresh with the newly synced database. You can force this refresh this by closing the printer and reopening the printer from the device tab in creality print. Or by rebooting the printer.
+
 ### To sync manually
 
 In Terminal/Powershell enter the Filament-Sync folder
