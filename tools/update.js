@@ -104,28 +104,38 @@ async function autoUpdate() {
     try {
         console.log('Checking for tool updates')
 
-        originalConfigSource = fs.readFileSync(configPath, 'utf8')
+        originalConfigSource = fs.existsSync(configPath)
+            ? fs.readFileSync(configPath, 'utf8')
+            : ''
+
         const currentConfig = loadConfig()
+
+        const { stdout, stderr } = await execAsync('git pull', {
+            cwd: repoRoot
+        })
+
+        const pullOutput = `${stdout}\n${stderr}`
+
+        if (/Already up to date/i.test(pullOutput)) {
+            console.log('Tool is up to date')
+
+            if (originalConfigSource) {
+                fs.writeFileSync(configPath, originalConfigSource)
+            }
+
+            return
+        }
 
         await execAsync(
             'git restore --source=HEAD --staged --worktree -- user-config.js',
             { cwd: repoRoot }
         )
 
-        const { stdout, stderr } = await execAsync('git pull', {
-            cwd: repoRoot
-        })
-
         const updatedConfig = loadConfig()
 
         writeConfig(
             mergeUserConfig(updatedConfig, currentConfig)
         )
-
-        if (/Already up to date/i.test(`${stdout}\n${stderr}`)) {
-            console.log('Tool is up to date')
-            return
-        }
 
         console.log('Updates downloaded successfully! Relaunching script')
 
@@ -137,7 +147,7 @@ async function autoUpdate() {
         child.unref()
         process.exit(0)
     } catch (error) {
-    console.error('Update failed:', error.message)
+        console.error('Update failed:', error.message)
         if (error.stdout) {
             console.error('Git output:', error.stdout)
         }
