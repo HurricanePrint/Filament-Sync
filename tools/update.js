@@ -1,114 +1,94 @@
 const fs = require('fs')
 const path = require('path')
-const { spawn } = require('child_process')
+const { exec, spawn } = require('child_process')
 const util = require('util')
-const { exec } = require('child_process')
 
 const execAsync = util.promisify(exec)
 const repoRoot = path.resolve(__dirname, '..')
 const configPath = path.join(repoRoot, 'user-config.js')
 
-const preservedKeys = [
-    'SLICER',
-    'USERID',
-    'USER',
-    'PASSWORD',
-    'PRINTERS'
-]
+const userKeys = ['SLICER', 'USERID', 'USER', 'PASSWORD', 'PRINTERS']
 
-function loadConfig() {
-    delete require.cache[require.resolve(configPath)]
-    return require(configPath)
+function readSource(file) {
+    return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
 }
 
-function isPlainObject(value) {
-    return value !== null &&
-        typeof value === 'object' &&
-        !Array.isArray(value)
+function captureAssignment(source, name) {
+    const needle = `const ${name} =`
+    const start = source.indexOf(needle)
+
+    if (start === -1) {
+        return null
+    }
+
+    const afterStart = start + needle.length
+    const nextConst = source.indexOf('\nconst ', afterStart)
+    const nextModule = source.indexOf('\nmodule.exports', afterStart)
+
+    let end = source.length
+    if (nextConst !== -1) end = Math.min(end, nextConst)
+    if (nextModule !== -1) end = Math.min(end, nextModule)
+
+    return source.slice(start, end).trim()
 }
 
-function mergeExistingValues(updatedValue, oldValue) {
-    if (Array.isArray(updatedValue)) {
-        if (!Array.isArray(oldValue)) {
-            return updatedValue
-        }
+function replaceAssignment(source, name, assignment) {
+    const needle = `const ${name} =`
+    const start = source.indexOf(needle)
 
-        return updatedValue.map((newItem, index) => {
-            if (!isPlainObject(newItem)) {
-                return newItem
-            }
-
-            const oldItem = newItem.name
-                ? oldValue.find(item =>
-                    isPlainObject(item) &&
-                    item.name === newItem.name
-                )
-                : oldValue[index]
-
-            return mergeExistingValues(newItem, oldItem || {})
-        })
+    if (start === -1) {
+        return insertAssignment(source, name, assignment)
     }
 
-    if (!isPlainObject(updatedValue) || !isPlainObject(oldValue)) {
-        return updatedValue
-    }
+    const afterStart = start + needle.length
+    const nextConst = source.indexOf('\nconst ', afterStart)
+    const nextModule = source.indexOf('\nmodule.exports', afterStart)
 
-    const merged = { ...updatedValue }
+    let end = source.length
+    if (nextConst !== -1) end = Math.min(end, nextConst)
+    if (nextModule !== -1) end = Math.min(end, nextModule)
 
-    for (const key of Object.keys(updatedValue)) {
-        if (!Object.prototype.hasOwnProperty.call(oldValue, key)) {
-            continue
-        }
-
-        if (isPlainObject(updatedValue[key]) ||
-            Array.isArray(updatedValue[key])) {
-            merged[key] = mergeExistingValues(
-                updatedValue[key],
-                oldValue[key]
-            )
-        } else {
-            merged[key] = oldValue[key]
-        }
-    }
-
-    return merged
+    return source.slice(0, start) + assignment + source.slice(end)
 }
 
-function mergeUserConfig(updatedConfig, oldConfig) {
-    const merged = { ...updatedConfig }
+function insertAssignment(source, name, assignment) {
+    const beforeModule = source.indexOf('\nmodule.exports')
 
-    for (const key of preservedKeys) {
-        if (!Object.prototype.hasOwnProperty.call(updatedConfig, key) ||
-            !Object.prototype.hasOwnProperty.call(oldConfig, key)) {
-            continue
-        }
-
-        merged[key] = key === 'PRINTERS'
-            ? mergeExistingValues(updatedConfig[key], oldConfig[key])
-            : oldConfig[key]
+    if (beforeModule === -1) {
+        return `${source.trimEnd()}\n\n${assignment}\n`
     }
 
-    return merged
-}
-
-function writeConfig(config) {
-    fs.writeFileSync(
-        configPath,
-        `module.exports = ${JSON.stringify(config, null, 2)}\n`
+    return (
+        source.slice(0, beforeModule) +
+        `\n${assignment}\n` +
+        source.slice(beforeModule)
     )
 }
 
+function extractUserAssignments(source) {
+    const result = {}
+
+    for (const key of userKeys) {
+        const assignment = captureAssignment(source, key)
+        if (assignment) {
+            result[key] = assignment
+        }
+    }
+
+    return result
+}
+
 async function autoUpdate() {
-    let originalConfigSource
+    let originalSource = ''
 
     try {
         console.log('Checking for tool updates')
 
-        originalConfigSource = fs.existsSync(configPath)
-            ? fs.readFileSync(configPath, 'utf8')
-            : ''
+        if (fs.existsSync(configPath)) {
+            originalSource = readSource(configPath)
+        }
 
-        const currentConfig = loadConfig()
+        const userAssignments = extractUserAssignments(originalSource)
 
         const { stdout, stderr } = await execAsync('git pull', {
             cwd: repoRoot
@@ -117,12 +97,10 @@ async function autoUpdate() {
         const pullOutput = `${stdout}\n${stderr}`
 
         if (/Already up to date/i.test(pullOutput)) {
-            console.log('Tool is up to date')
-
-            if (originalConfigSource) {
-                fs.writeFileSync(configPath, originalConfigSource)
+            console.log('No repo update available.')
+            if (originalSource) {
+                fs.writeFileSync(configPath, originalSource)
             }
-
             return
         }
 
@@ -131,13 +109,20 @@ async function autoUpdate() {
             { cwd: repoRoot }
         )
 
-        const updatedConfig = loadConfig()
+        let pulledTemplate = readSource(configPath)
 
-        writeConfig(
-            mergeUserConfig(updatedConfig, currentConfig)
-        )
+        for (const key of userKeys) {
+            if (!userAssignments[key]) continue
+            pulledTemplate = replaceAssignment(
+                pulledTemplate,
+                key,
+                userAssignments[key]
+            )
+        }
 
-        console.log('Updates downloaded successfully! Relaunching script')
+        fs.writeFileSync(configPath, pulledTemplate)
+
+        console.log('Updated user-config.js without destroying template text.')
 
         const child = spawn(process.argv[0], process.argv.slice(1), {
             detached: true,
@@ -149,13 +134,13 @@ async function autoUpdate() {
     } catch (error) {
         console.error('Update failed:', error.message)
         if (error.stdout) {
-            console.error('Git output:', error.stdout)
+            console.error(error.stdout)
         }
         if (error.stderr) {
-            console.error('Git error:', error.stderr)
+            console.error(error.stderr)
         }
-        if (originalConfigSource) {
-            fs.writeFileSync(configPath, originalConfigSource)
+        if (originalSource) {
+            fs.writeFileSync(configPath, originalSource)
         }
     }
 }
