@@ -35,8 +35,8 @@ Set k1: true if you are using a K1 printer
 */
 const PRINTERS = [
   { name: "Printer1", ip: "10.0.0.50", user: USER, pass: PASSWORD, k1: false },
-  //{ name: "Printer2", ip: "10.0.0.51", user: "user", pass: "pass" },
-  //{ name: "Printer3", ip: "10.0.0.52", user: "user2", pass: "pass2" },
+  //{ name: "Printer2", ip: "10.0.0.51", user: "user", pass: "pass", k1: false },
+  //{ name: "Printer3", ip: "10.0.0.52", user: "user2", pass: "pass2", k1: false },
 
 ]
 
