@@ -63,6 +63,8 @@ If you haven't already connected to your printer with SSH at least once, use ter
 ssh root@your-printer-ip
 ```
 
+Check out my other project [K2-mDNS](https://github.com/HurricanePrint/K2-mDNS) if you would like an easier way to connect to your printers. Instead of remembering IP's you can connect with a simple name like k2plus.local
+
 ### 2. All operating systems require **Node.js**. 
 
 Download it from the official site:
