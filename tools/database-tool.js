@@ -30,7 +30,6 @@ const removeDuplicates = () => {
         return index >= startCount || !newIds.includes(entry.base.id)
     })
     newDatabase.result.count = newDatabase.result.list.length
-    writeDatabase(newDatabase)
 }
 
 const createProfile = (newMaterial) => {
@@ -48,6 +47,8 @@ const addProfiles = () => {
         createProfile(updatedFilamentEntry)
     }
     removeDuplicates()
+    newDatabase.result.version = "9876543210"
+    writeDatabase(newDatabase)
 }
 
 module.exports = addProfiles
