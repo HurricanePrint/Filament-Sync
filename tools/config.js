@@ -17,6 +17,51 @@ const getOSInfo = () => {
     }
 }
 
+const compareVersions = (left, right) => {
+    const a = left.split('.').map(Number)
+    const b = right.split('.').map(Number)
+
+    for (let i = 0; i < Math.max(a.length, b.length); i++) {
+        const difference = (a[i] || 0) - (b[i] || 0)
+        if (difference !== 0) return difference
+    }
+    return 0
+}
+
+const findLatestCrealityDirs = (locations) => {
+    const candidates = []
+
+    for (const {root, getGenericDir} of locations) {
+        if (!fs.existsSync(root)) continue
+
+        for (const entry of fs.readdirSync(root, {withFileTypes: true})) {
+            if (!entry.isDirectory() || !/^\d+(?:\.\d+)*$/.test(entry.name)) continue
+
+            const versionDir = path.join(root, entry.name)
+            const candidate = {
+                version: entry.name,
+                profileDir: path.join(versionDir, 'user', USERID, 'filament'),
+                genericDir: getGenericDir(versionDir)
+            }
+
+            if (fs.existsSync(candidate.profileDir) && fs.existsSync(candidate.genericDir)) {
+                const profileFiles = fs.readdirSync(candidate.profileDir, {recursive: true})
+                if (profileFiles.some(file => path.extname(file) === '.json')) {
+                    candidates.push(candidate)
+                }
+            }
+        }
+    }
+
+    candidates.sort((a, b) => compareVersions(b.version, a.version))
+
+    if (candidates.length === 0) {
+        throw new Error(`Could not find a usable Creality Print config folder for user ${USERID}`)
+    }
+
+    return candidates[0]
+}
+
 const checkCrealityFormatting = (profiles) => {
     for(let profile of profiles) {
         if(typeof Object.values(profile)[0] != 'object') {
@@ -64,30 +109,42 @@ const loadCustomProfiles = () => {
         }
         loadedProfiles = profiles
     }else if (SLICER == 'creality') {
-                switch(osType) {
+        switch (osType) {
             case 'Darwin':
-                profileDir = homeDir + '/Library/Application Support/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
-                genericDir = homeDir + '/Library/Application Support/Creality/Creality Print/7.0/system/Creality/filament/'
+                ({profileDir, genericDir} = findLatestCrealityDirs([
+                    {
+                        root: path.join(homeDir, 'Library/Application Support/Creality/Creality Print'),
+                        getGenericDir: versionDir =>
+                            path.join(versionDir, 'system/Creality/filament')
+                    }
+                ]))
                 break
             case 'Linux':
-                if (fs.existsSync(homeDir + '/.config/Creality/Creality Print/7.0/user/' + USERID + '/filament/')) {
-                    profileDir = homeDir + '/.config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
-                    genericDir = homeDir + '/.config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
-                } else if (fs.existsSync(homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/')) {
-                    profileDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
-                    genericDir = homeDir + '/.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/system/Creality/filament/'
-                }
+                ({profileDir, genericDir} = findLatestCrealityDirs([
+                    {
+                        root: path.join(homeDir, '.config/Creality/Creality Print'),
+                        getGenericDir: versionDir => path.join(versionDir, 'system/Creality/filament')
+                    },
+                    {
+                        root: path.join(homeDir, '.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print'),
+                        getGenericDir: versionDir => path.join(versionDir, 'system/Creality/filament')
+                    }
+                ]))
                 break
             case 'Windows_NT':
-                profileDir = homeDir + '/AppData/Roaming/Creality/Creality Print/7.0/user/' + USERID + '/filament/'
-                genericDir = homeDir + '/AppData/Roaming/Creality/Creality Print/7.0/system/Creality/filament/'
+                ({profileDir, genericDir} = findLatestCrealityDirs([
+                    {
+                        root: path.join(homeDir, 'AppData/Roaming/Creality/Creality Print'),
+                        getGenericDir: versionDir => path.join(versionDir, 'system/Creality/filament')
+                    }
+                ]))
                 break
         }
         crealityFiles = fs.readdirSync(profileDir,{recursive: true})
         if (crealityFiles[0] == '.DS_Store') crealityFiles.splice(0, 1)
         crealityFiles = crealityFiles.filter(profile => profile.includes('.json'))
         for (item in crealityFiles) {
-            let parsedProfile = JSON.parse(fs.readFileSync(profileDir + crealityFiles[item]))
+            let parsedProfile = JSON.parse(fs.readFileSync(path.join(profileDir, crealityFiles[item])))
             profiles.push(parsedProfile)
         }
         loadedProfiles = checkCrealityFormatting(profiles)

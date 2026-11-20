@@ -136,10 +136,10 @@ OrcaSlicer
 
 CrealityPrint
 
-    Windows: /AppData/Roaming/Creality/Creality Print/7.0/user/USERID#
-    Mac: /Library/Application Support/Creality/Creality Print/7.0/user/USERID#
-    Linux: /.config/Creality/Creality Print/7.0/user/USERID#
-    Flatpak: /.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/7.0/user/
+    Windows: /AppData/Roaming/Creality/Creality Print/<version>/user/USERID#
+    Mac: /Library/Application Support/Creality/Creality Print/<version>/user/USERID#
+    Linux: /.config/Creality/Creality Print/<version>/user/USERID#
+    Flatpak: /.var/app/io.github.crealityofficial.CrealityPrint/config/Creality/Creality Print/<version>/user/
 
 ### 3. Setup your printers
 
