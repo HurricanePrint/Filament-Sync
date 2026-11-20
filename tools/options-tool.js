@@ -73,7 +73,24 @@ const addOptions = () => {
     let customProfiles = readProfiles()
     for (item in customProfiles) {
         let curItem = customProfiles[item]
-        let curItemData = JSON.parse(curItem.filament_notes)
+
+    let curItemData
+    try {
+        curItemData = JSON.parse(curItem.filament_notes)
+    } catch (error) {
+        continue
+    }
+    if (
+        !curItemData ||
+        typeof curItemData !== 'object' ||
+        Array.isArray(curItemData) ||
+        !curItemData.id ||
+        !curItemData.vendor ||
+        !curItemData.type ||
+        !curItemData.name
+    ) {
+        continue
+    }
         addFilament(curItemData.vendor, curItemData.type, curItemData.name)
     }
 }
